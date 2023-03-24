@@ -1,4 +1,3 @@
-rmdir dist
-rmdir build
-del app.spec
+call delete_build.bat
+call generate_ui_py.bat
 pyinstaller --noconsole src/app.py

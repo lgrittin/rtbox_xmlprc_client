@@ -1,7 +1,7 @@
 Plecs {
   Name          "sim_correnti_tensioni"
   Version       "4.7"
-  CircuitModel  "ContStateSpace"
+  CircuitModel  "DiscStateSpace"
   StartTime     "0.0"
   TimeSpan      "5*tau"
   Timeout       ""
@@ -36,7 +36,7 @@ Plecs {
   CodeGenFloatingPointFormat "2"
   CodeGenAbsTimeUsageMsg "3"
   CodeGenBaseName ""
-  CodeGenOutputDir "C:/Users/LGrittin/Desktop/rtbox_xmlprc_client/plecs_design"
+  CodeGenOutputDir "C:/Users/LGrittin/Desktop/ultimo_plecs_design"
   CodeGenExtraOpts ""
   CodeGenTarget "PLECS RT Box 1"
   CodeGenTargetSettings "AAAAfwAAAAAlUU1hcDxRU3RyaW5nLFFNYXA8UVN0cmluZyxRU3Rya"
@@ -117,7 +117,7 @@ Plecs {
     Index         "7"
   }
   Schematic {
-    Location      [0, 55; 1087, 652]
+    Location      [-1920, 31; 0, 1009]
     ZoomFactor    0.873846
     SliderPosition [0, 0]
     ShowBrowser   off
@@ -2066,21 +2066,21 @@ Plecs {
       Type          Scope
       Name          "Scope2"
       Show          on
-      Position      [1205, 640]
+      Position      [1215, 655]
       Direction     up
       Flipped       off
       LabelPosition south
-      Location      [1120, 572; 1841, 993]
+      Location      [0, 565; 721, 1016]
       State         "AAAA/wAAAAD9AAAAAgAAAAEAAAAAAAAAAPwCAAAAA/sAAAAQAFoAbwBvA"
 "G0AQQByAGUAYQAAAAAA/////wAAAFwA////+wAAABQAUwBhAHYAZQBkAFYAaQBlAHcAcwAAAAAA//"
 "///wAAAGYA////+wAAAAwAVAByAGEAYwBlAHMAAAAAAP////8AAABmAP///wAAAAMAAAAAAAAAAPw"
-"BAAAAAfsAAAAUAEQAYQB0AGEAVwBpAGQAZwBlAHQAAAAAAP////8AAABQAP///wAAAtEAAAGKAAAA"
+"BAAAAAfsAAAAUAEQAYQB0AGEAVwBpAGQAZwBlAHQAAAAAAP////8AAABQAP///wAAAtEAAAGoAAAA"
 "BAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAOAFQAbwBvAGwAQgBhAHIBAAAAAP////8AAAAAA"
 "AAAAA=="
       SavedViews    "AAAAAgAAAAA="
       HeaderState   "AAAA/wAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAL/gMAAAAJAAAAB"
-"wAAAGQAAAAIAAAAZAAAAAkAAABkAAAAAQAAAGQAAAACAAAAZAAAAAMAAABkAAAABAAAAGQAAAAFAA"
-"AAZAAAAAYAAABkAAAAhgAAAAsBAAABAAAAAAAAAAAAAAAAZP////8AAACBAAAAAAAAAAsAAABiAAA"
+"gAAAGQAAAAJAAAAZAAAAAgAAABkAAAAAQAAAGQAAAADAAAAZAAAAAIAAABkAAAABQAAAGQAAAAEAA"
+"AAZAAAAAcAAABkAAAAhgAAAAsBAAABAAAAAAAAAAAAAAAAZP////8AAACBAAAAAAAAAAsAAABiAAA"
 "AAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAA"
 "AAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAA"
 "AAkAAAAAQAAAAAAAAPoAAAAACQ="
@@ -2355,7 +2355,7 @@ Plecs {
       SrcComponent  "PLECSRTBoxLib/Analog Out1"
       Name          "Analog Out7"
       Show          off
-      Position      [530, 55]
+      Position      [575, 55]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -2394,6 +2394,126 @@ Plecs {
         Type          Input
         Position      [-25, 0]
         Direction     left
+      }
+    }
+    Component {
+      Type          Reference
+      SrcComponent  "PLECSRTBoxLib/Capture1"
+      Name          "Capture1"
+      Show          on
+      Position      [1270, 530]
+      Direction     up
+      Flipped       off
+      LabelPosition south
+      Frame         [-25, -20; 25, 20]
+      Parameter {
+        Variable      "num_samples"
+        Value         "2000"
+        Show          off
+      }
+      Parameter {
+        Variable      "trigger_type"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "trigger_level"
+        Value         "0"
+        Show          off
+      }
+      Parameter {
+        Variable      "TargetPortIndices"
+        Value         ""
+        Show          off
+      }
+      Terminal {
+        Type          Input
+        Position      [-25, 0]
+        Direction     left
+      }
+      Terminal {
+        Type          Input
+        Position      [0, -20]
+        Direction     up
+      }
+    }
+    Component {
+      Type          Goto
+      Name          "Goto"
+      Show          off
+      Position      [530, 100]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Tag"
+        Value         "synch"
+        Show          off
+      }
+      Parameter {
+        Variable      "Visibility"
+        Value         "1"
+        Show          off
+      }
+    }
+    Component {
+      Type          From
+      Name          "From"
+      Show          off
+      Position      [1185, 495]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Tag"
+        Value         "synch"
+        Show          off
+      }
+      Parameter {
+        Variable      "Visibility"
+        Value         "1"
+        Show          off
+      }
+    }
+    Component {
+      Type          Reference
+      SrcComponent  "PLECSRTBoxLib/Capture1"
+      Name          "Capture2"
+      Show          on
+      Position      [1270, 605]
+      Direction     up
+      Flipped       off
+      LabelPosition south
+      Frame         [-25, -20; 25, 20]
+      Parameter {
+        Variable      "num_samples"
+        Value         "2000"
+        Show          off
+      }
+      Parameter {
+        Variable      "trigger_type"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "trigger_level"
+        Value         "0"
+        Show          off
+      }
+      Parameter {
+        Variable      "TargetPortIndices"
+        Value         ""
+        Show          off
+      }
+      Terminal {
+        Type          Input
+        Position      [-25, 0]
+        Direction     left
+      }
+      Terminal {
+        Type          Input
+        Position      [0, -20]
+        Direction     up
       }
     }
     Connection {
@@ -3149,14 +3269,6 @@ Plecs {
     }
     Connection {
       Type          Signal
-      SrcComponent  "Mux3"
-      SrcTerminal   1
-      Points        [1175, 615]
-      DstComponent  "Scope2"
-      DstTerminal   1
-    }
-    Connection {
-      Type          Signal
       SrcComponent  "Sum16"
       SrcTerminal   1
       Points        [1135, 310]
@@ -3198,14 +3310,6 @@ Plecs {
         DstComponent  "Analog Out6"
         DstTerminal   1
       }
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Mux2"
-      SrcTerminal   1
-      Points        [1175, 660]
-      DstComponent  "Scope2"
-      DstTerminal   2
     }
     Connection {
       Type          Signal
@@ -3257,9 +3361,63 @@ Plecs {
       Type          Signal
       SrcComponent  "Pulse\nGenerator"
       SrcTerminal   1
-      DstComponent  "Analog Out7"
-      DstTerminal   1
+      Points        [505, 55]
+      Branch {
+        DstComponent  "Analog Out7"
+        DstTerminal   1
+      }
+      Branch {
+        Points        [505, 100]
+        DstComponent  "Goto"
+        DstTerminal   1
+      }
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "From"
+      SrcTerminal   1
+      Points        [1200, 495]
+      Branch {
+        DstComponent  "Capture1"
+        DstTerminal   2
+      }
+      Branch {
+        Points        [1200, 570]
+        DstComponent  "Capture2"
+        DstTerminal   2
+      }
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Mux3"
+      SrcTerminal   1
+      Points        [1170, 615]
+      Branch {
+        Points        [1185, 615]
+        DstComponent  "Scope2"
+        DstTerminal   1
+      }
+      Branch {
+        Points        [1170, 530]
+        DstComponent  "Capture1"
+        DstTerminal   1
+      }
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Mux2"
+      SrcTerminal   1
+      Points        [1175, 660]
+      Branch {
+        DstComponent  "Scope2"
+        DstTerminal   2
+      }
+      Branch {
+        Points        [1175, 605]
+        DstComponent  "Capture2"
+        DstTerminal   1
+      }
     }
   }
 }
-DemoSignature "NzqLwZS/S84m3FZLT91+k4/CI/+H1TmhPhI/ih6d30U="
+DemoSignature "gzYyjGW5cw5mPlfLWDSIOC3djrkCTc08NRPadq2UhEI="

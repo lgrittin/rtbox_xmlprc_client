@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(870, 242)
+        MainWindow.resize(870, 573)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -48,13 +48,11 @@ class Ui_MainWindow(object):
         self.action_Settings.setIcon(icon2)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-        self.layoutWidget = QWidget(self.centralwidget)
-        self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(10, 10, 845, 145))
-        self.gridLayout_3 = QGridLayout(self.layoutWidget)
+        self.gridLayout_4 = QGridLayout(self.centralwidget)
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.groupBox = QGroupBox(self.layoutWidget)
+        self.groupBox = QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(u"groupBox")
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
@@ -66,8 +64,8 @@ class Ui_MainWindow(object):
         self.doubleSpinBox_vAmp = QDoubleSpinBox(self.groupBox)
         self.doubleSpinBox_vAmp.setObjectName(u"doubleSpinBox_vAmp")
         self.doubleSpinBox_vAmp.setDecimals(3)
-        self.doubleSpinBox_vAmp.setMaximum(10.000000000000000)
-        self.doubleSpinBox_vAmp.setSingleStep(0.100000000000000)
+        self.doubleSpinBox_vAmp.setMaximum(5.500000000000000)
+        self.doubleSpinBox_vAmp.setSingleStep(0.050000000000000)
 
         self.gridLayout.addWidget(self.doubleSpinBox_vAmp, 0, 1, 1, 1)
 
@@ -137,6 +135,7 @@ class Ui_MainWindow(object):
 
         self.doubleSpinBox_unbalAmp = QDoubleSpinBox(self.groupBox)
         self.doubleSpinBox_unbalAmp.setObjectName(u"doubleSpinBox_unbalAmp")
+        self.doubleSpinBox_unbalAmp.setMinimum(-1.000000000000000)
         self.doubleSpinBox_unbalAmp.setMaximum(1.000000000000000)
         self.doubleSpinBox_unbalAmp.setSingleStep(0.010000000000000)
 
@@ -158,7 +157,7 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 1)
 
-        self.groupBox_2 = QGroupBox(self.layoutWidget)
+        self.groupBox_2 = QGroupBox(self.centralwidget)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.gridLayout_2 = QGridLayout(self.groupBox_2)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
@@ -181,6 +180,7 @@ class Ui_MainWindow(object):
 
         self.doubleSpinBox_unbalDCAmp = QDoubleSpinBox(self.groupBox_2)
         self.doubleSpinBox_unbalDCAmp.setObjectName(u"doubleSpinBox_unbalDCAmp")
+        self.doubleSpinBox_unbalDCAmp.setMinimum(-1.000000000000000)
         self.doubleSpinBox_unbalDCAmp.setMaximum(1.000000000000000)
         self.doubleSpinBox_unbalDCAmp.setSingleStep(0.010000000000000)
 
@@ -200,8 +200,8 @@ class Ui_MainWindow(object):
         self.doubleSpinBox_vDCAmp1 = QDoubleSpinBox(self.groupBox_2)
         self.doubleSpinBox_vDCAmp1.setObjectName(u"doubleSpinBox_vDCAmp1")
         self.doubleSpinBox_vDCAmp1.setDecimals(3)
-        self.doubleSpinBox_vDCAmp1.setMaximum(10.000000000000000)
-        self.doubleSpinBox_vDCAmp1.setSingleStep(0.100000000000000)
+        self.doubleSpinBox_vDCAmp1.setMaximum(2.000000000000000)
+        self.doubleSpinBox_vDCAmp1.setSingleStep(0.010000000000000)
 
         self.gridLayout_2.addWidget(self.doubleSpinBox_vDCAmp1, 0, 1, 1, 1)
 
@@ -227,16 +227,16 @@ class Ui_MainWindow(object):
         self.doubleSpinBox_vDCAmp2 = QDoubleSpinBox(self.groupBox_2)
         self.doubleSpinBox_vDCAmp2.setObjectName(u"doubleSpinBox_vDCAmp2")
         self.doubleSpinBox_vDCAmp2.setDecimals(3)
-        self.doubleSpinBox_vDCAmp2.setMaximum(10.000000000000000)
-        self.doubleSpinBox_vDCAmp2.setSingleStep(0.100000000000000)
+        self.doubleSpinBox_vDCAmp2.setMaximum(2.000000000000000)
+        self.doubleSpinBox_vDCAmp2.setSingleStep(0.010000000000000)
 
         self.gridLayout_2.addWidget(self.doubleSpinBox_vDCAmp2, 0, 2, 1, 1)
 
         self.doubleSpinBox_vDCAmp3 = QDoubleSpinBox(self.groupBox_2)
         self.doubleSpinBox_vDCAmp3.setObjectName(u"doubleSpinBox_vDCAmp3")
         self.doubleSpinBox_vDCAmp3.setDecimals(3)
-        self.doubleSpinBox_vDCAmp3.setMaximum(10.000000000000000)
-        self.doubleSpinBox_vDCAmp3.setSingleStep(0.100000000000000)
+        self.doubleSpinBox_vDCAmp3.setMaximum(2.000000000000000)
+        self.doubleSpinBox_vDCAmp3.setSingleStep(0.010000000000000)
 
         self.gridLayout_2.addWidget(self.doubleSpinBox_vDCAmp3, 0, 3, 1, 1)
 
@@ -274,6 +274,19 @@ class Ui_MainWindow(object):
 
 
         self.gridLayout_3.addWidget(self.groupBox_2, 0, 1, 1, 1)
+
+
+        self.gridLayout_4.addLayout(self.gridLayout_3, 0, 0, 1, 1)
+
+        self.groupBox_Plot = QGroupBox(self.centralwidget)
+        self.groupBox_Plot.setObjectName(u"groupBox_Plot")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.groupBox_Plot.sizePolicy().hasHeightForWidth())
+        self.groupBox_Plot.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_4.addWidget(self.groupBox_Plot, 1, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -339,6 +352,7 @@ class Ui_MainWindow(object):
         self.pushButton_vDCEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Switching Noise [V]-[Hz]:", None))
         self.pushButton_vDCLink.setText(QCoreApplication.translate("MainWindow", u"Link Off", None))
+        self.groupBox_Plot.setTitle(QCoreApplication.translate("MainWindow", u"Plot", None))
         self.menu_File.setTitle(QCoreApplication.translate("MainWindow", u"&File", None))
         self.menu_Edit.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.menu_Help.setTitle(QCoreApplication.translate("MainWindow", u"&Help", None))

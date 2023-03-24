@@ -2,7 +2,7 @@
  * Header file for: sim_correnti_tensioni
  * Generated with : PLECS 4.7.1
  *                  PLECS RT Box 1 2.3.1
- * Generated on   : 23 Mar 2023 09:59:48
+ * Generated on   : 24 Mar 2023 14:21:20
  */
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
 #define PLECS_HEADER_sim_correnti_tensioni_h_

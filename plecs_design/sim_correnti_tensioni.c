@@ -2,7 +2,7 @@
  * Implementation file for: sim_correnti_tensioni
  * Generated with         : PLECS 4.7.1
  *                          PLECS RT Box 1 2.3.1
- * Generated on           : 23 Mar 2023 09:59:48
+ * Generated on           : 24 Mar 2023 14:21:20
  */
 #include "sim_correnti_tensioni.h"
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
@@ -40,13 +40,13 @@
 #include <string.h>
 #include "plexim/ProgrammableValue.h"
 #include "plexim/AnalogOut.h"
+#include "plexim/DataCapture.h"
 #include "plexim/hw_wrapper.h"
 #include "plexim/DigitalOut.h"
 #include "plexim/DigitalIn.h"
 #include "plexim/AnalogIn.h"
 #include "plexim/SFP.h"
 #include "plexim/HIL_Framework.h"
-#include "plexim/DataCapture.h"
 #include "plexim/ToFile.h"
 #include <stdlib.h>
 #define PLECSRunTimeError(msg) sim_correnti_tensioni_errorStatus = msg
@@ -137,9 +137,9 @@ sim_correnti_tensioni_ModelStates sim_correnti_tensioni_X _ALIGN;
 const char * sim_correnti_tensioni_errorStatus;
 const double sim_correnti_tensioni_sampleTime = 1.00000000000000008e-05;
 const char * const sim_correnti_tensioni_checksum =
-   "4b4104fc37c7ab0dbe4c84c32cc35a2c95687aa6";
+   "70fa3c8e33874c97a362886949f7a443066c775c";
 /* Target declarations */
-struct PlxDataCaptureRegistry plxDataCaptureRegistry[1];
+struct PlxDataCaptureRegistry plxDataCaptureRegistry[2];
 const int plxUseEthercat = 0;
 struct PlxProgrammableValueRegistry plxProgrammableValueRegistry[8];
 struct PlxToFileRegistry plxToFileRegistry[1];
@@ -527,6 +527,21 @@ void sim_correnti_tensioni_initialize()
 
    /* Initialization for Analog Out : 'sim_correnti_tensioni/Analog Out7' */
    setupAnalogOut(15, 1.000000000e+00f, 0.000000000e+00f, -inf, inf);
+
+   /* Initialization for Data Capture : 'sim_correnti_tensioni/Capture1' */
+   {
+      static double dataBuffer[12000];
+      plxSetupDataCapture(0, "Capture1", 3, 2000, dataBuffer, 1,
+                          0.00000000000000000e+00, 1.00000000000000008e-05);
+   }
+
+
+   /* Initialization for Data Capture : 'sim_correnti_tensioni/Capture2' */
+   {
+      static double dataBuffer[12000];
+      plxSetupDataCapture(1, "Capture2", 3, 2000, dataBuffer, 1,
+                          0.00000000000000000e+00, 1.00000000000000008e-05);
+   }
 }
 
 void sim_correnti_tensioni_step(void)
@@ -978,6 +993,24 @@ void sim_correnti_tensioni_step(void)
 
    /* Analog Out : 'sim_correnti_tensioni/Analog Out7' */
    setAnalogOut(15, sim_correnti_tensioni_B.PulseGenerator);
+
+   /* Data Capture : 'sim_correnti_tensioni/Capture1' */
+   {
+      double data[] = {
+         sim_correnti_tensioni_B.Sum16, sim_correnti_tensioni_B.Sum17,
+         sim_correnti_tensioni_B.Sum18
+      };
+      plxUpdateDataCapture(0, sim_correnti_tensioni_B.PulseGenerator, data);
+   }
+
+   /* Data Capture : 'sim_correnti_tensioni/Capture2' */
+   {
+      double data[] = {
+         sim_correnti_tensioni_B.Sum7, sim_correnti_tensioni_B.Sum8,
+         sim_correnti_tensioni_B.Sum9
+      };
+      plxUpdateDataCapture(1, sim_correnti_tensioni_B.PulseGenerator, data);
+   }
    /* Constant : 'sim_correnti_tensioni/White Noise1/Width' */
    sim_correnti_tensioni_B.Width = 2.00001000000000007;
 
