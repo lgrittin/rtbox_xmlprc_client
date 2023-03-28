@@ -1,8 +1,8 @@
 /*
  * Implementation file for: sim_correnti_tensioni
  * Generated with         : PLECS 4.7.1
- *                          PLECS RT Box 1 2.3.1
- * Generated on           : 24 Mar 2023 14:21:20
+ *                          PLECS RT Box 1 2.3.5
+ * Generated on           : 28 Mar 2023 13:52:31
  */
 #include "sim_correnti_tensioni.h"
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
@@ -89,13 +89,14 @@ struct CScriptStruct
    void (*readCustomStateData)(void*, void*, int);
 };
 static struct CScriptStruct sim_correnti_tensioni_cScriptStruct[2];
-static char sim_correnti_tensioni_isMajorStep = '\001';
-static const uint32_t sim_correnti_tensioni_subTaskPeriod[1]= {
+static const uint32_t sim_correnti_tensioni_subTaskPeriod[2]= {
+   /* [0.0001, 0], [0, 0] */
+   2,
    /* [0.01, 0], [0, 0] */
-   1000
+   200
 };
-static uint32_t sim_correnti_tensioni_subTaskTick[1];
-static char sim_correnti_tensioni_subTaskHit[1];
+static uint32_t sim_correnti_tensioni_subTaskTick[2];
+static char sim_correnti_tensioni_subTaskHit[2];
 static const double sim_correnti_tensioni_UNCONNECTED = 0;
 static double sim_correnti_tensioni_D_double[6];
 static uint32_t sim_correnti_tensioni_D_uint32_t[3];
@@ -135,9 +136,9 @@ const double * const sim_correnti_tensioni_ExtModeSignals[] = {
 #endif /* defined(EXTERNAL_MODE) */
 sim_correnti_tensioni_ModelStates sim_correnti_tensioni_X _ALIGN;
 const char * sim_correnti_tensioni_errorStatus;
-const double sim_correnti_tensioni_sampleTime = 1.00000000000000008e-05;
+const double sim_correnti_tensioni_sampleTime = 5.00000000000000024e-05;
 const char * const sim_correnti_tensioni_checksum =
-   "70fa3c8e33874c97a362886949f7a443066c775c";
+   "e76be1ffec782465b9d41367b87d1afa00001420";
 /* Target declarations */
 struct PlxDataCaptureRegistry plxDataCaptureRegistry[2];
 const int plxUseEthercat = 0;
@@ -149,7 +150,8 @@ void sim_correnti_tensioni_initialize()
    sim_correnti_tensioni_tickHi = 0;
    sim_correnti_tensioni_tickLo = 0;
    /* Initialize sub-task tick counters */
-   sim_correnti_tensioni_subTaskTick[0] = 0; /* [0, 0], [0.01, 0] */
+   sim_correnti_tensioni_subTaskTick[0] = 0; /* [0, 0], [0.0001, 0] */
+   sim_correnti_tensioni_subTaskTick[1] = 0; /* [0, 0], [0.01, 0] */
 
 
    /* Target pre-initialization */
@@ -158,7 +160,7 @@ void sim_correnti_tensioni_initialize()
    setDigitalOutVoltage(0);
    plxInitDigitalOut();
    initPWMCapture();
-   plxSetupAnalogSampling(1, 0, 1.00000000000000008e-05);
+   plxSetupAnalogSampling(1, 0, 5.00000000000000024e-05);
    plxSetMaxNumConsecutiveOverruns(5);
    setupSFPSyncMaster(0, 0, 0, 0);
    setupSFPSyncSlave(0, 0, 0);
@@ -234,10 +236,10 @@ void sim_correnti_tensioni_initialize()
       };
       static double nextSampleHit;
       static const char * sampleHits[] = {
-         &sim_correnti_tensioni_isMajorStep
+         &sim_correnti_tensioni_subTaskHit[0]
       };
       static double sampleTimePeriods[] = {
-         1e-05
+         0.0001
       };
       static double sampleTimeOffsets[] = {
          0
@@ -246,7 +248,7 @@ void sim_correnti_tensioni_initialize()
       static const char* warningStatus;
       static const char* rangeErrorMsg;
       static const double paramData[] = {
-         0.,2.,0.,1.00000000000000008e-05
+         0.,2.,0.,0.000100000000000000005
       };
       static const double* paramDataPtr[] = {
          paramData+0,paramData+1,paramData+2,paramData+3
@@ -399,10 +401,10 @@ void sim_correnti_tensioni_initialize()
       };
       static double nextSampleHit;
       static const char * sampleHits[] = {
-         &sim_correnti_tensioni_isMajorStep
+         &sim_correnti_tensioni_subTaskHit[0]
       };
       static double sampleTimePeriods[] = {
-         1e-05
+         0.0001
       };
       static double sampleTimeOffsets[] = {
          0
@@ -411,7 +413,7 @@ void sim_correnti_tensioni_initialize()
       static const char* warningStatus;
       static const char* rangeErrorMsg;
       static const double paramData[] = {
-         0.,2.,0.,1.00000000000000008e-05
+         0.,2.,0.,0.000100000000000000005
       };
       static const double* paramDataPtr[] = {
          paramData+0,paramData+1,paramData+2,paramData+3
@@ -530,17 +532,17 @@ void sim_correnti_tensioni_initialize()
 
    /* Initialization for Data Capture : 'sim_correnti_tensioni/Capture1' */
    {
-      static double dataBuffer[12000];
-      plxSetupDataCapture(0, "Capture1", 3, 2000, dataBuffer, 1,
-                          0.00000000000000000e+00, 1.00000000000000008e-05);
+      static double dataBuffer[3000];
+      plxSetupDataCapture(0, "Capture1", 3, 500, dataBuffer, 1,
+                          0.00000000000000000e+00, 5.00000000000000024e-05);
    }
 
 
    /* Initialization for Data Capture : 'sim_correnti_tensioni/Capture2' */
    {
-      static double dataBuffer[12000];
-      plxSetupDataCapture(1, "Capture2", 3, 2000, dataBuffer, 1,
-                          0.00000000000000000e+00, 1.00000000000000008e-05);
+      static double dataBuffer[3000];
+      plxSetupDataCapture(1, "Capture2", 3, 500, dataBuffer, 1,
+                          0.00000000000000000e+00, 5.00000000000000024e-05);
    }
 }
 
@@ -552,7 +554,7 @@ void sim_correnti_tensioni_step(void)
    }
    {
       size_t i;
-      for (i = 0; i < 1; ++i)
+      for (i = 0; i < 2; ++i)
       {
          sim_correnti_tensioni_subTaskHit[i] =
             (sim_correnti_tensioni_subTaskTick[i] == 0);
@@ -627,7 +629,7 @@ void sim_correnti_tensioni_step(void)
    if (!sim_correnti_tensioni_X.Monoflop1 &&
        (sim_correnti_tensioni_B.Comparator1))
    {
-      double ticks = (0.000100000000000000005)/1.00000000000000008e-05;
+      double ticks = (0.000100000000000000005)/5.00000000000000024e-05;
       if (ticks < 0)
       {
          ticks = 0;
@@ -666,13 +668,16 @@ void sim_correnti_tensioni_step(void)
          regEntry->readBufferIdx=newReadBufferIdx;
       }
    }
-   /* C-Script : 'sim_correnti_tensioni/White Noise1/C-Script' */
-   sim_correnti_tensioni_0_cScriptOutput(&sim_correnti_tensioni_cScriptStruct[
-                                            0]);
-   if (*sim_correnti_tensioni_cScriptStruct[0].errorStatus)
-      sim_correnti_tensioni_errorStatus =
-         *sim_correnti_tensioni_cScriptStruct[0].errorStatus;
-
+   if (sim_correnti_tensioni_subTaskHit[0])
+   {
+      /* C-Script : 'sim_correnti_tensioni/White Noise1/C-Script' */
+      sim_correnti_tensioni_0_cScriptOutput(
+                                            &sim_correnti_tensioni_cScriptStruct[
+                                               0]);
+      if (*sim_correnti_tensioni_cScriptStruct[0].errorStatus)
+         sim_correnti_tensioni_errorStatus =
+            *sim_correnti_tensioni_cScriptStruct[0].errorStatus;
+   }
    /* Product : 'sim_correnti_tensioni/Product10'
     * incorporates
     *  Programmable Value : 'sim_correnti_tensioni/InputDC1'
@@ -821,7 +826,7 @@ void sim_correnti_tensioni_step(void)
    if (!sim_correnti_tensioni_X.Monoflop &&
        (sim_correnti_tensioni_B.Comparator))
    {
-      double ticks = (0.000100000000000000005)/1.00000000000000008e-05;
+      double ticks = (0.000100000000000000005)/5.00000000000000024e-05;
       if (ticks < 0)
       {
          ticks = 0;
@@ -860,13 +865,16 @@ void sim_correnti_tensioni_step(void)
          regEntry->readBufferIdx=newReadBufferIdx;
       }
    }
-   /* C-Script : 'sim_correnti_tensioni/White Noise/C-Script' */
-   sim_correnti_tensioni_1_cScriptOutput(&sim_correnti_tensioni_cScriptStruct[
-                                            1]);
-   if (*sim_correnti_tensioni_cScriptStruct[1].errorStatus)
-      sim_correnti_tensioni_errorStatus =
-         *sim_correnti_tensioni_cScriptStruct[1].errorStatus;
-
+   if (sim_correnti_tensioni_subTaskHit[0])
+   {
+      /* C-Script : 'sim_correnti_tensioni/White Noise/C-Script' */
+      sim_correnti_tensioni_1_cScriptOutput(
+                                            &sim_correnti_tensioni_cScriptStruct[
+                                               1]);
+      if (*sim_correnti_tensioni_cScriptStruct[1].errorStatus)
+         sim_correnti_tensioni_errorStatus =
+            *sim_correnti_tensioni_cScriptStruct[1].errorStatus;
+   }
    /* Product : 'sim_correnti_tensioni/Product1'
     * incorporates
     *  Programmable Value : 'sim_correnti_tensioni/Input1'
@@ -984,7 +992,7 @@ void sim_correnti_tensioni_step(void)
 
    /* Analog Out : 'sim_correnti_tensioni/Analog Out6' */
    setAnalogOut(5, sim_correnti_tensioni_B.Sum18);
-   if (sim_correnti_tensioni_subTaskHit[0])
+   if (sim_correnti_tensioni_subTaskHit[1])
    {
       /* Pulse Generator : 'sim_correnti_tensioni/Pulse\nGenerator' */
       sim_correnti_tensioni_B.PulseGenerator =
@@ -1012,10 +1020,10 @@ void sim_correnti_tensioni_step(void)
       plxUpdateDataCapture(1, sim_correnti_tensioni_B.PulseGenerator, data);
    }
    /* Constant : 'sim_correnti_tensioni/White Noise1/Width' */
-   sim_correnti_tensioni_B.Width = 2.00001000000000007;
+   sim_correnti_tensioni_B.Width = 2.00010000000000021;
 
    /* Constant : 'sim_correnti_tensioni/White Noise/Width' */
-   sim_correnti_tensioni_B.Width_1 = 2.00001000000000007;
+   sim_correnti_tensioni_B.Width_1 = 2.00010000000000021;
    if (sim_correnti_tensioni_errorStatus)
    {
       return;
@@ -1027,28 +1035,32 @@ void sim_correnti_tensioni_step(void)
       sim_correnti_tensioni_D_uint32_t[0] -= 1;
    }
    sim_correnti_tensioni_X.Monoflop1 = sim_correnti_tensioni_B.Comparator1;
-
-   /* Update for C-Script : 'sim_correnti_tensioni/White Noise1/C-Script' */
-   sim_correnti_tensioni_0_cScriptUpdate(&sim_correnti_tensioni_cScriptStruct[
-                                            0]);
-   if (*sim_correnti_tensioni_cScriptStruct[0].errorStatus)
-      sim_correnti_tensioni_errorStatus =
-         *sim_correnti_tensioni_cScriptStruct[0].errorStatus;
-
+   if (sim_correnti_tensioni_subTaskHit[0])
+   {
+      /* Update for C-Script : 'sim_correnti_tensioni/White Noise1/C-Script' */
+      sim_correnti_tensioni_0_cScriptUpdate(
+                                            &sim_correnti_tensioni_cScriptStruct[
+                                               0]);
+      if (*sim_correnti_tensioni_cScriptStruct[0].errorStatus)
+         sim_correnti_tensioni_errorStatus =
+            *sim_correnti_tensioni_cScriptStruct[0].errorStatus;
+   }
    /* Update for Monoflop : 'sim_correnti_tensioni/Monoflop' */
    if (sim_correnti_tensioni_D_uint32_t[1] > 0)
    {
       sim_correnti_tensioni_D_uint32_t[1] -= 1;
    }
    sim_correnti_tensioni_X.Monoflop = sim_correnti_tensioni_B.Comparator;
-
-   /* Update for C-Script : 'sim_correnti_tensioni/White Noise/C-Script' */
-   sim_correnti_tensioni_1_cScriptUpdate(&sim_correnti_tensioni_cScriptStruct[
-                                            1]);
-   if (*sim_correnti_tensioni_cScriptStruct[1].errorStatus)
-      sim_correnti_tensioni_errorStatus =
-         *sim_correnti_tensioni_cScriptStruct[1].errorStatus;
-
+   if (sim_correnti_tensioni_subTaskHit[0])
+   {
+      /* Update for C-Script : 'sim_correnti_tensioni/White Noise/C-Script' */
+      sim_correnti_tensioni_1_cScriptUpdate(
+                                            &sim_correnti_tensioni_cScriptStruct[
+                                               1]);
+      if (*sim_correnti_tensioni_cScriptStruct[1].errorStatus)
+         sim_correnti_tensioni_errorStatus =
+            *sim_correnti_tensioni_cScriptStruct[1].errorStatus;
+   }
    /* Update for Sine Wave Generator : 'sim_correnti_tensioni/Sine Wave' */
    {
       double scaling, scaledX, scaledY;
@@ -1061,10 +1073,10 @@ void sim_correnti_tensioni_step(void)
                   1.));
       scaledX = sim_correnti_tensioni_D_double[0] / scaling;
       scaledY = sim_correnti_tensioni_D_double[1] / scaling;
-      sim_correnti_tensioni_D_double[0] = 0.999995065201858213 * scaledX +
-                                          0.00314158748587956352 * scaledY;
-      sim_correnti_tensioni_D_double[1] = -0.00314158748587956352 * scaledX +
-                                          0.999995065201858213 * scaledY;
+      sim_correnti_tensioni_D_double[0] = 0.999876632481660588 * scaledX +
+                                          0.0157073173118206753 * scaledY;
+      sim_correnti_tensioni_D_double[1] = -0.0157073173118206753 * scaledX +
+                                          0.999876632481660588 * scaledY;
    }
 
    /* Update for Sine Wave Generator : 'sim_correnti_tensioni/Sine Wave1' */
@@ -1079,10 +1091,10 @@ void sim_correnti_tensioni_step(void)
                   1.));
       scaledX = sim_correnti_tensioni_D_double[2] / scaling;
       scaledY = sim_correnti_tensioni_D_double[3] / scaling;
-      sim_correnti_tensioni_D_double[2] = 0.999995065201858213 * scaledX +
-                                          0.00314158748587956352 * scaledY;
-      sim_correnti_tensioni_D_double[3] = -0.00314158748587956352 * scaledX +
-                                          0.999995065201858213 * scaledY;
+      sim_correnti_tensioni_D_double[2] = 0.999876632481660588 * scaledX +
+                                          0.0157073173118206753 * scaledY;
+      sim_correnti_tensioni_D_double[3] = -0.0157073173118206753 * scaledX +
+                                          0.999876632481660588 * scaledY;
    }
 
    /* Update for Sine Wave Generator : 'sim_correnti_tensioni/Sine Wave2' */
@@ -1097,12 +1109,12 @@ void sim_correnti_tensioni_step(void)
                   1.));
       scaledX = sim_correnti_tensioni_D_double[4] / scaling;
       scaledY = sim_correnti_tensioni_D_double[5] / scaling;
-      sim_correnti_tensioni_D_double[4] = 0.999995065201858213 * scaledX +
-                                          0.00314158748587956352 * scaledY;
-      sim_correnti_tensioni_D_double[5] = -0.00314158748587956352 * scaledX +
-                                          0.999995065201858213 * scaledY;
+      sim_correnti_tensioni_D_double[4] = 0.999876632481660588 * scaledX +
+                                          0.0157073173118206753 * scaledY;
+      sim_correnti_tensioni_D_double[5] = -0.0157073173118206753 * scaledX +
+                                          0.999876632481660588 * scaledY;
    }
-   if (sim_correnti_tensioni_subTaskHit[0])
+   if (sim_correnti_tensioni_subTaskHit[1])
    {
       /* Update for Pulse Generator : 'sim_correnti_tensioni/Pulse\nGenerator' */
       sim_correnti_tensioni_D_uint32_t[2] += 1;
@@ -1115,7 +1127,7 @@ void sim_correnti_tensioni_step(void)
    /* Increment sub-task tick counters */
    {
       size_t i;
-      for (i = 0; i < 1; ++i)
+      for (i = 0; i < 2; ++i)
       {
          sim_correnti_tensioni_subTaskTick[i]++;
          if (sim_correnti_tensioni_subTaskTick[i] >=
@@ -1133,9 +1145,9 @@ void sim_correnti_tensioni_step(void)
    sim_correnti_tensioni_deriv[0] = sim_correnti_tensioni_B.Input2[1];
 
    /* Update continuous states */
-   sim_correnti_tensioni_X.Integrator4_x += 1.00000000000000008e-05*
+   sim_correnti_tensioni_X.Integrator4_x += 5.00000000000000024e-05*
                                             sim_correnti_tensioni_deriv[1];
-   sim_correnti_tensioni_X.Integrator3_x += 1.00000000000000008e-05*
+   sim_correnti_tensioni_X.Integrator3_x += 5.00000000000000024e-05*
                                             sim_correnti_tensioni_deriv[0];
 }
 

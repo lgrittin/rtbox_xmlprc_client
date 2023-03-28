@@ -1,6 +1,11 @@
 #include "plexim/HIL_Framework.h"
 #include "plexim/ScopeBuffer.h"
+#include "plexim/DigitalOut.h"
+#include "plexim/SPI.h"
 #include <math.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdatomic.h>
 #include "sim_correnti_tensioni.h"
 
 #define MODEL_PREFIX sim_correnti_tensioni
@@ -128,6 +133,8 @@ void copyTunableParameters(const double* aData) { (void)aData; }
 #define checkScopeTrigger()
 #endif /* defined(EXTERNAL_MODE) */
 
+uint32_t plxActiveTasks = 1;
+
 int plxPlatform_poll();
 static void modelInitFunction()
 {
@@ -151,6 +158,11 @@ static void modelInitFunction()
 }
 
 
+void plxGenPreStepFunction()
+{
+   plxSetBufferAdresses();
+}
+
 void modelStepFunction0()
 {
    /* Execute base task. */
@@ -171,6 +183,8 @@ void modelStepFunction0()
    checkScopeTrigger();
 #endif /* defined(EXTERNAL_MODE) */
 
+   plxSyncDigitalOuts();
+   plxPostBaseStep();
 }
 
 void modelStepFunction1()

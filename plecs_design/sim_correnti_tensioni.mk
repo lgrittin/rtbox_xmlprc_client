@@ -1,4 +1,4 @@
-CROSS            ?= "C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/bin/win/arm-none-eabi/bin/arm-none-eabi-"
+CROSS            ?= "C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/arm-none-eabi/bin/arm-none-eabi-"
 CFLAGS           := -Wall -O2 -c -fmessage-length=0 -DEXTERNAL_MODE=1 \
    -fgcse-after-reload \
    -finline-functions \
@@ -21,11 +21,11 @@ CFLAGS           := -Wall -O2 -c -fmessage-length=0 -DEXTERNAL_MODE=1 \
    -funsafe-math-optimizations -fopt-info-vec --param max-completely-peeled-insns=1000 --param max-completely-peel-times=100
 CC               = $(CROSS)gcc
 STRIP            = $(CROSS)strip
-INCLUDE          := -I"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/include/rtbox"
-LIBS             := -L"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/lib/rtbox" -L"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/lib/rtbox/OpenAmp" \
-                    -L"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/lib/rtbox/Xilinx" -lplexim_hil -lopen_amp -lbaremetal_remote \
+INCLUDE          := -I"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/include/rtbox"
+LIBS             := -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox" -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox/OpenAmp" \
+                    -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox/Xilinx" -lplexim_hil -lopen_amp -lbaremetal_remote \
                     -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-LFLAGS           := -Wl,-T -Wl,"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/build/rtbox.ld"
+LFLAGS           := -Wl,-T -Wl,"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/build/rtbox.ld"
 
 undefine GCC_EXEC_PREFIX
 
