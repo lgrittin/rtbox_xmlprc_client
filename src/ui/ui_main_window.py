@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(870, 548)
+        MainWindow.resize(872, 471)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -50,15 +50,11 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.groupBox_Plot = QGroupBox(self.centralwidget)
-        self.groupBox_Plot.setObjectName(u"groupBox_Plot")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.groupBox_Plot.sizePolicy().hasHeightForWidth())
-        self.groupBox_Plot.setSizePolicy(sizePolicy1)
+        self.pushButton_EnablePlot = QPushButton(self.centralwidget)
+        self.pushButton_EnablePlot.setObjectName(u"pushButton_EnablePlot")
+        self.pushButton_EnablePlot.setCheckable(True)
 
-        self.gridLayout_4.addWidget(self.groupBox_Plot, 2, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.pushButton_EnablePlot, 1, 0, 1, 1)
 
         self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setObjectName(u"gridLayout_3")
@@ -296,16 +292,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addLayout(self.gridLayout_3, 0, 0, 1, 1)
 
-        self.pushButton_EnablePlot = QPushButton(self.centralwidget)
-        self.pushButton_EnablePlot.setObjectName(u"pushButton_EnablePlot")
-        self.pushButton_EnablePlot.setCheckable(True)
-
-        self.gridLayout_4.addWidget(self.pushButton_EnablePlot, 1, 0, 1, 1)
-
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 870, 21))
+        self.menubar.setGeometry(QRect(0, 0, 872, 21))
         self.menu_File = QMenu(self.menubar)
         self.menu_File.setObjectName(u"menu_File")
         self.menu_Edit = QMenu(self.menubar)
@@ -347,7 +337,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.action_Settings.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+F", None))
 #endif // QT_CONFIG(shortcut)
-        self.groupBox_Plot.setTitle(QCoreApplication.translate("MainWindow", u"Plot", None))
+        self.pushButton_EnablePlot.setText(QCoreApplication.translate("MainWindow", u"Plot Off", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"AC Voltage", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"White Noise Ampl [V]:", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Switching Noise [V]-[Hz]:", None))
@@ -367,7 +357,6 @@ class Ui_MainWindow(object):
         self.pushButton_vDCEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Switching Noise [V]-[Hz]:", None))
         self.pushButton_vDCLink.setText(QCoreApplication.translate("MainWindow", u"Link Off", None))
-        self.pushButton_EnablePlot.setText(QCoreApplication.translate("MainWindow", u"Plot Off", None))
         self.menu_File.setTitle(QCoreApplication.translate("MainWindow", u"&File", None))
         self.menu_Edit.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.menu_Help.setTitle(QCoreApplication.translate("MainWindow", u"&Help", None))

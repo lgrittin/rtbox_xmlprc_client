@@ -15,7 +15,7 @@ import pathlib
 import os
 import sys
 
-from PyQt5 import QtGui
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QMessageBox, QFileDialog, QLabel, QVBoxLayout
 from pyqtgraph import PlotWidget, plot
 from PyQt5.QtCore import QTimer, Qt
@@ -90,7 +90,9 @@ SwitchingNoise_DC_Ena = 0
 UnbalVoltage_DC_Ampl = 0.0
 UnbalVoltage_DC_Phase = 0
 UnbalVoltage_DC_Ena = 0
-DATA_DIM = 500
+DESIGN_TDISC_US = 10
+DESIGN_FLINE_HZ = 50
+DATA_DIM = int(1/(DESIGN_FLINE_HZ*DESIGN_TDISC_US*0.000001))
 Voltage_AC_R = np.zeros(DATA_DIM, dtype=float)
 Voltage_AC_S = np.zeros(DATA_DIM, dtype=float)
 Voltage_AC_T = np.zeros(DATA_DIM, dtype=float)
@@ -458,6 +460,10 @@ class Window(QMainWindow, Ui_MainWindow):
             V_DC_Link = 0
         
     def init_PlotData(self):
+        self.groupBox_Plot = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_Plot.setObjectName("groupBox_Plot")
+        self.gridLayout_4.addWidget(self.groupBox_Plot, 2, 0, 1, 1)
+        self.groupBox_Plot.setTitle("Plot")
         self.layout = self.groupBox_Plot.layout()#QVBoxLayout()
         if self.layout is None:
             self.layout = QVBoxLayout(self.groupBox_Plot)
