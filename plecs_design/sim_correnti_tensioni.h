@@ -1,8 +1,8 @@
 /*
  * Header file for: sim_correnti_tensioni
  * Generated with : PLECS 4.7.1
- *                  PLECS RT Box 1 2.3.5
- * Generated on   : 28 Mar 2023 13:52:31
+ *                  PLECS RT Box 1 2.3.1
+ * Generated on   : 29 Mar 2023 16:52:59
  */
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
 #define PLECS_HEADER_sim_correnti_tensioni_h_
@@ -31,9 +31,17 @@ typedef struct
    double Integrator4_x;            /* sim_correnti_tensioni/Integrator4 */
    bool Monoflop1;                  /* sim_correnti_tensioni/Monoflop1 */
    double C_Script;                 /* sim_correnti_tensioni/White Noise1/C-Script */
+   bool EdgeDetection3;             /* sim_correnti_tensioni/Edge Detection3 */
+   bool EdgeDetection2;             /* sim_correnti_tensioni/Edge Detection2 */
+   bool Memory;                     /* sim_correnti_tensioni/SR Flip-flop1/Memory */
+   double Integrator5_x;            /* sim_correnti_tensioni/Integrator5 */
    double Integrator3_x;            /* sim_correnti_tensioni/Integrator3 */
    bool Monoflop;                   /* sim_correnti_tensioni/Monoflop */
    double C_Script_1;               /* sim_correnti_tensioni/White Noise/C-Script */
+   bool EdgeDetection5;             /* sim_correnti_tensioni/Edge Detection5 */
+   bool EdgeDetection4;             /* sim_correnti_tensioni/Edge Detection4 */
+   bool Memory_1;                   /* sim_correnti_tensioni/SR Flip-flop2/Memory */
+   double Integrator6_x;            /* sim_correnti_tensioni/Integrator6 */
 } sim_correnti_tensioni_ModelStates;
 extern sim_correnti_tensioni_ModelStates sim_correnti_tensioni_X;
 
@@ -54,7 +62,10 @@ typedef struct
    double Integrator4;              /* sim_correnti_tensioni/Integrator4 */
    double Product13;                /* sim_correnti_tensioni/Product13 */
    double Product10;                /* sim_correnti_tensioni/Product10 */
-   double InputDC[5];               /* sim_correnti_tensioni/InputDC */
+   double InputDC[6];               /* sim_correnti_tensioni/InputDC */
+   bool Memory;                     /* sim_correnti_tensioni/SR Flip-flop1/Memory */
+   bool LogicalOperator;            /* sim_correnti_tensioni/SR Flip-flop1/Logical Operator */
+   double Integrator5;              /* sim_correnti_tensioni/Integrator5 */
    double Sum16;                    /* sim_correnti_tensioni/Sum16 */
    double Sum17;                    /* sim_correnti_tensioni/Sum17 */
    double Sum18;                    /* sim_correnti_tensioni/Sum18 */
@@ -64,8 +75,11 @@ typedef struct
    double Integrator3;              /* sim_correnti_tensioni/Integrator3 */
    double Product4;                 /* sim_correnti_tensioni/Product4 */
    double Product1;                 /* sim_correnti_tensioni/Product1 */
-   double Input[3];                 /* sim_correnti_tensioni/Input */
+   double Input[4];                 /* sim_correnti_tensioni/Input */
    double SineWave;                 /* sim_correnti_tensioni/Sine Wave */
+   bool Memory_1;                   /* sim_correnti_tensioni/SR Flip-flop2/Memory */
+   bool LogicalOperator_1;          /* sim_correnti_tensioni/SR Flip-flop2/Logical Operator */
+   double Integrator6;              /* sim_correnti_tensioni/Integrator6 */
    double Sum7;                     /* sim_correnti_tensioni/Sum7 */
    double SineWave1;                /* sim_correnti_tensioni/Sine Wave1 */
    double Sum8;                     /* sim_correnti_tensioni/Sum8 */

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>870</width>
-    <height>573</height>
+    <height>548</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,6 +21,19 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_4">
+    <item row="2" column="0">
+     <widget class="QGroupBox" name="groupBox_Plot">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Plot</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -29,10 +42,10 @@
          <string>AC Voltage</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_10">
            <property name="text">
-            <string>3 Phase Voltage [V]-[Hz]:</string>
+            <string>White Noise Ampl [V]:</string>
            </property>
           </widget>
          </item>
@@ -42,10 +55,54 @@
             <number>3</number>
            </property>
            <property name="maximum">
-            <double>5.500000000000000</double>
+            <double>7.000000000000000</double>
            </property>
            <property name="singleStep">
             <double>0.050000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>Switching Noise [V]-[Hz]:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>3 Phase Voltage [V]-[Hz]:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_wnAmp">
+           <property name="maximum">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QPushButton" name="pushButton_wnEna">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="pushButton_voltageEna">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -65,8 +122,8 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="pushButton_voltageEna">
+         <item row="2" column="4">
+          <widget class="QPushButton" name="pushButton_snEna">
            <property name="text">
             <string>Off</string>
            </property>
@@ -75,37 +132,13 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>White Noise Ampl [V]:</string>
+         <item row="3" column="2">
+          <widget class="QSpinBox" name="spinBox_unbalPhase">
+           <property name="minimum">
+            <number>1</number>
            </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_wnAmp">
            <property name="maximum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="3">
-          <widget class="QPushButton" name="pushButton_wnEna">
-           <property name="text">
-            <string>Off</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_16">
-           <property name="text">
-            <string>Switching Noise [V]-[Hz]:</string>
+            <number>3</number>
            </property>
           </widget>
          </item>
@@ -132,8 +165,21 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
-          <widget class="QPushButton" name="pushButton_snEna">
+         <item row="3" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_unbalAmp">
+           <property name="minimum">
+            <double>-1.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="4">
+          <widget class="QPushButton" name="pushButton_unbalEna">
            <property name="text">
             <string>Off</string>
            </property>
@@ -149,36 +195,16 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_unbalAmp">
-           <property name="minimum">
-            <double>-1.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QSpinBox" name="spinBox_unbalPhase">
-           <property name="minimum">
+         <item row="0" column="3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_voltageRampTime">
+           <property name="decimals">
             <number>1</number>
            </property>
            <property name="maximum">
-            <number>3</number>
+            <double>50.000000000000000</double>
            </property>
-          </widget>
-         </item>
-         <item row="3" column="3">
-          <widget class="QPushButton" name="pushButton_unbalEna">
-           <property name="text">
-            <string>Off</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
+           <property name="value">
+            <double>10.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -214,7 +240,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>3 DC Voltage [V1]-[V2]-[V3]:</string>
+            <string>3 DC Voltage [V1-V2-V3]:</string>
            </property>
           </widget>
          </item>
@@ -370,15 +396,12 @@
      </layout>
     </item>
     <item row="1" column="0">
-     <widget class="QGroupBox" name="groupBox_Plot">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+     <widget class="QPushButton" name="pushButton_EnablePlot">
+      <property name="text">
+       <string>Plot Off</string>
       </property>
-      <property name="title">
-       <string>Plot</string>
+      <property name="checkable">
+       <bool>true</bool>
       </property>
      </widget>
     </item>

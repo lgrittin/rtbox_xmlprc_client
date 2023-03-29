@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(870, 573)
+        MainWindow.resize(870, 548)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -50,44 +50,44 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.groupBox_Plot = QGroupBox(self.centralwidget)
+        self.groupBox_Plot.setObjectName(u"groupBox_Plot")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.groupBox_Plot.sizePolicy().hasHeightForWidth())
+        self.groupBox_Plot.setSizePolicy(sizePolicy1)
+
+        self.gridLayout_4.addWidget(self.groupBox_Plot, 2, 0, 1, 1)
+
         self.gridLayout_3 = QGridLayout()
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.groupBox = QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(u"groupBox")
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label = QLabel(self.groupBox)
-        self.label.setObjectName(u"label")
-
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-
-        self.doubleSpinBox_vAmp = QDoubleSpinBox(self.groupBox)
-        self.doubleSpinBox_vAmp.setObjectName(u"doubleSpinBox_vAmp")
-        self.doubleSpinBox_vAmp.setDecimals(3)
-        self.doubleSpinBox_vAmp.setMaximum(5.500000000000000)
-        self.doubleSpinBox_vAmp.setSingleStep(0.050000000000000)
-
-        self.gridLayout.addWidget(self.doubleSpinBox_vAmp, 0, 1, 1, 1)
-
-        self.doubleSpinBox_vFreq = QDoubleSpinBox(self.groupBox)
-        self.doubleSpinBox_vFreq.setObjectName(u"doubleSpinBox_vFreq")
-        self.doubleSpinBox_vFreq.setDecimals(0)
-        self.doubleSpinBox_vFreq.setMinimum(30.000000000000000)
-        self.doubleSpinBox_vFreq.setMaximum(60.000000000000000)
-        self.doubleSpinBox_vFreq.setValue(50.000000000000000)
-
-        self.gridLayout.addWidget(self.doubleSpinBox_vFreq, 0, 2, 1, 1)
-
-        self.pushButton_voltageEna = QPushButton(self.groupBox)
-        self.pushButton_voltageEna.setObjectName(u"pushButton_voltageEna")
-        self.pushButton_voltageEna.setCheckable(True)
-
-        self.gridLayout.addWidget(self.pushButton_voltageEna, 0, 3, 1, 1)
-
         self.label_10 = QLabel(self.groupBox)
         self.label_10.setObjectName(u"label_10")
 
         self.gridLayout.addWidget(self.label_10, 1, 0, 1, 1)
+
+        self.doubleSpinBox_vAmp = QDoubleSpinBox(self.groupBox)
+        self.doubleSpinBox_vAmp.setObjectName(u"doubleSpinBox_vAmp")
+        self.doubleSpinBox_vAmp.setDecimals(3)
+        self.doubleSpinBox_vAmp.setMaximum(7.000000000000000)
+        self.doubleSpinBox_vAmp.setSingleStep(0.050000000000000)
+
+        self.gridLayout.addWidget(self.doubleSpinBox_vAmp, 0, 1, 1, 1)
+
+        self.label_16 = QLabel(self.groupBox)
+        self.label_16.setObjectName(u"label_16")
+
+        self.gridLayout.addWidget(self.label_16, 2, 0, 1, 1)
+
+        self.label = QLabel(self.groupBox)
+        self.label.setObjectName(u"label")
+
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
         self.doubleSpinBox_wnAmp = QDoubleSpinBox(self.groupBox)
         self.doubleSpinBox_wnAmp.setObjectName(u"doubleSpinBox_wnAmp")
@@ -100,12 +100,35 @@ class Ui_MainWindow(object):
         self.pushButton_wnEna.setObjectName(u"pushButton_wnEna")
         self.pushButton_wnEna.setCheckable(True)
 
-        self.gridLayout.addWidget(self.pushButton_wnEna, 1, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_wnEna, 1, 4, 1, 1)
 
-        self.label_16 = QLabel(self.groupBox)
-        self.label_16.setObjectName(u"label_16")
+        self.pushButton_voltageEna = QPushButton(self.groupBox)
+        self.pushButton_voltageEna.setObjectName(u"pushButton_voltageEna")
+        self.pushButton_voltageEna.setCheckable(True)
 
-        self.gridLayout.addWidget(self.label_16, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_voltageEna, 0, 4, 1, 1)
+
+        self.doubleSpinBox_vFreq = QDoubleSpinBox(self.groupBox)
+        self.doubleSpinBox_vFreq.setObjectName(u"doubleSpinBox_vFreq")
+        self.doubleSpinBox_vFreq.setDecimals(0)
+        self.doubleSpinBox_vFreq.setMinimum(30.000000000000000)
+        self.doubleSpinBox_vFreq.setMaximum(60.000000000000000)
+        self.doubleSpinBox_vFreq.setValue(50.000000000000000)
+
+        self.gridLayout.addWidget(self.doubleSpinBox_vFreq, 0, 2, 1, 1)
+
+        self.pushButton_snEna = QPushButton(self.groupBox)
+        self.pushButton_snEna.setObjectName(u"pushButton_snEna")
+        self.pushButton_snEna.setCheckable(True)
+
+        self.gridLayout.addWidget(self.pushButton_snEna, 2, 4, 1, 1)
+
+        self.spinBox_unbalPhase = QSpinBox(self.groupBox)
+        self.spinBox_unbalPhase.setObjectName(u"spinBox_unbalPhase")
+        self.spinBox_unbalPhase.setMinimum(1)
+        self.spinBox_unbalPhase.setMaximum(3)
+
+        self.gridLayout.addWidget(self.spinBox_unbalPhase, 3, 2, 1, 1)
 
         self.doubleSpinBox_snAmp = QDoubleSpinBox(self.groupBox)
         self.doubleSpinBox_snAmp.setObjectName(u"doubleSpinBox_snAmp")
@@ -122,17 +145,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.doubleSpinBox_snFreq, 2, 2, 1, 1)
 
-        self.pushButton_snEna = QPushButton(self.groupBox)
-        self.pushButton_snEna.setObjectName(u"pushButton_snEna")
-        self.pushButton_snEna.setCheckable(True)
-
-        self.gridLayout.addWidget(self.pushButton_snEna, 2, 3, 1, 1)
-
-        self.label_12 = QLabel(self.groupBox)
-        self.label_12.setObjectName(u"label_12")
-
-        self.gridLayout.addWidget(self.label_12, 3, 0, 1, 1)
-
         self.doubleSpinBox_unbalAmp = QDoubleSpinBox(self.groupBox)
         self.doubleSpinBox_unbalAmp.setObjectName(u"doubleSpinBox_unbalAmp")
         self.doubleSpinBox_unbalAmp.setMinimum(-1.000000000000000)
@@ -141,18 +153,24 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.doubleSpinBox_unbalAmp, 3, 1, 1, 1)
 
-        self.spinBox_unbalPhase = QSpinBox(self.groupBox)
-        self.spinBox_unbalPhase.setObjectName(u"spinBox_unbalPhase")
-        self.spinBox_unbalPhase.setMinimum(1)
-        self.spinBox_unbalPhase.setMaximum(3)
-
-        self.gridLayout.addWidget(self.spinBox_unbalPhase, 3, 2, 1, 1)
-
         self.pushButton_unbalEna = QPushButton(self.groupBox)
         self.pushButton_unbalEna.setObjectName(u"pushButton_unbalEna")
         self.pushButton_unbalEna.setCheckable(True)
 
-        self.gridLayout.addWidget(self.pushButton_unbalEna, 3, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_unbalEna, 3, 4, 1, 1)
+
+        self.label_12 = QLabel(self.groupBox)
+        self.label_12.setObjectName(u"label_12")
+
+        self.gridLayout.addWidget(self.label_12, 3, 0, 1, 1)
+
+        self.doubleSpinBox_voltageRampTime = QDoubleSpinBox(self.groupBox)
+        self.doubleSpinBox_voltageRampTime.setObjectName(u"doubleSpinBox_voltageRampTime")
+        self.doubleSpinBox_voltageRampTime.setDecimals(1)
+        self.doubleSpinBox_voltageRampTime.setMaximum(50.000000000000000)
+        self.doubleSpinBox_voltageRampTime.setValue(10.000000000000000)
+
+        self.gridLayout.addWidget(self.doubleSpinBox_voltageRampTime, 0, 3, 1, 1)
 
 
         self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 1)
@@ -278,15 +296,11 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addLayout(self.gridLayout_3, 0, 0, 1, 1)
 
-        self.groupBox_Plot = QGroupBox(self.centralwidget)
-        self.groupBox_Plot.setObjectName(u"groupBox_Plot")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.groupBox_Plot.sizePolicy().hasHeightForWidth())
-        self.groupBox_Plot.setSizePolicy(sizePolicy1)
+        self.pushButton_EnablePlot = QPushButton(self.centralwidget)
+        self.pushButton_EnablePlot.setObjectName(u"pushButton_EnablePlot")
+        self.pushButton_EnablePlot.setCheckable(True)
 
-        self.gridLayout_4.addWidget(self.groupBox_Plot, 1, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.pushButton_EnablePlot, 1, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -333,26 +347,27 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.action_Settings.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+F", None))
 #endif // QT_CONFIG(shortcut)
+        self.groupBox_Plot.setTitle(QCoreApplication.translate("MainWindow", u"Plot", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"AC Voltage", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"3 Phase Voltage [V]-[Hz]:", None))
-        self.pushButton_voltageEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"White Noise Ampl [V]:", None))
-        self.pushButton_wnEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Switching Noise [V]-[Hz]:", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"3 Phase Voltage [V]-[Hz]:", None))
+        self.pushButton_wnEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.pushButton_voltageEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.pushButton_snEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Unbalance [V]-[ph]:", None))
         self.pushButton_unbalEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Unbalance [V]-[ph]:", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"DC Voltage", None))
         self.pushButton_wnDCEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.pushButton_unbalDCEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"3 DC Voltage [V1]-[V2]-[V3]:", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"3 DC Voltage [V1-V2-V3]:", None))
         self.pushButton_snDCEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_13.setText(QCoreApplication.translate("MainWindow", u"Unbalance [V]-[ph]:", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"White Noise Ampl [V]:", None))
         self.pushButton_vDCEna.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Switching Noise [V]-[Hz]:", None))
         self.pushButton_vDCLink.setText(QCoreApplication.translate("MainWindow", u"Link Off", None))
-        self.groupBox_Plot.setTitle(QCoreApplication.translate("MainWindow", u"Plot", None))
+        self.pushButton_EnablePlot.setText(QCoreApplication.translate("MainWindow", u"Plot Off", None))
         self.menu_File.setTitle(QCoreApplication.translate("MainWindow", u"&File", None))
         self.menu_Edit.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
         self.menu_Help.setTitle(QCoreApplication.translate("MainWindow", u"&Help", None))
