@@ -2,7 +2,7 @@
  * Header file for: sim_correnti_tensioni
  * Generated with : PLECS 4.7.1
  *                  PLECS RT Box 1 2.3.1
- * Generated on   : 29 Mar 2023 16:52:59
+ * Generated on   : 30 Mar 2023 11:44:47
  */
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
 #define PLECS_HEADER_sim_correnti_tensioni_h_
@@ -63,8 +63,11 @@ typedef struct
    double Product13;                /* sim_correnti_tensioni/Product13 */
    double Product10;                /* sim_correnti_tensioni/Product10 */
    double InputDC[6];               /* sim_correnti_tensioni/InputDC */
+   bool EdgeDetection3;             /* sim_correnti_tensioni/Edge Detection3 */
+   bool EdgeDetection2;             /* sim_correnti_tensioni/Edge Detection2 */
    bool Memory;                     /* sim_correnti_tensioni/SR Flip-flop1/Memory */
    bool LogicalOperator;            /* sim_correnti_tensioni/SR Flip-flop1/Logical Operator */
+   bool LogicalOperator4;           /* sim_correnti_tensioni/SR Flip-flop1/Logical Operator4 */
    double Integrator5;              /* sim_correnti_tensioni/Integrator5 */
    double Sum16;                    /* sim_correnti_tensioni/Sum16 */
    double Sum17;                    /* sim_correnti_tensioni/Sum17 */
@@ -77,8 +80,11 @@ typedef struct
    double Product1;                 /* sim_correnti_tensioni/Product1 */
    double Input[4];                 /* sim_correnti_tensioni/Input */
    double SineWave;                 /* sim_correnti_tensioni/Sine Wave */
+   bool EdgeDetection5;             /* sim_correnti_tensioni/Edge Detection5 */
+   bool EdgeDetection4;             /* sim_correnti_tensioni/Edge Detection4 */
    bool Memory_1;                   /* sim_correnti_tensioni/SR Flip-flop2/Memory */
    bool LogicalOperator_1;          /* sim_correnti_tensioni/SR Flip-flop2/Logical Operator */
+   bool LogicalOperator4_1;         /* sim_correnti_tensioni/SR Flip-flop2/Logical Operator4 */
    double Integrator6;              /* sim_correnti_tensioni/Integrator6 */
    double Sum7;                     /* sim_correnti_tensioni/Sum7 */
    double SineWave1;                /* sim_correnti_tensioni/Sine Wave1 */
@@ -86,7 +92,9 @@ typedef struct
    double SineWave2;                /* sim_correnti_tensioni/Sine Wave2 */
    double Sum9;                     /* sim_correnti_tensioni/Sum9 */
    double Width;                    /* sim_correnti_tensioni/White Noise1/Width */
+   double Product18;                /* sim_correnti_tensioni/Product18 */
    double Width_1;                  /* sim_correnti_tensioni/White Noise/Width */
+   double Product19;                /* sim_correnti_tensioni/Product19 */
 } sim_correnti_tensioni_BlockOutputs;
 extern sim_correnti_tensioni_BlockOutputs sim_correnti_tensioni_B;
 

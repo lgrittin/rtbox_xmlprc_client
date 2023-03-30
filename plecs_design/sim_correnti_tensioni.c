@@ -2,7 +2,7 @@
  * Implementation file for: sim_correnti_tensioni
  * Generated with         : PLECS 4.7.1
  *                          PLECS RT Box 1 2.3.1
- * Generated on           : 29 Mar 2023 16:52:59
+ * Generated on           : 30 Mar 2023 11:44:47
  */
 #include "sim_correnti_tensioni.h"
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
@@ -100,7 +100,7 @@ static char sim_correnti_tensioni_subTaskHit[2];
 static const double sim_correnti_tensioni_UNCONNECTED = 0;
 static double sim_correnti_tensioni_D_double[6];
 static uint32_t sim_correnti_tensioni_D_uint32_t[3];
-static double sim_correnti_tensioni_deriv[4] _ALIGN;
+static double sim_correnti_tensioni_deriv[5] _ALIGN;
 void sim_correnti_tensioni_0_cScriptStart(
                                           const struct CScriptStruct *cScriptStruct);
 void sim_correnti_tensioni_0_cScriptOutput(
@@ -138,7 +138,7 @@ sim_correnti_tensioni_ModelStates sim_correnti_tensioni_X _ALIGN;
 const char * sim_correnti_tensioni_errorStatus;
 const double sim_correnti_tensioni_sampleTime = 1.00000000000000008e-05;
 const char * const sim_correnti_tensioni_checksum =
-   "c5f233475426b90359a6314e559c1dfd0fd63c0b";
+   "080f299f0b2d5f1aed22d868c424e6787a38edb7";
 /* Target declarations */
 struct PlxDataCaptureRegistry plxDataCaptureRegistry[2];
 const int plxUseEthercat = 0;
@@ -734,25 +734,40 @@ void sim_correnti_tensioni_step(void)
    sim_correnti_tensioni_B.InputDC[4] = plxGetProgrammableValueData(3, 4);
    sim_correnti_tensioni_B.InputDC[5] = plxGetProgrammableValueUpdateFlag(3);
 
+   /* Edge Detection : 'sim_correnti_tensioni/Edge Detection3' */
+   sim_correnti_tensioni_B.EdgeDetection3 =
+      !sim_correnti_tensioni_B.InputDC[3] &&
+      sim_correnti_tensioni_X.EdgeDetection3;
+
+   /* Edge Detection : 'sim_correnti_tensioni/Edge Detection2' */
+   sim_correnti_tensioni_B.EdgeDetection2 =
+      sim_correnti_tensioni_B.InputDC[3] &&
+      !sim_correnti_tensioni_X.EdgeDetection2;
+
    /* Memory : 'sim_correnti_tensioni/SR Flip-flop1/Memory' */
    sim_correnti_tensioni_B.Memory = sim_correnti_tensioni_X.Memory;
 
    /* Logical Operator : 'sim_correnti_tensioni/SR Flip-flop1/Logical\nOperator'
     * incorporates
     *  Logical Operator : 'sim_correnti_tensioni/SR Flip-flop1/Logical\nOperator1'
-    *  Edge Detection : 'sim_correnti_tensioni/Edge Detection3'
     *  Logical Operator : 'sim_correnti_tensioni/SR Flip-flop1/Logical\nOperator2'
-    *  Edge Detection : 'sim_correnti_tensioni/Edge Detection2'
     */
    sim_correnti_tensioni_B.LogicalOperator =
-      (!(!sim_correnti_tensioni_B.InputDC[3] &&
-         sim_correnti_tensioni_X.EdgeDetection3)) &&
-      ((sim_correnti_tensioni_B.InputDC[3] &&
-        !sim_correnti_tensioni_X.EdgeDetection2) ||
+      (!sim_correnti_tensioni_B.EdgeDetection3) &&
+      (sim_correnti_tensioni_B.EdgeDetection2 ||
        sim_correnti_tensioni_B.Memory);
 
+   /* Logical Operator : 'sim_correnti_tensioni/SR Flip-flop1/Logical\nOperator4'
+    * incorporates
+    *  Logical Operator : 'sim_correnti_tensioni/SR Flip-flop1/Logical\nOperator3'
+    */
+   sim_correnti_tensioni_B.LogicalOperator4 =
+      !(sim_correnti_tensioni_B.LogicalOperator ||
+        (sim_correnti_tensioni_B.EdgeDetection2 &&
+         sim_correnti_tensioni_B.EdgeDetection3));
+
    /* Integrator : 'sim_correnti_tensioni/Integrator5' */
-   if ((sim_correnti_tensioni_B.LogicalOperator != 0))
+   if ((sim_correnti_tensioni_B.LogicalOperator4 != 0))
    {
       sim_correnti_tensioni_X.Integrator5_x = 0.;
    }
@@ -970,25 +985,40 @@ void sim_correnti_tensioni_step(void)
                                        0.*
                                        sim_correnti_tensioni_D_double[1]);
 
+   /* Edge Detection : 'sim_correnti_tensioni/Edge Detection5' */
+   sim_correnti_tensioni_B.EdgeDetection5 =
+      !sim_correnti_tensioni_B.Input[1] &&
+      sim_correnti_tensioni_X.EdgeDetection5;
+
+   /* Edge Detection : 'sim_correnti_tensioni/Edge Detection4' */
+   sim_correnti_tensioni_B.EdgeDetection4 =
+      sim_correnti_tensioni_B.Input[1] &&
+      !sim_correnti_tensioni_X.EdgeDetection4;
+
    /* Memory : 'sim_correnti_tensioni/SR Flip-flop2/Memory' */
    sim_correnti_tensioni_B.Memory_1 = sim_correnti_tensioni_X.Memory_1;
 
    /* Logical Operator : 'sim_correnti_tensioni/SR Flip-flop2/Logical\nOperator'
     * incorporates
     *  Logical Operator : 'sim_correnti_tensioni/SR Flip-flop2/Logical\nOperator1'
-    *  Edge Detection : 'sim_correnti_tensioni/Edge Detection5'
     *  Logical Operator : 'sim_correnti_tensioni/SR Flip-flop2/Logical\nOperator2'
-    *  Edge Detection : 'sim_correnti_tensioni/Edge Detection4'
     */
    sim_correnti_tensioni_B.LogicalOperator_1 =
-      (!(!sim_correnti_tensioni_B.Input[1] &&
-         sim_correnti_tensioni_X.EdgeDetection5)) &&
-      ((sim_correnti_tensioni_B.Input[1] &&
-        !sim_correnti_tensioni_X.EdgeDetection4) ||
+      (!sim_correnti_tensioni_B.EdgeDetection5) &&
+      (sim_correnti_tensioni_B.EdgeDetection4 ||
        sim_correnti_tensioni_B.Memory_1);
 
+   /* Logical Operator : 'sim_correnti_tensioni/SR Flip-flop2/Logical\nOperator4'
+    * incorporates
+    *  Logical Operator : 'sim_correnti_tensioni/SR Flip-flop2/Logical\nOperator3'
+    */
+   sim_correnti_tensioni_B.LogicalOperator4_1 =
+      !(sim_correnti_tensioni_B.LogicalOperator_1 ||
+        (sim_correnti_tensioni_B.EdgeDetection4 &&
+         sim_correnti_tensioni_B.EdgeDetection5));
+
    /* Integrator : 'sim_correnti_tensioni/Integrator6' */
-   if ((sim_correnti_tensioni_B.LogicalOperator_1 != 0))
+   if ((sim_correnti_tensioni_B.LogicalOperator4_1 != 0))
    {
       sim_correnti_tensioni_X.Integrator6_x = 0.;
    }
@@ -1116,8 +1146,16 @@ void sim_correnti_tensioni_step(void)
    /* Constant : 'sim_correnti_tensioni/White Noise1/Width' */
    sim_correnti_tensioni_B.Width = 2.00010000000000021;
 
+   /* Product : 'sim_correnti_tensioni/Product18' */
+   sim_correnti_tensioni_B.Product18 = sim_correnti_tensioni_B.InputDC[3] *
+                                       sim_correnti_tensioni_B.InputDC[4];
+
    /* Constant : 'sim_correnti_tensioni/White Noise/Width' */
    sim_correnti_tensioni_B.Width_1 = 2.00010000000000021;
+
+   /* Product : 'sim_correnti_tensioni/Product19' */
+   sim_correnti_tensioni_B.Product19 = sim_correnti_tensioni_B.Input[1] *
+                                       sim_correnti_tensioni_B.Input[2];
    if (sim_correnti_tensioni_errorStatus)
    {
       return;
@@ -1257,34 +1295,34 @@ void sim_correnti_tensioni_step(void)
    sim_correnti_tensioni_deriv[1] = sim_correnti_tensioni_B.InputDC2[1];
 
    /* Derivatives for Integrator : 'sim_correnti_tensioni/Integrator5' */
-   if (sim_correnti_tensioni_B.LogicalOperator != 0 ||
+   if (sim_correnti_tensioni_B.LogicalOperator4 != 0 ||
        (sim_correnti_tensioni_X.Integrator5_x >= 1. &&
-        sim_correnti_tensioni_B.InputDC[4] > 0) ||
+        sim_correnti_tensioni_B.Product18 > 0) ||
        (sim_correnti_tensioni_X.Integrator5_x <= 0. &&
-        sim_correnti_tensioni_B.InputDC[4] < 0))
+        sim_correnti_tensioni_B.Product18 < 0))
    {
       sim_correnti_tensioni_deriv[2] = 0;
    }
    else
    {
-      sim_correnti_tensioni_deriv[2] = sim_correnti_tensioni_B.InputDC[4];
+      sim_correnti_tensioni_deriv[2] = sim_correnti_tensioni_B.Product18;
    }
 
    /* Derivatives for Integrator : 'sim_correnti_tensioni/Integrator3' */
    sim_correnti_tensioni_deriv[0] = sim_correnti_tensioni_B.Input2[1];
 
    /* Derivatives for Integrator : 'sim_correnti_tensioni/Integrator6' */
-   if (sim_correnti_tensioni_B.LogicalOperator_1 != 0 ||
+   if (sim_correnti_tensioni_B.LogicalOperator4_1 != 0 ||
        (sim_correnti_tensioni_X.Integrator6_x >= 1. &&
-        sim_correnti_tensioni_B.Input[2] > 0) ||
+        sim_correnti_tensioni_B.Product19 > 0) ||
        (sim_correnti_tensioni_X.Integrator6_x <= 0. &&
-        sim_correnti_tensioni_B.Input[2] < 0))
+        sim_correnti_tensioni_B.Product19 < 0))
    {
       sim_correnti_tensioni_deriv[3] = 0;
    }
    else
    {
-      sim_correnti_tensioni_deriv[3] = sim_correnti_tensioni_B.Input[2];
+      sim_correnti_tensioni_deriv[3] = sim_correnti_tensioni_B.Product19;
    }
 
    /* Update continuous states */

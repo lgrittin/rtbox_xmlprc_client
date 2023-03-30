@@ -66,7 +66,7 @@ TOUT_mainWindow_PlotData_ms = 700
 ## Specific Implementation
 V_AC_Ampl = 0.0
 V_AC_Freq = 50
-V_AC_Ena = 0
+V_AC_Ena = -1
 V_AC_RampTime = 0.1
 WhiteNoise_AC_Ampl = 0.0
 WhiteNoise_AC_Ena = 0
@@ -79,7 +79,7 @@ UnbalVoltage_AC_Ena = 0
 V_DC_Ampl1 = 0.0
 V_DC_Ampl2 = 0.0
 V_DC_Ampl3 = 0.0
-V_DC_Ena = 0
+V_DC_Ena = -1
 V_DC_RampTime = 0.1
 V_DC_Link = 0
 WhiteNoise_DC_Ampl = 0.0
@@ -125,8 +125,6 @@ class Window(QMainWindow, Ui_MainWindow):
         ## Start Timer # --------------------------------------------------------
         self.timer_RefreshStatusBar.start(TOUT_mainWindow_RefreshStatusBar_ms)
         self.timer_RefreshWrite.start(TOUT_mainWindow_RefreshWrite_ms)
-        self.timer_RefreshRead.start(TOUT_mainWindow_RefreshRead_ms)
-        self.timer_PlotData.start(TOUT_mainWindow_PlotData_ms)
 
     def connectSignalsSlots(self):
         self.action_Exit.triggered.connect(self.close)
@@ -134,6 +132,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.action_About.triggered.connect(self.about)
         self.timer_RefreshStatusBar.timeout.connect(self.refreshStatusBar)
         self.timer_RefreshWrite.timeout.connect(self.refreshWrite)
+        self.timer_RefreshRead.timeout.connect(self.refreshRead)
+        self.timer_PlotData.timeout.connect(self.update_PlotData)
         self.pushButton_EnablePlot.clicked.connect(self.pushButton_EnablePlot_clicked)
         
         ## Specific Implementation
@@ -195,6 +195,8 @@ class Window(QMainWindow, Ui_MainWindow):
         if self.pushButton_EnablePlot.isChecked():
             self.pushButton_EnablePlot.setText("Plot On")
             self.init_PlotData()
+            self.timer_RefreshRead.timeout.connect(self.refreshRead)
+            self.timer_PlotData.timeout.connect(self.update_PlotData)
             self.timer_RefreshRead.start(TOUT_mainWindow_RefreshRead_ms)
             self.timer_PlotData.start(TOUT_mainWindow_PlotData_ms)
         else:
@@ -203,10 +205,6 @@ class Window(QMainWindow, Ui_MainWindow):
             self.timer_PlotData.stop()
             self.layout.removeWidget(self.groupBox_Plot)
             sip.delete(self.groupBox_Plot)
-            #self.groupBox_Plot = None
-            #self.layout = None
-
-
 
     ## Specific Implementation
 
@@ -239,23 +237,6 @@ class Window(QMainWindow, Ui_MainWindow):
         global UnbalVoltage_DC_Phase
         global UnbalVoltage_DC_Ena
 
-        V_AC_Ampl = self.doubleSpinBox_vAmp.value()
-        V_AC_RampTime = V_DC_RampTime = self.doubleSpinBox_voltageRampTime.value()
-        V_AC_Freq = self.doubleSpinBox_vFreq.value()
-        WhiteNoise_AC_Ampl = self.doubleSpinBox_wnAmp.value()
-        SwitchingNoise_AC_Ampl = self.doubleSpinBox_snAmp.value()
-        SwitchingNoise_AC_Freq = self.doubleSpinBox_snFreq.value()
-        UnbalVoltage_AC_Ampl = self.doubleSpinBox_unbalAmp.value()
-        UnbalVoltage_AC_Phase = self.spinBox_unbalPhase.value()
-        V_DC_Ampl1 = self.doubleSpinBox_vDCAmp1.value()
-        V_DC_Ampl2 = self.doubleSpinBox_vDCAmp2.value()
-        V_DC_Ampl3 = self.doubleSpinBox_vDCAmp3.value()
-        WhiteNoise_DC_Ampl = self.doubleSpinBox_wnDCAmp.value()
-        SwitchingNoise_DC_Ampl = self.doubleSpinBox_snDCAmp.value()
-        SwitchingNoise_DC_Freq = self.doubleSpinBox_snDCFreq.value()
-        UnbalVoltage_DC_Ampl = self.doubleSpinBox_unbalDCAmp.value()
-        UnbalVoltage_DC_Phase = self.spinBox_unbalDCPhase.value()
-
         if (V_DC_Link == 1):
             V_DC_Ampl2 = V_DC_Ampl1
             V_DC_Ampl3 = V_DC_Ampl1
@@ -286,7 +267,6 @@ class Window(QMainWindow, Ui_MainWindow):
         global Voltage_DC_R
         global Voltage_DC_S
         global Voltage_DC_T
-        global EnPlot
         if ((RTBOX_STATUS == DeviceStatus.RUNNING) & (RTBOX_CONNECTED == ConnectionStatus.CONNECTED)):
             try:
                 if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture1') != 0):
@@ -318,7 +298,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def doubleSpinBox_voltageRampTime_valueChanged(self):
         global V_AC_RampTime, V_DC_RampTime
-        V_AC_RampTime = V_DC_RampTime = self.doubleSpinBox_voltageRampTime.value()
+        V_AC_RampTime = V_DC_RampTime = 1.0/self.doubleSpinBox_voltageRampTime.value()
 
     def doubleSpinBox_wnAmp_valueChanged(self):
         global WhiteNoise_AC_Ampl
@@ -372,6 +352,8 @@ class Window(QMainWindow, Ui_MainWindow):
         global UnbalVoltage_DC_Phase
         UnbalVoltage_DC_Phase = self.spinBox_unbalDCPhase.value()
 
+    # PushButton
+
     def pushButton_voltageEna_clicked(self):
         global V_AC_Ena
         if self.pushButton_voltageEna.isChecked():
@@ -379,7 +361,7 @@ class Window(QMainWindow, Ui_MainWindow):
             V_AC_Ena = 1
         else:
             self.pushButton_voltageEna.setText("Off")
-            V_AC_Ena = 0
+            V_AC_Ena = -1
 
     def pushButton_wnEna_clicked(self):
         global WhiteNoise_AC_Ena
@@ -389,8 +371,6 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             self.pushButton_wnEna.setText("Off")
             WhiteNoise_AC_Ena = 0
-
-    # PushButton
 
     def pushButton_snEna_clicked(self):
         global SwitchingNoise_AC_Ena
@@ -417,7 +397,7 @@ class Window(QMainWindow, Ui_MainWindow):
             V_DC_Ena = 1
         else:
             self.pushButton_vDCEna.setText("Off")
-            V_DC_Ena = 0
+            V_DC_Ena = -1
 
     def pushButton_wnDCEna_clicked(self):
         global WhiteNoise_DC_Ena
@@ -448,11 +428,15 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def pushButton_vDCLink_clicked(self):
         global V_DC_Link
+        global V_DC_Ampl2
+        global V_DC_Ampl3
         if self.pushButton_vDCLink.isChecked():
             self.pushButton_vDCLink.setText("Link On")
             self.doubleSpinBox_vDCAmp2.setEnabled(0)
             self.doubleSpinBox_vDCAmp3.setEnabled(0)
             V_DC_Link = 1
+            V_DC_Ampl2 = V_DC_Ampl1
+            V_DC_Ampl3 = V_DC_Ampl1
         else:
             self.pushButton_vDCLink.setText("Link Off")
             self.doubleSpinBox_vDCAmp2.setEnabled(1)
