@@ -14,6 +14,9 @@ import xmlrpc.client
 import pathlib
 import os
 import sys
+import concurrent.futures
+import requests
+import threading
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QMessageBox, QFileDialog, QLabel, QVBoxLayout
@@ -61,44 +64,11 @@ TOUT_settingsDialog_RefreshLabels_ms = 2000
 TOUT_mainWindow_RefreshStatusBar_ms = 5000
 TOUT_mainWindow_RefreshWrite_ms = 900
 TOUT_mainWindow_RefreshRead_ms = 1100
-TOUT_mainWindow_PlotData_ms = 700
 
 ## Specific Implementation
-V_AC_Ampl = 0.0
-V_AC_Freq = 50
-V_AC_Ena = -1
-V_AC_RampTime = 0.1
-WhiteNoise_AC_Ampl = 0.0
-WhiteNoise_AC_Ena = 0
-SwitchingNoise_AC_Ampl = 0.0
-SwitchingNoise_AC_Freq = 680.0
-SwitchingNoise_AC_Ena = 0
-UnbalVoltage_AC_Ampl = 0.0
-UnbalVoltage_AC_Phase = 0
-UnbalVoltage_AC_Ena = 0
-V_DC_Ampl1 = 0.0
-V_DC_Ampl2 = 0.0
-V_DC_Ampl3 = 0.0
-V_DC_Ena = -1
-V_DC_RampTime = 0.1
-V_DC_Link = 0
-WhiteNoise_DC_Ampl = 0.0
-WhiteNoise_DC_Ena = 0
-SwitchingNoise_DC_Ampl = 0.0
-SwitchingNoise_DC_Freq = 680.0
-SwitchingNoise_DC_Ena = 0
-UnbalVoltage_DC_Ampl = 0.0
-UnbalVoltage_DC_Phase = 0
-UnbalVoltage_DC_Ena = 0
 DESIGN_TDISC_US = 10
 DESIGN_FLINE_HZ = 50
 DATA_DIM = int(1/(DESIGN_FLINE_HZ*DESIGN_TDISC_US*0.000001))
-Voltage_AC_R = np.zeros(DATA_DIM, dtype=float)
-Voltage_AC_S = np.zeros(DATA_DIM, dtype=float)
-Voltage_AC_T = np.zeros(DATA_DIM, dtype=float)
-Voltage_DC_R = np.zeros(DATA_DIM, dtype=float)
-Voltage_DC_S = np.zeros(DATA_DIM, dtype=float)
-Voltage_DC_T = np.zeros(DATA_DIM, dtype=float)
 
 # ===============================================================================
 # MAIN CLASS
@@ -119,12 +89,47 @@ class Window(QMainWindow, Ui_MainWindow):
         self.timer_RefreshStatusBar = QTimer()
         self.timer_RefreshWrite = QTimer()
         self.timer_RefreshRead = QTimer()
-        self.timer_PlotData = QTimer()
         ## Connect Slots # ------------------------------------------------------
         self.connectSignalsSlots()
         ## Start Timer # --------------------------------------------------------
         self.timer_RefreshStatusBar.start(TOUT_mainWindow_RefreshStatusBar_ms)
         self.timer_RefreshWrite.start(TOUT_mainWindow_RefreshWrite_ms)
+        ## Specific Implementation # --------------------------------------------
+        self.data_Capture1 = []
+        self.data_Capture2 = []
+        self.PlotData_Ena = 0
+        self.V_AC_Ampl = 0.0
+        self.V_AC_Freq = 50
+        self.V_AC_Ena = -1
+        self.V_AC_RampTime = 0.1
+        self.WhiteNoise_AC_Ampl = 0.0
+        self.WhiteNoise_AC_Ena = 0
+        self.SwitchingNoise_AC_Ampl = 0.0
+        self.SwitchingNoise_AC_Freq = 680.0
+        self.SwitchingNoise_AC_Ena = 0
+        self.UnbalVoltage_AC_Ampl = 0.0
+        self.UnbalVoltage_AC_Phase = 0
+        self.UnbalVoltage_AC_Ena = 0
+        self.V_DC_Ampl1 = 0.0
+        self.V_DC_Ampl2 = 0.0
+        self.V_DC_Ampl3 = 0.0
+        self.V_DC_Ena = -1
+        self.V_DC_RampTime = 0.1
+        self.V_DC_Link = 0
+        self.WhiteNoise_DC_Ampl = 0.0
+        self.WhiteNoise_DC_Ena = 0
+        self.SwitchingNoise_DC_Ampl = 0.0
+        self.SwitchingNoise_DC_Freq = 680.0
+        self.SwitchingNoise_DC_Ena = 0
+        self.UnbalVoltage_DC_Ampl = 0.0
+        self.UnbalVoltage_DC_Phase = 0
+        self.UnbalVoltage_DC_Ena = 0
+        self.Voltage_AC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_AC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_AC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_DC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_DC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_DC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
 
     def connectSignalsSlots(self):
         self.action_Exit.triggered.connect(self.close)
@@ -133,7 +138,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.timer_RefreshStatusBar.timeout.connect(self.refreshStatusBar)
         self.timer_RefreshWrite.timeout.connect(self.refreshWrite)
         self.timer_RefreshRead.timeout.connect(self.refreshRead)
-        self.timer_PlotData.timeout.connect(self.update_PlotData)
         self.pushButton_EnablePlot.clicked.connect(self.pushButton_EnablePlot_clicked)
         
         ## Specific Implementation
@@ -194,95 +198,67 @@ class Window(QMainWindow, Ui_MainWindow):
     def pushButton_EnablePlot_clicked(self):
         if self.pushButton_EnablePlot.isChecked():
             self.pushButton_EnablePlot.setText("Plot On")
+            self.PlotData_Ena = 1
             self.init_PlotData()
-            self.timer_RefreshRead.timeout.connect(self.refreshRead)
-            self.timer_PlotData.timeout.connect(self.update_PlotData)
             self.timer_RefreshRead.start(TOUT_mainWindow_RefreshRead_ms)
-            self.timer_PlotData.start(TOUT_mainWindow_PlotData_ms)
         else:
             self.pushButton_EnablePlot.setText("Plot Off")
+            self.PlotData_Ena = 0
             self.timer_RefreshRead.stop()
-            self.timer_PlotData.stop()
             self.layout.removeWidget(self.groupBox_Plot)
             sip.delete(self.groupBox_Plot)
 
     ## Specific Implementation
 
-    def refreshWrite(self):
-        global RTBOX_SERVER_XMLPRC
-        global V_AC_Ena
-        global V_AC_RampTime
-        global V_AC_Ampl
-        global V_AC_Freq
-        global WhiteNoise_AC_Ampl
-        global WhiteNoise_AC_Ena
-        global SwitchingNoise_AC_Ampl
-        global SwitchingNoise_AC_Freq
-        global SwitchingNoise_AC_Ena
-        global UnbalVoltage_AC_Ampl
-        global UnbalVoltage_AC_Phase
-        global UnbalVoltage_AC_Ena
-        global V_DC_Ampl1
-        global V_DC_Ampl2
-        global V_DC_Ampl3
-        global V_DC_Ena
-        global V_DC_RampTime
-        global V_DC_Link
-        global WhiteNoise_DC_Ampl
-        global WhiteNoise_DC_Ena
-        global SwitchingNoise_DC_Ampl
-        global SwitchingNoise_DC_Freq
-        global SwitchingNoise_DC_Ena
-        global UnbalVoltage_DC_Ampl
-        global UnbalVoltage_DC_Phase
-        global UnbalVoltage_DC_Ena
+    #def writeToRtBox(self):
 
-        if (V_DC_Link == 1):
-            V_DC_Ampl2 = V_DC_Ampl1
-            V_DC_Ampl3 = V_DC_Ampl1
+    def refreshWrite(self):
+
+        if (self.V_DC_Link == 1):
+            self.V_DC_Ampl2 = self.V_DC_Ampl1
+            self.V_DC_Ampl3 = self.V_DC_Ampl1
 
         try:
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input', [V_AC_Ampl, V_AC_Ena, V_AC_RampTime])
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input1', [WhiteNoise_AC_Ampl, WhiteNoise_AC_Ena])
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input2', [SwitchingNoise_AC_Ampl, SwitchingNoise_AC_Freq, SwitchingNoise_AC_Ena])
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input3', [UnbalVoltage_AC_Ampl, UnbalVoltage_AC_Phase, UnbalVoltage_AC_Ena])
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC', [V_DC_Ampl1, V_DC_Ampl2, V_DC_Ampl3, V_DC_Ena, V_DC_RampTime])
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC1', [WhiteNoise_DC_Ampl, WhiteNoise_DC_Ena])
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC2', [SwitchingNoise_DC_Ampl, SwitchingNoise_DC_Freq, SwitchingNoise_DC_Ena])
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC3', [UnbalVoltage_DC_Ampl, UnbalVoltage_DC_Phase, UnbalVoltage_DC_Ena])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input', [self.V_AC_Ampl, self.V_AC_Ena, self.V_AC_RampTime])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input1', [self.WhiteNoise_AC_Ampl, self.WhiteNoise_AC_Ena])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input2', [self.SwitchingNoise_AC_Ampl, self.SwitchingNoise_AC_Freq, self.SwitchingNoise_AC_Ena])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input3', [self.UnbalVoltage_AC_Ampl, self.UnbalVoltage_AC_Phase, self.UnbalVoltage_AC_Ena])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC', [self.V_DC_Ampl1, self.V_DC_Ampl2, self.V_DC_Ampl3, self.V_DC_Ena, self.V_DC_RampTime])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC1', [self.WhiteNoise_DC_Ampl, self.WhiteNoise_DC_Ena])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC2', [self.SwitchingNoise_DC_Ampl, self.SwitchingNoise_DC_Freq, self.SwitchingNoise_DC_Ena])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC3', [self.UnbalVoltage_DC_Ampl, self.UnbalVoltage_DC_Phase, self.UnbalVoltage_DC_Ena])
         except Exception:
             pass
 
     def refreshRead(self):
-        # Capture1 -> 500 dati
-        # Capture2 -> 500 dati
         global RTBOX_SERVER_XMLPRC
         global RTBOX_CONNECTED
         global RTBOX_STATUS
-        global data_Capture1
-        global data_Capture2
-        global Voltage_AC_R
-        global Voltage_AC_S
-        global Voltage_AC_T
-        global Voltage_DC_R
-        global Voltage_DC_S
-        global Voltage_DC_T
+
+        self.start_time = time.time()
+        self.Voltage_AC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
+        self.Voltage_AC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
+        self.Voltage_AC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
+        self.Voltage_DC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
+        self.Voltage_DC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
+        self.Voltage_DC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
+
         if ((RTBOX_STATUS == DeviceStatus.RUNNING) & (RTBOX_CONNECTED == ConnectionStatus.CONNECTED)):
             try:
                 if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture1') != 0):
                     try:
-                        data_Capture1 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture1').values())
-                        Voltage_DC_R = [idx[0] for idx in data_Capture1[0]]
-                        Voltage_DC_S = [idx[1] for idx in data_Capture1[0]]
-                        Voltage_DC_T = [idx[2] for idx in data_Capture1[0]]
+                        self.data_Capture1 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture1').values())
+                        self.Voltage_DC_R = [idx[0] for idx in self.data_Capture1[0]]
+                        self.Voltage_DC_S = [idx[1] for idx in self.data_Capture1[0]]
+                        self.Voltage_DC_T = [idx[2] for idx in self.data_Capture1[0]]
                     except Exception:
                         pass
                 if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture2') != 0):
                     try:
-                        data_Capture2 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture2').values())
-                        Voltage_AC_R = [idx[0] for idx in data_Capture2[0]]
-                        Voltage_AC_S = [idx[1] for idx in data_Capture2[0]]
-                        Voltage_AC_T = [idx[2] for idx in data_Capture2[0]]
+                        self.data_Capture2 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture2').values())
+                        self.Voltage_AC_R = [idx[0] for idx in self.data_Capture2[0]]
+                        self.Voltage_AC_S = [idx[1] for idx in self.data_Capture2[0]]
+                        self.Voltage_AC_T = [idx[2] for idx in self.data_Capture2[0]]
                     except Exception:
                         pass
             except Exception:
@@ -290,158 +266,138 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             pass
 
+        if (self.PlotData_Ena == 1):
+            self.update_PlotData()
+
+        self.duration = time.time() - self.start_time
+        print(f"Duration {self.duration} seconds")
+
     # DoubleSpinBox
 
     def doubleSpinBox_vAmp_valueChanged(self):
-        global V_AC_Ampl
-        V_AC_Ampl = self.doubleSpinBox_vAmp.value()
+        self.V_AC_Ampl = self.doubleSpinBox_vAmp.value()
 
     def doubleSpinBox_voltageRampTime_valueChanged(self):
-        global V_AC_RampTime, V_DC_RampTime
-        V_AC_RampTime = V_DC_RampTime = 1.0/self.doubleSpinBox_voltageRampTime.value()
+        self.V_AC_RampTime = self.V_DC_RampTime = 1.0/self.doubleSpinBox_voltageRampTime.value()
 
     def doubleSpinBox_wnAmp_valueChanged(self):
-        global WhiteNoise_AC_Ampl
-        WhiteNoise_AC_Ampl = self.doubleSpinBox_wnAmp.value()
+        self.WhiteNoise_AC_Ampl = self.doubleSpinBox_wnAmp.value()
 
     def doubleSpinBox_snAmp_valueChanged(self):
-        global SwitchingNoise_AC_Ampl
-        SwitchingNoise_AC_Ampl = self.doubleSpinBox_snAmp.value()
+        self.SwitchingNoise_AC_Ampl = self.doubleSpinBox_snAmp.value()
 
     def doubleSpinBox_snFreq_valueChanged(self):
-        global SwitchingNoise_AC_Freq
-        SwitchingNoise_AC_Freq = self.doubleSpinBox_snFreq.value()
+        self.SwitchingNoise_AC_Freq = self.doubleSpinBox_snFreq.value()
 
     def doubleSpinBox_unbalAmp_valueChanged(self):
-        global UnbalVoltage_AC_Ampl
-        UnbalVoltage_AC_Ampl = self.doubleSpinBox_unbalAmp.value()
+        self.UnbalVoltage_AC_Ampl = self.doubleSpinBox_unbalAmp.value()
 
     def spinBox_unbalPhase_valueChanged(self):
-        global UnbalVoltage_AC_Phase
-        UnbalVoltage_AC_Phase = self.spinBox_unbalPhase.value()
+        self.UnbalVoltage_AC_Phase = self.spinBox_unbalPhase.value()
 
     def doubleSpinBox_vDCAmp1_valueChanged(self):
-        global V_DC_Ampl1
-        V_DC_Ampl1 = self.doubleSpinBox_vDCAmp1.value()
+        self.V_DC_Ampl1 = self.doubleSpinBox_vDCAmp1.value()
 
     def doubleSpinBox_vDCAmp2_valueChanged(self):
-        global V_DC_Ampl2
-        V_DC_Ampl2 = self.doubleSpinBox_vDCAmp2.value()
+        self.V_DC_Ampl2 = self.doubleSpinBox_vDCAmp2.value()
 
     def doubleSpinBox_vDCAmp3_valueChanged(self):
-        global V_DC_Ampl3
-        V_DC_Ampl3 = self.doubleSpinBox_vDCAmp3.value()
+        self.V_DC_Ampl3 = self.doubleSpinBox_vDCAmp3.value()
 
     def doubleSpinBox_wnDCAmp_valueChanged(self):
-        global WhiteNoise_DC_Ampl
-        WhiteNoise_DC_Ampl = self.doubleSpinBox_wnDCAmp.value()
+        self.WhiteNoise_DC_Ampl = self.doubleSpinBox_wnDCAmp.value()
 
     def doubleSpinBox_snDCAmp_valueChanged(self):
-        global SwitchingNoise_DC_Ampl
-        SwitchingNoise_DC_Ampl = self.doubleSpinBox_snDCAmp.value()
+        self.SwitchingNoise_DC_Ampl = self.doubleSpinBox_snDCAmp.value()
 
     def doubleSpinBox_snDCFreq_valueChanged(self):
-        global SwitchingNoise_DC_Freq
-        SwitchingNoise_DC_Freq = self.doubleSpinBox_snDCFreq.value()
+        self.SwitchingNoise_DC_Freq = self.doubleSpinBox_snDCFreq.value()
 
     def doubleSpinBox_unbalDCAmp_valueChanged(self):
-        global UnbalVoltage_DC_Ampl
-        UnbalVoltage_DC_Ampl = self.doubleSpinBox_unbalDCAmp.value()
+        self.UnbalVoltage_DC_Ampl = self.doubleSpinBox_unbalDCAmp.value()
 
     def spinBox_unbalDCPhase_valueChanged(self):
-        global UnbalVoltage_DC_Phase
-        UnbalVoltage_DC_Phase = self.spinBox_unbalDCPhase.value()
+        self.UnbalVoltage_DC_Phase = self.spinBox_unbalDCPhase.value()
 
     # PushButton
 
     def pushButton_voltageEna_clicked(self):
-        global V_AC_Ena
         if self.pushButton_voltageEna.isChecked():
             self.pushButton_voltageEna.setText("On")
-            V_AC_Ena = 1
+            self.V_AC_Ena = 1
         else:
             self.pushButton_voltageEna.setText("Off")
-            V_AC_Ena = -1
+            self.V_AC_Ena = -1
 
     def pushButton_wnEna_clicked(self):
-        global WhiteNoise_AC_Ena
         if self.pushButton_wnEna.isChecked():
             self.pushButton_wnEna.setText("On")
-            WhiteNoise_AC_Ena = 1
+            self.WhiteNoise_AC_Ena = 1
         else:
             self.pushButton_wnEna.setText("Off")
-            WhiteNoise_AC_Ena = 0
+            self.WhiteNoise_AC_Ena = 0
 
     def pushButton_snEna_clicked(self):
-        global SwitchingNoise_AC_Ena
         if self.pushButton_snEna.isChecked():
             self.pushButton_snEna.setText("On")
-            SwitchingNoise_AC_Ena = 1
+            self.SwitchingNoise_AC_Ena = 1
         else:
             self.pushButton_snEna.setText("Off")
-            SwitchingNoise_AC_Ena = 0
+            self.SwitchingNoise_AC_Ena = 0
 
     def pushButton_unbalEna_clicked(self):
-        global UnbalVoltage_AC_Ena
         if self.pushButton_unbalEna.isChecked():
             self.pushButton_unbalEna.setText("On")
-            UnbalVoltage_AC_Ena = 1
+            self.UnbalVoltage_AC_Ena = 1
         else:
             self.pushButton_unbalEna.setText("Off")
-            UnbalVoltage_AC_Ena = 0
+            self.UnbalVoltage_AC_Ena = 0
 
     def pushButton_vDCEna_clicked(self):
-        global V_DC_Ena
         if self.pushButton_vDCEna.isChecked():
             self.pushButton_vDCEna.setText("On")
-            V_DC_Ena = 1
+            self.V_DC_Ena = 1
         else:
             self.pushButton_vDCEna.setText("Off")
-            V_DC_Ena = -1
+            self.V_DC_Ena = -1
 
     def pushButton_wnDCEna_clicked(self):
-        global WhiteNoise_DC_Ena
         if self.pushButton_wnDCEna.isChecked():
             self.pushButton_wnDCEna.setText("On")
-            WhiteNoise_DC_Ena = 1
+            self.WhiteNoise_DC_Ena = 1
         else:
             self.pushButton_wnDCEna.setText("Off")
-            WhiteNoise_DC_Ena = 0
+            self.WhiteNoise_DC_Ena = 0
 
     def pushButton_snDCEna_clicked(self):
-        global SwitchingNoise_DC_Ena
         if self.pushButton_snDCEna.isChecked():
             self.pushButton_snDCEna.setText("On")
-            SwitchingNoise_DC_Ena = 1
+            self.SwitchingNoise_DC_Ena = 1
         else:
             self.pushButton_snDCEna.setText("Off")
-            SwitchingNoise_DC_Ena = 0
+            self.SwitchingNoise_DC_Ena = 0
 
     def pushButton_unbalDCEna_clicked(self):
-        global UnbalVoltage_DC_Ena
         if self.pushButton_unbalDCEna.isChecked():
             self.pushButton_unbalDCEna.setText("On")
-            UnbalVoltage_DC_Ena = 1
+            self.UnbalVoltage_DC_Ena = 1
         else:
             self.pushButton_unbalDCEna.setText("Off")
-            UnbalVoltage_DC_Ena = 0
+            self.UnbalVoltage_DC_Ena = 0
 
     def pushButton_vDCLink_clicked(self):
-        global V_DC_Link
-        global V_DC_Ampl2
-        global V_DC_Ampl3
         if self.pushButton_vDCLink.isChecked():
             self.pushButton_vDCLink.setText("Link On")
             self.doubleSpinBox_vDCAmp2.setEnabled(0)
             self.doubleSpinBox_vDCAmp3.setEnabled(0)
-            V_DC_Link = 1
-            V_DC_Ampl2 = V_DC_Ampl1
-            V_DC_Ampl3 = V_DC_Ampl1
+            self.V_DC_Link = 1
+            self.V_DC_Ampl2 = self.V_DC_Ampl1
+            self.V_DC_Ampl3 = self.V_DC_Ampl1
         else:
             self.pushButton_vDCLink.setText("Link Off")
             self.doubleSpinBox_vDCAmp2.setEnabled(1)
             self.doubleSpinBox_vDCAmp3.setEnabled(1)
-            V_DC_Link = 0
+            self.V_DC_Link = 0
         
     def init_PlotData(self):
         self.groupBox_Plot = QtWidgets.QGroupBox(self.centralwidget)
@@ -455,12 +411,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.layout.addWidget(self.graphWidget)
         # Data
         self.x = list(range(DATA_DIM))
-        self.yAC1 = np.zeros(DATA_DIM, dtype=float)
-        self.yAC2 = np.zeros(DATA_DIM, dtype=float)
-        self.yAC3 = np.zeros(DATA_DIM, dtype=float)
-        self.yDC1 = np.zeros(DATA_DIM, dtype=float)
-        self.yDC2 = np.zeros(DATA_DIM, dtype=float)
-        self.yDC3 = np.zeros(DATA_DIM, dtype=float)
         # Background Color
         color = self.palette().color(QtGui.QPalette.Window)  # Get the default window background
         self.graphWidget.setBackground(color)
@@ -480,40 +430,21 @@ class Window(QMainWindow, Ui_MainWindow):
         pen2 = pg.mkPen(color = 'r', width = 2, style = Qt.SolidLine)
         pen3 = pg.mkPen(color = 'b', width = 2, style = Qt.SolidLine)
         # Data Plot
-        self.data_line_AC1 =  self.graphWidget.plot(self.x, self.yAC1, pen = pen1)
-        self.data_line_AC2 =  self.graphWidget.plot(self.x, self.yAC2, pen = pen2)
-        self.data_line_AC3 =  self.graphWidget.plot(self.x, self.yAC3, pen = pen3)
-        self.data_line_DC1 =  self.graphWidget.plot(self.x, self.yDC1, pen = pen1)
-        self.data_line_DC2 =  self.graphWidget.plot(self.x, self.yDC2, pen = pen2)
-        self.data_line_DC3 =  self.graphWidget.plot(self.x, self.yDC3, pen = pen3)
+        self.data_line_AC1 =  self.graphWidget.plot(self.x, self.Voltage_AC_R, pen = pen1)
+        self.data_line_AC2 =  self.graphWidget.plot(self.x, self.Voltage_AC_S, pen = pen2)
+        self.data_line_AC3 =  self.graphWidget.plot(self.x, self.Voltage_AC_T, pen = pen3)
+        self.data_line_DC1 =  self.graphWidget.plot(self.x, self.Voltage_DC_R, pen = pen1)
+        self.data_line_DC2 =  self.graphWidget.plot(self.x, self.Voltage_DC_S, pen = pen2)
+        self.data_line_DC3 =  self.graphWidget.plot(self.x, self.Voltage_DC_T, pen = pen3)
 
     def update_PlotData(self):
-        global Voltage_AC_R
-        global Voltage_AC_S
-        global Voltage_AC_T
-        global Voltage_DC_R
-        global Voltage_DC_S
-        global Voltage_DC_T
-        #self.x = self.x[1:]  # Remove the first y element.
-        #self.x.append(self.x[-1] + 1)  # Add a new value 1 higher than the last.
-        #self.y1 = self.y1[1:]  # Remove the first
-        #self.y1.append(np.random.uniform(low=-10.0, high=10.0))  # Add a new random value.
-        #self.y2 = self.y2[1:]  # Remove the first
-        #self.y2.append(np.random.uniform(low=-10.0, high=10.0))  # Add a new random value.
-        #self.y3 = self.y3[1:]  # Remove the first
-        #self.y3.append(np.random.uniform(low=-10.0, high=10.0))  # Add a new random value.
-        self.yAC1 = Voltage_AC_R
-        self.yAC2 = Voltage_AC_S
-        self.yAC3 = Voltage_AC_T
-        self.yDC1 = Voltage_DC_R
-        self.yDC2 = Voltage_DC_S
-        self.yDC3 = Voltage_DC_T
-        self.data_line_AC1.setData(self.x, self.yAC1)  # Update the data.
-        self.data_line_AC2.setData(self.x, self.yAC2)  # Update the data.
-        self.data_line_AC3.setData(self.x, self.yAC3)  # Update the data.
-        self.data_line_DC1.setData(self.x, self.yDC1)  # Update the data.
-        self.data_line_DC2.setData(self.x, self.yDC2)  # Update the data.
-        self.data_line_DC3.setData(self.x, self.yDC3)  # Update the data.
+        
+        self.data_line_AC1.setData(self.x, self.Voltage_AC_R)  # Update the data.
+        self.data_line_AC2.setData(self.x, self.Voltage_AC_S)  # Update the data.
+        self.data_line_AC3.setData(self.x, self.Voltage_AC_T)  # Update the data.
+        self.data_line_DC1.setData(self.x, self.Voltage_DC_R)  # Update the data.
+        self.data_line_DC2.setData(self.x, self.Voltage_DC_S)  # Update the data.
+        self.data_line_DC3.setData(self.x, self.Voltage_DC_T)  # Update the data.
 
 
 # ===============================================================================
