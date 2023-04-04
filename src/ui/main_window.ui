@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>872</width>
-    <height>471</height>
+    <width>983</width>
+    <height>343</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -33,48 +33,30 @@
     </item>
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_3">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QGroupBox" name="groupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="title">
          <string>AC Voltage</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_10">
+         <item row="4" column="1">
+          <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>White Noise Ampl [V]:</string>
+            <string>Ampl [V]</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_vAmp">
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>7.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.050000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_16">
-           <property name="text">
-            <string>Switching Noise [V]-[Hz]:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>3 Phase Voltage [V]-[Hz]:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_wnAmp">
+         <item row="5" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_snAmp">
            <property name="maximum">
             <double>1.000000000000000</double>
            </property>
@@ -83,18 +65,28 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="4">
-          <widget class="QPushButton" name="pushButton_wnEna">
+         <item row="2" column="1">
+          <widget class="QLabel" name="label_6">
            <property name="text">
-            <string>Off</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
+            <string>Ampl [V]</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="pushButton_voltageEna">
+         <item row="1" column="3">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_voltageRampTime">
+           <property name="decimals">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <double>50.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="4">
+          <widget class="QPushButton" name="pushButton_snEna">
            <property name="text">
             <string>Off</string>
            </property>
@@ -104,6 +96,30 @@
           </widget>
          </item>
          <item row="0" column="2">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Freq [Hz]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QPushButton" name="pushButton_voltageEna">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>Switching Noise:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
           <widget class="QDoubleSpinBox" name="doubleSpinBox_vFreq">
            <property name="decimals">
             <number>0</number>
@@ -119,50 +135,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="4">
-          <widget class="QPushButton" name="pushButton_snEna">
-           <property name="text">
-            <string>Off</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QSpinBox" name="spinBox_unbalPhase">
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>3</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_snAmp">
-           <property name="maximum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_snFreq">
-           <property name="decimals">
-            <number>0</number>
-           </property>
-           <property name="maximum">
-            <double>1500.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>680.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
+         <item row="7" column="1">
           <widget class="QDoubleSpinBox" name="doubleSpinBox_unbalAmp">
            <property name="minimum">
             <double>-1.000000000000000</double>
@@ -175,7 +148,61 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Peak [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>RampT [s]</string>
+           </property>
+          </widget>
+         </item>
          <item row="3" column="4">
+          <widget class="QPushButton" name="pushButton_wnEna">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Unbalance:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_vAmp">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>7.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.050000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_wnAmp">
+           <property name="maximum">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="4">
           <widget class="QPushButton" name="pushButton_unbalEna">
            <property name="text">
             <string>Off</string>
@@ -186,22 +213,60 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="label_12">
+          <widget class="QLabel" name="label_10">
            <property name="text">
-            <string>Unbalance [V]-[ph]:</string>
+            <string>White Noise:</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_voltageRampTime">
-           <property name="decimals">
+         <item row="7" column="2">
+          <widget class="QSpinBox" name="spinBox_unbalPhase">
+           <property name="minimum">
             <number>1</number>
            </property>
            <property name="maximum">
-            <double>50.000000000000000</double>
+            <number>3</number>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_snFreq">
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <double>1500.000000000000000</double>
            </property>
            <property name="value">
-            <double>10.000000000000000</double>
+            <double>680.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Freq [Hz]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Ampl [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="2">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Phase [n]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>3 Phase Voltage:</string>
            </property>
           </widget>
          </item>
@@ -210,38 +275,24 @@
       </item>
       <item row="0" column="1">
        <widget class="QGroupBox" name="groupBox_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="title">
          <string>DC Voltage</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="1" column="5">
-          <widget class="QPushButton" name="pushButton_wnDCEna">
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_15">
            <property name="text">
-            <string>Off</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
+            <string>Ampl1 [V]</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="5">
-          <widget class="QPushButton" name="pushButton_unbalDCEna">
-           <property name="text">
-            <string>Off</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>3 DC Voltage [V1-V2-V3]:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
+         <item row="7" column="1">
           <widget class="QDoubleSpinBox" name="doubleSpinBox_unbalDCAmp">
            <property name="minimum">
             <double>-1.000000000000000</double>
@@ -254,8 +305,32 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="5">
-          <widget class="QPushButton" name="pushButton_snDCEna">
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_18">
+           <property name="text">
+            <string>Ampl2 [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>Ampl [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QPushButton" name="pushButton_vDCLink">
+           <property name="text">
+            <string>Link Off</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="5">
+          <widget class="QPushButton" name="pushButton_wnDCEna">
            <property name="text">
             <string>Off</string>
            </property>
@@ -264,14 +339,24 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>Unbalance [V]-[ph]:</string>
+         <item row="5" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_snDCAmp">
+           <property name="maximum">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>White Noise Ampl:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
           <widget class="QDoubleSpinBox" name="doubleSpinBox_vDCAmp1">
            <property name="decimals">
             <number>3</number>
@@ -284,14 +369,34 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_11">
+         <item row="7" column="5">
+          <widget class="QPushButton" name="pushButton_unbalDCEna">
            <property name="text">
-            <string>White Noise Ampl [V]:</string>
+            <string>Off</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
+         <item row="4" column="2">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Freq [Hz]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QPushButton" name="pushButton_vDCEna">
+           <property name="text">
+            <string>Off</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="2">
           <widget class="QSpinBox" name="spinBox_unbalDCPhase">
            <property name="minimum">
             <number>1</number>
@@ -301,30 +406,7 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_snDCAmp">
-           <property name="maximum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_vDCAmp2">
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>2.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
+         <item row="1" column="3">
           <widget class="QDoubleSpinBox" name="doubleSpinBox_vDCAmp3">
            <property name="decimals">
             <number>3</number>
@@ -337,8 +419,56 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="pushButton_vDCEna">
+         <item row="1" column="2">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_vDCAmp2">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>2.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Unbalance:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>3 DC Voltage:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_19">
+           <property name="text">
+            <string>Ampl3 [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>Ampl [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_17">
+           <property name="text">
+            <string>Switching Noise:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="5">
+          <widget class="QPushButton" name="pushButton_snDCEna">
            <property name="text">
             <string>Off</string>
            </property>
@@ -347,24 +477,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_wnDCAmp">
-           <property name="maximum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_17">
-           <property name="text">
-            <string>Switching Noise [V]-[Hz]:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
+         <item row="5" column="2">
           <widget class="QDoubleSpinBox" name="doubleSpinBox_snDCFreq">
            <property name="decimals">
             <number>0</number>
@@ -377,13 +490,27 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="pushButton_vDCLink">
-           <property name="text">
-            <string>Link Off</string>
+         <item row="3" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_wnDCAmp">
+           <property name="maximum">
+            <double>1.000000000000000</double>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLabel" name="label_23">
+           <property name="text">
+            <string>Ampl [V]</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="2">
+          <widget class="QLabel" name="label_24">
+           <property name="text">
+            <string>Phase [n]</string>
            </property>
           </widget>
          </item>
@@ -399,7 +526,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>872</width>
+     <width>983</width>
      <height>21</height>
     </rect>
    </property>
