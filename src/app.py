@@ -21,7 +21,8 @@ import threading
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QMessageBox, QFileDialog, QLabel, QVBoxLayout
 from pyqtgraph import PlotWidget, plot
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer, Qt, QObject, QThread, pyqtSignal
+from PyQt5.QtGui import QCursor
 from PyQt5.uic import loadUi
 from socket import gaierror
 from enum import Enum
@@ -44,7 +45,7 @@ HOST_IPV4 = "000.000.000.000"
 HOST_ADDRESS = "http://" + HOST_IPV4 + ":9998/RPC2"
 INPUTBLOCKS = [0]
 OUTPUTBLOCKS = [0]
-DESIGN_NAME = "sim_correnti_tensioni"
+#DESIGN_NAME = "sim_correnti_tensioni"
 DESIGN_PATH = str(pathlib.Path().resolve().parent.joinpath('plecs_design'))
 RTBOX_SERVER_XMLPRC = 0
 ConnectionStatus = Enum('ConnectionStatus', ["NOT_CONNECTED", "CONNECTED"])
@@ -69,6 +70,107 @@ TOUT_mainWindow_RefreshRead_ms = 1100
 DESIGN_TDISC_US = 10
 DESIGN_FLINE_HZ = 50
 DATA_DIM = int(1/(DESIGN_FLINE_HZ*DESIGN_TDISC_US*0.000001))
+
+
+# ===============================================================================
+# RTBOX XMLRPC CLASS
+# ===============================================================================
+class RTBox(QObject):
+    finished = pyqtSignal()
+    progress = pyqtSignal(int)
+#    DESIGN_NAME = "0"
+#    
+#    def __init__(self):
+#        self.DESIGN_NAME = "sim_correnti_tensioni"
+
+    def RTBox_find(self):
+        global HOST_IPV4
+        global HOST_ADDRESS
+        global RTBOX_IPFOUND
+        global dispList_Ipv4
+        try:
+            HOST_IPV4 = socket.gethostbyname(HOST_NAME)
+            RTBOX_IPFOUND = ConnectionStatus.CONNECTED
+        except gaierror:
+            HOST_IPV4 = "000.000.000.000"
+            RTBOX_IPFOUND = ConnectionStatus.NOT_CONNECTED
+        HOST_ADDRESS = "http://" + HOST_IPV4 + ":9998/RPC2"
+        dispList_Ipv4[1] = HOST_IPV4
+        self.finished.emit()
+
+    def RTBox_connect(self):
+        global RTBOX_SERVER_XMLPRC
+        global INPUTBLOCKS
+        global OUTPUTBLOCKS
+        global RTBOX_CONNECTED
+        global RTBOX_STATUS_INT
+        try:
+            RTBOX_SERVER_XMLPRC = xmlrpc.client.Server(HOST_ADDRESS)
+            RTBOX_CONNECTED = ConnectionStatus.CONNECTED
+            self.RTBox_requestInputOutputBlocks()
+            self.RTBox_querySimulation()
+        except Exception as error:
+            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+            RTBOX_CONNECTED = ConnectionStatus.NOT_CONNECTED
+            INPUTBLOCKS = [0]
+            OUTPUTBLOCKS = [0]
+
+    def RTBox_requestInputOutputBlocks(self):
+        global INPUTBLOCKS
+        global OUTPUTBLOCKS
+        global RTBOX_CONNECTED
+        try:
+            INPUTBLOCKS = RTBOX_SERVER_XMLPRC.rtbox.getProgrammableValueBlocks()
+            RTBOX_CONNECTED = ConnectionStatus.CONNECTED
+        except Exception as error:
+            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+            RTBOX_CONNECTED = ConnectionStatus.NOT_CONNECTED
+            INPUTBLOCKS = [0]
+        try:
+            OUTPUTBLOCKS = RTBOX_SERVER_XMLPRC.rtbox.getDataCaptureBlocks()
+            RTBOX_CONNECTED = ConnectionStatus.CONNECTED
+        except Exception as error:
+            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+            RTBOX_CONNECTED = ConnectionStatus.NOT_CONNECTED
+            OUTPUTBLOCKS = [0]
+
+    def RTBox_querySimulation(self):
+        global RTBOX_STATUS_INT
+        try:
+            RTBOX_STATUS_INT = RTBOX_SERVER_XMLPRC.rtbox.querySimulation()
+        except Exception as error:
+            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+
+    def RTBox_loadDesignFile(self):
+        global RTBOX_SERVER_XMLPRC
+        global RTBOX_STATUS
+        try:
+            with open(DESIGN_PATH, "rb") as f:
+                RTBOX_STATUS = DeviceStatus.LOADING_DESIGN
+                try:
+                    RTBOX_SERVER_XMLPRC.rtbox.load(xmlrpc.client.Binary(f.read()))
+                    RTBOX_STATUS = DeviceStatus.DESIGN_LOADED
+                except Exception as error:
+                    QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+            f.closed
+        except Exception as error:
+            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+
+    def RTBox_startSimulation(self):
+        global RTBOX_SERVER_XMLPRC
+        try:
+            RTBOX_SERVER_XMLPRC.rtbox.start()
+        except Exception as error:
+            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+        self.RTBox_requestInputOutputBlocks()
+
+    def RTBox_stopSimulation(self):
+        global RTBOX_SERVER_XMLPRC
+        try:
+            RTBOX_SERVER_XMLPRC.rtbox.stop()
+        except Exception as error:
+            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+        self.finished.emit()
 
 # ===============================================================================
 # MAIN CLASS
@@ -438,7 +540,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.data_line_DC3 =  self.graphWidget.plot(self.x, self.Voltage_DC_T, pen = pen3)
 
     def update_PlotData(self):
-        
         self.data_line_AC1.setData(self.x, self.Voltage_AC_R)  # Update the data.
         self.data_line_AC2.setData(self.x, self.Voltage_AC_S)  # Update the data.
         self.data_line_AC3.setData(self.x, self.Voltage_AC_T)  # Update the data.
@@ -448,24 +549,29 @@ class Window(QMainWindow, Ui_MainWindow):
 
 
 # ===============================================================================
-# RTBOX SETTINGS DIALOG CLASS
+# SETTINGS DIALOG CLASS
 # ===============================================================================
 class settingsDialog(QDialog, Ui_Dialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("RT-Box Settings")
+
+        self.RTBox = RTBox()
+        self.thread_callRTBoxMethod = QThread()
+        self.RTBox.moveToThread(self.thread_callRTBoxMethod)
+
         self.timer_RefreshLabels = QTimer()
         self.connectSignalsSlots()
         self.timer_RefreshLabels.start(TOUT_settingsDialog_RefreshLabels_ms)
 
     def connectSignalsSlots(self):
-        self.pushButton_Find.clicked.connect(self.findRtBox)
-        self.pushButton_Connect.clicked.connect(self.connectRtBox)
+        self.pushButton_Find.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_find))
+        self.pushButton_Connect.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_connect))
+        self.pushButton_LoadDesign.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_loadDesignFile))
+        self.pushButton_Start.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_startSimulation))
+        self.pushButton_Stop.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_stopSimulation))
         self.pushButton_BrowseDesignFilePath.clicked.connect(self.browseDesignFile)
-        self.pushButton_LoadDesign.clicked.connect(self.loadDesignFile)
-        self.pushButton_Start.clicked.connect(self.startSimulation)
-        self.pushButton_Stop.clicked.connect(self.stopSimulation)
         self.timer_RefreshLabels.timeout.connect(self.refreshLabels)
 
     def refreshLabels(self):
@@ -529,98 +635,47 @@ class settingsDialog(QDialog, Ui_Dialog):
         DESIGN_PATH = fname[0]
         self.lineEdit_DesignFilePath.setText(DESIGN_PATH)
 
-    def findRtBox(self):
-        global HOST_IPV4
-        global HOST_ADDRESS
-        global RTBOX_IPFOUND
-        global dispList_Ipv4
-        try:
-            HOST_IPV4 = socket.gethostbyname(HOST_NAME)
-            RTBOX_IPFOUND = ConnectionStatus.CONNECTED
-        except gaierror:
-            HOST_IPV4 = "000.000.000.000"
-            RTBOX_IPFOUND = ConnectionStatus.NOT_CONNECTED
-        HOST_ADDRESS = "http://" + HOST_IPV4 + ":9998/RPC2"
-        dispList_Ipv4[1] = HOST_IPV4
-
-    def connectRtBox(self):
-        global RTBOX_SERVER_XMLPRC
-        global INPUTBLOCKS
-        global OUTPUTBLOCKS
-        global RTBOX_CONNECTED
-        global RTBOX_STATUS_INT
-        try:
-            RTBOX_SERVER_XMLPRC = xmlrpc.client.Server(HOST_ADDRESS)
-            RTBOX_CONNECTED = ConnectionStatus.CONNECTED
-            self.requestInputOutputBlocks()
-            self.querySimulation()
-        except Exception as error:
-            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-            RTBOX_CONNECTED = ConnectionStatus.NOT_CONNECTED
-            INPUTBLOCKS = [0]
-            OUTPUTBLOCKS = [0]
-
-    def requestInputOutputBlocks(self):
-        global INPUTBLOCKS
-        global OUTPUTBLOCKS
-        global RTBOX_CONNECTED
-        try:
-            INPUTBLOCKS = RTBOX_SERVER_XMLPRC.rtbox.getProgrammableValueBlocks()
-            RTBOX_CONNECTED = ConnectionStatus.CONNECTED
-        except Exception as error:
-            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-            RTBOX_CONNECTED = ConnectionStatus.NOT_CONNECTED
-            INPUTBLOCKS = [0]
-        try:
-            OUTPUTBLOCKS = RTBOX_SERVER_XMLPRC.rtbox.getDataCaptureBlocks()
-            RTBOX_CONNECTED = ConnectionStatus.CONNECTED
-        except Exception as error:
-            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-            RTBOX_CONNECTED = ConnectionStatus.NOT_CONNECTED
-            OUTPUTBLOCKS = [0]
-
-    def querySimulation(self):
-        global RTBOX_STATUS_INT
-        try:
-            RTBOX_STATUS_INT = RTBOX_SERVER_XMLPRC.rtbox.querySimulation()
-        except Exception as error:
-            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-
-    def loadDesignFile(self):
-        global RTBOX_SERVER_XMLPRC
-        global RTBOX_STATUS
-        try:
-            with open(DESIGN_PATH, "rb") as f:
-                RTBOX_STATUS = DeviceStatus.LOADING_DESIGN
-                try:
-                    RTBOX_SERVER_XMLPRC.rtbox.load(xmlrpc.client.Binary(f.read()))
-                    RTBOX_STATUS = DeviceStatus.DESIGN_LOADED
-                except Exception as error:
-                    QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-            f.closed
-        except Exception as error:
-            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-
-    def startSimulation(self):
-        global RTBOX_SERVER_XMLPRC
-        try:
-            RTBOX_SERVER_XMLPRC.rtbox.start()
-        except Exception as error:
-            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-        self.requestInputOutputBlocks()
-
-    def stopSimulation(self):
-        global RTBOX_SERVER_XMLPRC
-        try:
-            RTBOX_SERVER_XMLPRC.rtbox.stop()
-        except Exception as error:
-            QMessageBox.about(self, type(error).__name__, traceback.format_exc())
+    def callRTBoxMethod(self, method):
+        self.thread_callRTBoxMethod.started.connect(method)
+        self.RTBox.finished.connect(self.thread_callRTBoxMethod.quit)
+        #self.RTBox.finished.connect(self.RTBox.deleteLater)
+        #self.thread_callRTBoxMethod.finished.connect(self.thread_callRTBoxMethod.deleteLater)
+        self.thread_callRTBoxMethod.start()
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        self.thread_callRTBoxMethod.finished.connect(
+            lambda: QApplication.restoreOverrideCursor())
+        
+        match method:
+            case self.RTBox.RTBox_find:
+                self.pushButton_Find.setEnabled(0)
+                self.thread_callRTBoxMethod.finished.connect(
+                lambda: self.pushButton_Find.setEnabled(1))
+            case self.RTBox.RTBox_connect:
+                self.pushButton_Connect.setEnabled(0)
+                self.thread_callRTBoxMethod.finished.connect(
+                lambda: self.pushButton_Connect.setEnabled(1))
+            case self.RTBox.RTBox_loadDesignFile:
+                self.pushButton_LoadDesign.setEnabled(0)
+                self.thread_callRTBoxMethod.finished.connect(
+                lambda: self.pushButton_LoadDesign.setEnabled(1))
+            case self.RTBox.RTBox_startSimulation:
+                self.pushButton_Start.setEnabled(0)
+                self.thread_callRTBoxMethod.finished.connect(
+                lambda: self.pushButton_Start.setEnabled(1))
+            case self.RTBox.RTBox_stopSimulation:
+                self.pushButton_Stop.setEnabled(0)
+                self.thread_callRTBoxMethod.finished.connect(
+                lambda: self.pushButton_Stop.setEnabled(1))
+            case _:
+                pass
+            
 
 # ===============================================================================
 # MAIN FUNCTION
 # ===============================================================================
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    rtbox = RTBox()
     win = Window()
     win.show()
     sys.exit(app.exec())

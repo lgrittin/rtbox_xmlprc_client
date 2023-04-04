@@ -114,6 +114,7 @@ class Ui_Dialog(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.pushButton_Find = QPushButton(self.layoutWidget)
         self.pushButton_Find.setObjectName(u"pushButton_Find")
+        self.pushButton_Find.setCheckable(False)
 
         self.gridLayout_2.addWidget(self.pushButton_Find, 0, 0, 1, 1)
 

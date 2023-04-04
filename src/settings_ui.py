@@ -72,6 +72,7 @@ class Ui_Dialog(object):
         self.gridLayout_2 = QtWidgets.QGridLayout()
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.pushButton_Find = QtWidgets.QPushButton(self.layoutWidget)
+        self.pushButton_Find.setCheckable(False)
         self.pushButton_Find.setObjectName("pushButton_Find")
         self.gridLayout_2.addWidget(self.pushButton_Find, 0, 0, 1, 1)
         self.pushButton_Connect = QtWidgets.QPushButton(self.layoutWidget)
