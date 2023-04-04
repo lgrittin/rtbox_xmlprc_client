@@ -229,7 +229,7 @@ class RTBox(QObject):
         global UnbalVoltage_DC_Phase
         global UnbalVoltage_DC_Ena
         try:
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input', [V_AC_Ampl, V_AC_Ena, V_AC_RampTime])
+            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input', [V_AC_Ampl, V_AC_Ena, V_AC_RampTime, V_AC_Freq])
             self.write_progress.emit(1)
             RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input1', [WhiteNoise_AC_Ampl, WhiteNoise_AC_Ena])
             self.write_progress.emit(2)
@@ -305,6 +305,7 @@ class Window(QMainWindow, Ui_MainWindow):
         ## Specific Implementation
         # DoubleSpinBox
         self.doubleSpinBox_vAmp.valueChanged.connect(self.doubleSpinBox_vAmp_valueChanged)
+        self.doubleSpinBox_vFreq.valueChanged.connect(self.doubleSpinBox_vFreq_valueChanged)
         self.doubleSpinBox_voltageRampTime.valueChanged.connect(self.doubleSpinBox_voltageRampTime_valueChanged)
         self.doubleSpinBox_wnAmp.valueChanged.connect(self.doubleSpinBox_wnAmp_valueChanged)
         self.doubleSpinBox_snAmp.valueChanged.connect(self.doubleSpinBox_snAmp_valueChanged)
@@ -432,6 +433,10 @@ class Window(QMainWindow, Ui_MainWindow):
     def doubleSpinBox_vAmp_valueChanged(self):
         global V_AC_Ampl
         V_AC_Ampl = self.doubleSpinBox_vAmp.value()
+
+    def doubleSpinBox_vFreq_valueChanged(self):
+        global V_AC_Freq
+        V_AC_Freq = self.doubleSpinBox_vFreq.value()
 
     def doubleSpinBox_voltageRampTime_valueChanged(self):
         global V_AC_RampTime

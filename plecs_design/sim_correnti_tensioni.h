@@ -2,7 +2,7 @@
  * Header file for: sim_correnti_tensioni
  * Generated with : PLECS 4.7.1
  *                  PLECS RT Box 1 2.3.1
- * Generated on   : 30 Mar 2023 11:44:47
+ * Generated on   : 4 Apr 2023 16:17:10
  */
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
 #define PLECS_HEADER_sim_correnti_tensioni_h_
@@ -55,6 +55,15 @@ typedef struct
    bool Comparator;                 /* sim_correnti_tensioni/Comparator */
    bool Monoflop;                   /* sim_correnti_tensioni/Monoflop */
    double C_Script_1;               /* sim_correnti_tensioni/White Noise/C-Script */
+   bool MultiportSignalSwitch_bool; /* sim_correnti_tensioni/Multiport Signal Switch */
+   int32_t MultiportSignalSwitch_int32_t; /* sim_correnti_tensioni/Multiport Signal Switch */
+   double MultiportSignalSwitch_double; /* sim_correnti_tensioni/Multiport Signal Switch */
+   bool MultiportSignalSwitch1_bool; /* sim_correnti_tensioni/Multiport Signal Switch1 */
+   int32_t MultiportSignalSwitch1_int32_t; /* sim_correnti_tensioni/Multiport Signal Switch1 */
+   double MultiportSignalSwitch1_double; /* sim_correnti_tensioni/Multiport Signal Switch1 */
+   bool MultiportSignalSwitch2_bool; /* sim_correnti_tensioni/Multiport Signal Switch2 */
+   int32_t MultiportSignalSwitch2_int32_t; /* sim_correnti_tensioni/Multiport Signal Switch2 */
+   double MultiportSignalSwitch2_double; /* sim_correnti_tensioni/Multiport Signal Switch2 */
    double PulseGenerator;           /* sim_correnti_tensioni/Pulse Generator */
    double InputDC3[4];              /* sim_correnti_tensioni/InputDC3 */
    double Product14;                /* sim_correnti_tensioni/Product14 */
@@ -78,7 +87,8 @@ typedef struct
    double Integrator3;              /* sim_correnti_tensioni/Integrator3 */
    double Product4;                 /* sim_correnti_tensioni/Product4 */
    double Product1;                 /* sim_correnti_tensioni/Product1 */
-   double Input[4];                 /* sim_correnti_tensioni/Input */
+   double Input[5];                 /* sim_correnti_tensioni/Input */
+   bool CompareToConstant6;         /* sim_correnti_tensioni/Compare to Constant6 */
    double SineWave;                 /* sim_correnti_tensioni/Sine Wave */
    bool EdgeDetection5;             /* sim_correnti_tensioni/Edge Detection5 */
    bool EdgeDetection4;             /* sim_correnti_tensioni/Edge Detection4 */

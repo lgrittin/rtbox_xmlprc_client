@@ -24,9 +24,9 @@ Plecs {
   AlgebraicLoopWithStateMachineMsg "3"
   AssertionAction "1"
   InitializationCommands "f_line = 50\t\t\t\t\t\t\t\t% Hz\nT_line = 1/f_line\t"
-"\t\t\t\t\t% s\nTdisc = 10e-6;\t\t\t\t\t\t\t% Model discretization step (s)\nn"
-"_samples = round(T_line/Tdisc);\t% Estimated number of samples needed to reco"
-"rd response"
+"\t\t\t\t\t% s\nTdisc = 10*10e-6;\t\t\t\t\t\t\t% Model discretization step (s)"
+"\nn_samples = round(T_line/Tdisc/4);\t% Estimated number of samples needed to"
+" record response"
   InitialState  "1"
   SystemState   ""
   TaskingMode   "1"
@@ -51,29 +51,27 @@ Plecs {
 "AAQAFsAMwAwACwAIAAzADEAXQAAABQAYwBhAG4AQQBFAG4AYQBiAGwAZQAAAAIAMAAAABAAYwBhAG"
 "4AQQBCAGEAdQBkAAAADAA1ADAAMAAwADAAMAAAABoAVABBAFIARwBFAFQAXwBEAEUAVgBJAEMARf/"
 "///8AAAAaAEUAWABUAEUAUgBOAEEATABfAE0ATwBEAEUAAAACADEAAAAcAFAATABFAEMAUwAgAFIA"
-"VAAgAEIAbwB4ACAAMQAAACEAAAAgAHgAYwBwAFMAbABhAHYAZQBJAGQAZQBuAHQAaQB0AHkAAAACA"
+"VAAgAEIAbwB4ACAAMQAAACAAAAAgAHgAYwBwAFMAbABhAHYAZQBJAGQAZQBuAHQAaQB0AHkAAAACA"
 "DEAAAAQAHgAYwBwAFMAbABhAHYAZQAAAAAAAAAeAHMAeQBuAGMAaAByAG8AbgBpAHoAZQBUAGkAbQ"
 "BlAAAAAgAwAAAAGABzAHQAYQByAHQAdQBwAFMARgBQAF8ASAAAAAIAMAAAABgAcwB0AGEAcgB0AHU"
 "AcABTAEYAUABfAEcAAAACADAAAAAYAHMAdABhAHIAdAB1AHAAUwBGAFAAXwBGAAAAAgAwAAAAGABz"
 "AHQAYQByAHQAdQBwAFMARgBQAF8ARQAAAAIAMAAAABgAcwB0AGEAcgB0AHUAcABTAEYAUABfAEQAA"
 "AACADAAAAAYAHMAdABhAHIAdAB1AHAAUwBGAFAAXwBDAAAAAgAwAAAAGABzAHQAYQByAHQAdQBwAF"
-"MARgBQAF8AQgAAAAIAMAAAABgAcwB0AGEAcgB0AHUAcABTAEYAUABfAEEAAAACADAAAAAcAHMAaQB"
-"tAHUAbABhAHQAaQBvAG4ATQBvAGQAZQAAAAIAMQAAABoAcwBhAG0AcABsAGkAbgBnAEQAZQBsAGEA"
-"eQAAAAIAMAAAABgAbQBhAHgAXwBvAHYAZQByAHIAdQBuAHMAAAACADUAAAASAG0AYQBzAHQAZQByA"
-"FMARgBQAAAAAgAxAAAAEgBlAG4AYQBiAGwAZQBYAEMAUAAAAAIAMAAAACQAZABpAGcAaQB0AGEAbA"
-"BPAHUAdABwAHUAdABMAGUAdgBlAGwAAAACADEAAAAQAGMAYQBuADIAVAB4AFIAeAAAAAIAMQAAAB4"
-"AYwBhAG4AMgBUAGUAcgBtAGkAbgBhAHQAaQBvAG4AAAACADIAAAAiAGMAYQBuADIAUgBlAGMAbwB2"
-"AGUAcgB5AEQAZQBsAGEAeQAAAAIAMAAAABQAYwBhAG4AMgBFAG4AYQBiAGwAZQAAAAIAMAAAABAAY"
-"wBhAG4AMgBCAGEAdQBkAAAADAA1ADAAMAAwADAAMAAAABAAYwBhAG4AMQBUAHgAUgB4AAAAAgAxAA"
-"AAHgBjAGEAbgAxAFQAZQByAG0AaQBuAGEAdABpAG8AbgAAAAIAMgAAACIAYwBhAG4AMQBSAGUAYwB"
-"vAHYAZQByAHkARABlAGwAYQB5AAAAAgAwAAAAFABjAGEAbgAxAEUAbgBhAGIAbABlAAAAAgAwAAAA"
-"EABjAGEAbgAxAEIAYQB1AGQAAAAMADUAMAAwADAAMAAwAAAAHABhAG4AYQBsAG8AZwBTAGEAbQBwA"
-"GwAaQBuAGcAAAACADEAAAAiAGEAbgBhAGwAbwBnAE8AdQB0AHAAdQB0AFIAYQBuAGcAZQAAAAIANA"
-"AAACAAYQBuAGEAbABvAGcASQBuAHAAdQB0AFIAYQBuAGcAZQAAAAIAMQAAAEoAVQBTAEUAXwBEAEE"
-"AVABBAF8AVABZAFAARQBTAF8ARgBPAFIAXwBUAFUATgBBAEIATABFAF8AUABBAFIAQQBNAEUAVABF"
-"AFIAUwAAAAIAMQAAABoAVABBAFIARwBFAFQAXwBEAEUAVgBJAEMARQAAADAAcgB0AGIAbwB4AC0AM"
-"gAwAGIAMABmADcAMAA0ADcANgA4ADAALgBsAG8AYwBhAGwAAAAaAEUAWABUAEUAUgBOAEEATABfAE"
-"0ATwBEAEUAAAACADE="
+"MARgBQAF8AQgAAAAIAMAAAABgAcwB0AGEAcgB0AHUAcABTAEYAUABfAEEAAAACADAAAAAaAHMAYQB"
+"tAHAAbABpAG4AZwBEAGUAbABhAHkAAAACADAAAAAYAG0AYQB4AF8AbwB2AGUAcgByAHUAbgBzAAAA"
+"AgA1AAAAEgBtAGEAcwB0AGUAcgBTAEYAUAAAAAIAMQAAABIAZQBuAGEAYgBsAGUAWABDAFAAAAACA"
+"DAAAAAkAGQAaQBnAGkAdABhAGwATwB1AHQAcAB1AHQATABlAHYAZQBsAAAAAgAxAAAAEABjAGEAbg"
+"AyAFQAeABSAHgAAAACADEAAAAeAGMAYQBuADIAVABlAHIAbQBpAG4AYQB0AGkAbwBuAAAAAgAyAAA"
+"AIgBjAGEAbgAyAFIAZQBjAG8AdgBlAHIAeQBEAGUAbABhAHkAAAACADAAAAAUAGMAYQBuADIARQBu"
+"AGEAYgBsAGUAAAACADAAAAAQAGMAYQBuADIAQgBhAHUAZAAAAAwANQAwADAAMAAwADAAAAAQAGMAY"
+"QBuADEAVAB4AFIAeAAAAAIAMQAAAB4AYwBhAG4AMQBUAGUAcgBtAGkAbgBhAHQAaQBvAG4AAAACAD"
+"IAAAAiAGMAYQBuADEAUgBlAGMAbwB2AGUAcgB5AEQAZQBsAGEAeQAAAAIAMAAAABQAYwBhAG4AMQB"
+"FAG4AYQBiAGwAZQAAAAIAMAAAABAAYwBhAG4AMQBCAGEAdQBkAAAADAA1ADAAMAAwADAAMAAAABwA"
+"YQBuAGEAbABvAGcAUwBhAG0AcABsAGkAbgBnAAAAAgAxAAAAIgBhAG4AYQBsAG8AZwBPAHUAdABwA"
+"HUAdABSAGEAbgBnAGUAAAACADQAAAAgAGEAbgBhAGwAbwBnAEkAbgBwAHUAdABSAGEAbgBnAGUAAA"
+"ACADEAAABKAFUAUwBFAF8ARABBAFQAQQBfAFQAWQBQAEUAUwBfAEYATwBSAF8AVABVAE4AQQBCAEw"
+"ARQBfAFAAQQBSAEEATQBFAFQARQBSAFMAAAACADEAAAAaAFQAQQBSAEcARQBUAF8ARABFAFYASQBD"
+"AEUAAAAAAAAAGgBFAFgAVABFAFIATgBBAEwAXwBNAE8ARABFAAAAAgAx"
   ExtendedMatrixPrecision "1"
   MatrixSignificanceCheck "2"
   EnableStateSpaceSplitting "2"
@@ -118,8 +116,8 @@ Plecs {
     Index         "7"
   }
   Schematic {
-    Location      [1, 33; 1917, 1000]
-    ZoomFactor    0.873846
+    Location      [0, 23; 1920, 1001]
+    ZoomFactor    0.873847
     SliderPosition [0, 0]
     ShowBrowser   off
     BrowserWidth  100
@@ -128,19 +126,19 @@ Plecs {
       SrcComponent  "PLECSRTBoxLib/Value1"
       Name          "Input"
       Show          on
-      Position      [55, 285]
+      Position      [55, 290]
       Direction     up
       Flipped       on
       LabelPosition north
       Frame         [-25, -20; 25, 20]
       Parameter {
         Variable      "width"
-        Value         "3"
+        Value         "4"
         Show          off
       }
       Parameter {
         Variable      "default"
-        Value         "[1, 1, 1]"
+        Value         "[1, 1, 1, 1]"
         Show          on
       }
       Parameter {
@@ -686,7 +684,7 @@ Plecs {
       SrcComponent  "PLECSRTBoxLib/Value1"
       Name          "Input3"
       Show          on
-      Position      [55, 550]
+      Position      [55, 750]
       Direction     up
       Flipped       on
       LabelPosition north
@@ -721,7 +719,7 @@ Plecs {
       Type          SignalDemux
       Name          "Demux3"
       Show          off
-      Position      [115, 555]
+      Position      [115, 755]
       Direction     right
       Flipped       on
       LabelPosition south
@@ -807,7 +805,7 @@ Plecs {
       Type          ConstantRelationalOperator
       Name          "Compare to\nConstant"
       Show          off
-      Position      [445, 555]
+      Position      [445, 755]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -827,7 +825,7 @@ Plecs {
       Type          ConstantRelationalOperator
       Name          "Compare to\nConstant1"
       Show          off
-      Position      [445, 590]
+      Position      [445, 790]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -847,7 +845,7 @@ Plecs {
       Type          ConstantRelationalOperator
       Name          "Compare to\nConstant2"
       Show          off
-      Position      [445, 625]
+      Position      [445, 825]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -867,7 +865,7 @@ Plecs {
       Type          Product
       Name          "Product5"
       Show          off
-      Position      [450, 520]
+      Position      [450, 720]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -891,7 +889,7 @@ Plecs {
       Type          Product
       Name          "Product6"
       Show          off
-      Position      [515, 550]
+      Position      [515, 750]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -915,7 +913,7 @@ Plecs {
       Type          Product
       Name          "Product7"
       Show          off
-      Position      [515, 585]
+      Position      [515, 785]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -939,7 +937,7 @@ Plecs {
       Type          Product
       Name          "Product8"
       Show          off
-      Position      [515, 620]
+      Position      [515, 820]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -962,8 +960,8 @@ Plecs {
     Component {
       Type          SineGenerator
       Name          "Sine Wave"
-      Show          on
-      Position      [455, 330]
+      Show          off
+      Position      [60, 500]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -996,8 +994,8 @@ Plecs {
     Component {
       Type          SineGenerator
       Name          "Sine Wave1"
-      Show          on
-      Position      [455, 395]
+      Show          off
+      Position      [60, 570]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -1030,8 +1028,8 @@ Plecs {
     Component {
       Type          SineGenerator
       Name          "Sine Wave2"
-      Show          on
-      Position      [455, 460]
+      Show          off
+      Position      [60, 640]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -1065,13 +1063,13 @@ Plecs {
       Type          SignalDemux
       Name          "Demux4"
       Show          off
-      Position      [105, 290]
+      Position      [105, 295]
       Direction     right
       Flipped       on
       LabelPosition south
       Parameter {
         Variable      "Width"
-        Value         "3"
+        Value         "4"
         Show          off
       }
     }
@@ -1790,7 +1788,7 @@ Plecs {
       SrcComponent  "PLECSRTBoxLib/Value1"
       Name          "InputDC3"
       Show          on
-      Position      [1175, 555]
+      Position      [1175, 750]
       Direction     up
       Flipped       on
       LabelPosition north
@@ -1825,7 +1823,7 @@ Plecs {
       Type          SignalDemux
       Name          "Demux7"
       Show          off
-      Position      [1235, 560]
+      Position      [1235, 755]
       Direction     right
       Flipped       on
       LabelPosition south
@@ -1911,7 +1909,7 @@ Plecs {
       Type          ConstantRelationalOperator
       Name          "Compare to\nConstant3"
       Show          off
-      Position      [1475, 560]
+      Position      [1475, 755]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -1931,7 +1929,7 @@ Plecs {
       Type          ConstantRelationalOperator
       Name          "Compare to\nConstant4"
       Show          off
-      Position      [1475, 595]
+      Position      [1475, 790]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -1951,7 +1949,7 @@ Plecs {
       Type          ConstantRelationalOperator
       Name          "Compare to\nConstant5"
       Show          off
-      Position      [1475, 630]
+      Position      [1475, 825]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -1971,7 +1969,7 @@ Plecs {
       Type          Product
       Name          "Product14"
       Show          off
-      Position      [1480, 525]
+      Position      [1480, 720]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -1995,7 +1993,7 @@ Plecs {
       Type          Product
       Name          "Product15"
       Show          off
-      Position      [1545, 555]
+      Position      [1545, 750]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -2019,7 +2017,7 @@ Plecs {
       Type          Product
       Name          "Product16"
       Show          off
-      Position      [1545, 590]
+      Position      [1545, 785]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -2043,7 +2041,7 @@ Plecs {
       Type          Product
       Name          "Product17"
       Show          off
-      Position      [1545, 625]
+      Position      [1545, 820]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -2629,7 +2627,7 @@ Plecs {
       Type          EdgeDetection
       Name          "Edge Detection4"
       Show          off
-      Position      [150, 385]
+      Position      [210, 375]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -2643,7 +2641,7 @@ Plecs {
       Type          EdgeDetection
       Name          "Edge Detection5"
       Show          off
-      Position      [150, 420]
+      Position      [210, 410]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -2658,7 +2656,7 @@ Plecs {
       SrcComponent  "Components/Control/Logical/SR Flip-flop"
       Name          "SR Flip-flop2"
       Show          off
-      Position      [210, 405]
+      Position      [270, 395]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -2734,50 +2732,6 @@ Plecs {
       }
     }
     Component {
-      Type          Integrator
-      Name          "Integrator7"
-      Show          on
-      Position      [1055, 485]
-      Direction     right
-      Flipped       off
-      LabelPosition south
-      Parameter {
-        Variable      "ExternalReset"
-        Value         "5"
-        Show          off
-      }
-      Parameter {
-        Variable      "InitialConditionSource"
-        Value         "1"
-        Show          off
-      }
-      Parameter {
-        Variable      "x0"
-        Value         "0"
-        Show          off
-      }
-      Parameter {
-        Variable      "ShowStatePort"
-        Value         "1"
-        Show          off
-      }
-      Parameter {
-        Variable      "EnableWrapping"
-        Value         "1"
-        Show          off
-      }
-      Parameter {
-        Variable      "UpperLimit"
-        Value         "1"
-        Show          off
-      }
-      Parameter {
-        Variable      "LowerLimit"
-        Value         "0"
-        Show          off
-      }
-    }
-    Component {
       Type          Product
       Name          "Product18"
       Show          off
@@ -2805,7 +2759,7 @@ Plecs {
       Type          Product
       Name          "Product19"
       Show          off
-      Position      [175, 330]
+      Position      [255, 315]
       Direction     up
       Flipped       off
       LabelPosition south
@@ -2822,6 +2776,143 @@ Plecs {
       Parameter {
         Variable      "DataType"
         Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          ConstantRelationalOperator
+      Name          "Compare to\nConstant6"
+      Show          off
+      Position      [135, 435]
+      Direction     down
+      Flipped       off
+      LabelPosition west
+      Frame         [-10, -20; 10, 20]
+      Parameter {
+        Variable      "Operator"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "Threshold"
+        Value         "0"
+        Show          off
+      }
+    }
+    Component {
+      Type          MultiportSignalSwitch
+      Name          "Multiport Signal Switch"
+      Show          off
+      Position      [180, 505]
+      Direction     up
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Width"
+        Value         "2"
+        Show          off
+      }
+      Parameter {
+        Variable      "Default"
+        Value         "1"
+        Show          off
+      }
+    }
+    Component {
+      Type          Constant
+      Name          "Constant"
+      Show          off
+      Position      [65, 530]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Frame         [-10, -10; 10, 10]
+      Parameter {
+        Variable      "Value"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "DataType"
+        Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          Constant
+      Name          "Constant1"
+      Show          off
+      Position      [65, 600]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Frame         [-10, -10; 10, 10]
+      Parameter {
+        Variable      "Value"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "DataType"
+        Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          Constant
+      Name          "Constant2"
+      Show          off
+      Position      [65, 670]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Frame         [-10, -10; 10, 10]
+      Parameter {
+        Variable      "Value"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "DataType"
+        Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          MultiportSignalSwitch
+      Name          "Multiport Signal Switch1"
+      Show          off
+      Position      [180, 575]
+      Direction     up
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Width"
+        Value         "2"
+        Show          off
+      }
+      Parameter {
+        Variable      "Default"
+        Value         "1"
+        Show          off
+      }
+    }
+    Component {
+      Type          MultiportSignalSwitch
+      Name          "Multiport Signal Switch2"
+      Show          off
+      Position      [180, 645]
+      Direction     up
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Width"
+        Value         "2"
+        Show          off
+      }
+      Parameter {
+        Variable      "Default"
+        Value         "1"
         Show          off
       }
     }
@@ -3018,19 +3109,19 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux3"
       SrcTerminal   3
-      Points        [275, 555]
+      Points        [275, 755]
       Branch {
         DstComponent  "Compare to\nConstant"
         DstTerminal   1
       }
       Branch {
-        Points        [275, 590]
+        Points        [275, 790]
         Branch {
           DstComponent  "Compare to\nConstant1"
           DstTerminal   1
         }
         Branch {
-          Points        [275, 625]
+          Points        [275, 825]
           DstComponent  "Compare to\nConstant2"
           DstTerminal   1
         }
@@ -3040,7 +3131,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux3"
       SrcTerminal   2
-      Points        [130, 545; 130, 515]
+      Points        [130, 745; 130, 715]
       DstComponent  "Product5"
       DstTerminal   2
     }
@@ -3048,7 +3139,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux3"
       SrcTerminal   4
-      Points        [140, 565; 140, 525]
+      Points        [140, 765; 140, 725]
       DstComponent  "Product5"
       DstTerminal   3
     }
@@ -3077,19 +3168,19 @@ Plecs {
       Type          Signal
       SrcComponent  "Product5"
       SrcTerminal   1
-      Points        [480, 520; 480, 545]
+      Points        [480, 720; 480, 745]
       Branch {
         DstComponent  "Product6"
         DstTerminal   2
       }
       Branch {
-        Points        [480, 580]
+        Points        [480, 780]
         Branch {
           DstComponent  "Product7"
           DstTerminal   2
         }
         Branch {
-          Points        [480, 615]
+          Points        [480, 815]
           DstComponent  "Product8"
           DstTerminal   2
         }
@@ -3099,7 +3190,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Product6"
       SrcTerminal   1
-      Points        [695, 550; 695, 305]
+      Points        [695, 750; 695, 305]
       DstComponent  "Sum7"
       DstTerminal   2
     }
@@ -3107,7 +3198,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Product7"
       SrcTerminal   1
-      Points        [700, 585; 700, 370]
+      Points        [700, 785; 700, 370]
       DstComponent  "Sum8"
       DstTerminal   2
     }
@@ -3115,30 +3206,9 @@ Plecs {
       Type          Signal
       SrcComponent  "Product8"
       SrcTerminal   1
-      Points        [705, 620; 705, 435]
+      Points        [705, 820; 705, 435]
       DstComponent  "Sum9"
       DstTerminal   2
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Sine Wave"
-      SrcTerminal   1
-      DstComponent  "Product"
-      DstTerminal   3
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Sine Wave1"
-      SrcTerminal   1
-      DstComponent  "Product2"
-      DstTerminal   3
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Sine Wave2"
-      SrcTerminal   1
-      DstComponent  "Product3"
-      DstTerminal   3
     }
     Connection {
       Type          Signal
@@ -3147,28 +3217,6 @@ Plecs {
       Points        [565, 330; 565, 325]
       DstComponent  "Sum1"
       DstTerminal   3
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Demux4"
-      SrcTerminal   2
-      Points        [500, 280; 500, 320]
-      Branch {
-        DstComponent  "Product"
-        DstTerminal   2
-      }
-      Branch {
-        Points        [500, 385]
-        Branch {
-          DstComponent  "Product2"
-          DstTerminal   2
-        }
-        Branch {
-          Points        [500, 450]
-          DstComponent  "Product3"
-          DstTerminal   2
-        }
-      }
     }
     Connection {
       Type          Signal
@@ -3427,13 +3475,13 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux7"
       SrcTerminal   3
-      Points        [1440, 560]
+      Points        [1440, 755]
       Branch {
         DstComponent  "Compare to\nConstant3"
         DstTerminal   1
       }
       Branch {
-        Points        [1440, 595]
+        Points        [1440, 790]
         Branch {
           DstComponent  "Compare to\nConstant4"
           DstTerminal   1
@@ -3448,7 +3496,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux7"
       SrcTerminal   2
-      Points        [1250, 550; 1250, 520]
+      Points        [1250, 745; 1250, 715]
       DstComponent  "Product14"
       DstTerminal   2
     }
@@ -3456,7 +3504,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux7"
       SrcTerminal   4
-      Points        [1260, 570; 1260, 530]
+      Points        [1260, 765; 1260, 725]
       DstComponent  "Product14"
       DstTerminal   3
     }
@@ -3485,19 +3533,19 @@ Plecs {
       Type          Signal
       SrcComponent  "Product14"
       SrcTerminal   1
-      Points        [1510, 525; 1510, 550]
+      Points        [1510, 720; 1510, 745]
       Branch {
         DstComponent  "Product15"
         DstTerminal   2
       }
       Branch {
-        Points        [1510, 585]
+        Points        [1510, 780]
         Branch {
           DstComponent  "Product16"
           DstTerminal   2
         }
         Branch {
-          Points        [1510, 620]
+          Points        [1510, 815]
           DstComponent  "Product17"
           DstTerminal   2
         }
@@ -3507,7 +3555,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Product15"
       SrcTerminal   1
-      Points        [1725, 555; 1725, 310]
+      Points        [1725, 750; 1725, 310]
       DstComponent  "Sum16"
       DstTerminal   2
     }
@@ -3515,7 +3563,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Product16"
       SrcTerminal   1
-      Points        [1730, 590; 1730, 375]
+      Points        [1730, 785; 1730, 375]
       DstComponent  "Sum17"
       DstTerminal   2
     }
@@ -3523,7 +3571,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Product17"
       SrcTerminal   1
-      Points        [1735, 625; 1735, 440]
+      Points        [1735, 820; 1735, 440]
       DstComponent  "Sum18"
       DstTerminal   2
     }
@@ -3704,7 +3752,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Edge Detection4"
       SrcTerminal   2
-      Points        [175, 385]
+      Points        [235, 375]
       DstComponent  "SR Flip-flop2"
       DstTerminal   2
     }
@@ -3712,7 +3760,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Edge Detection5"
       SrcTerminal   2
-      Points        [175, 420]
+      Points        [235, 410]
       DstComponent  "SR Flip-flop2"
       DstTerminal   1
     }
@@ -3720,7 +3768,7 @@ Plecs {
       Type          Signal
       SrcComponent  "SR Flip-flop2"
       SrcTerminal   4
-      Points        [295, 415; 295, 390]
+      Points        [295, 390]
       DstComponent  "Integrator6"
       DstTerminal   3
     }
@@ -3820,7 +3868,7 @@ Plecs {
       Type          Signal
       SrcComponent  "Product19"
       SrcTerminal   1
-      Points        [265, 330; 265, 380]
+      Points        [305, 315; 305, 380]
       DstComponent  "Integrator6"
       DstTerminal   1
     }
@@ -3828,14 +3876,15 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux4"
       SrcTerminal   3
-      Points        [120, 290; 120, 325]
+      Points        [170, 290; 170, 310]
       Branch {
-        Points        [120, 385]
+        Points        [170, 375]
         Branch {
           DstComponent  "Edge Detection4"
           DstTerminal   1
         }
         Branch {
+          Points        [170, 410]
           DstComponent  "Edge Detection5"
           DstTerminal   1
         }
@@ -3849,10 +3898,132 @@ Plecs {
       Type          Signal
       SrcComponent  "Demux4"
       SrcTerminal   4
-      Points        [130, 300; 130, 335]
+      Points        [195, 300; 195, 320]
       DstComponent  "Product19"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Demux4"
+      SrcTerminal   2
+      Points        [500, 280; 500, 320]
+      Branch {
+        DstComponent  "Product"
+        DstTerminal   2
+      }
+      Branch {
+        Points        [500, 385]
+        Branch {
+          DstComponent  "Product2"
+          DstTerminal   2
+        }
+        Branch {
+          Points        [500, 450]
+          DstComponent  "Product3"
+          DstTerminal   2
+        }
+      }
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Demux4"
+      SrcTerminal   5
+      Points        [135, 310]
+      DstComponent  "Compare to\nConstant6"
+      DstTerminal   1
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Sine Wave"
+      SrcTerminal   1
+      DstComponent  "Multiport Signal Switch"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Sine Wave1"
+      SrcTerminal   1
+      DstComponent  "Multiport Signal Switch1"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Sine Wave2"
+      SrcTerminal   1
+      DstComponent  "Multiport Signal Switch2"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Compare to\nConstant6"
+      SrcTerminal   2
+      Points        [135, 470]
+      Branch {
+        Points        [180, 470]
+        DstComponent  "Multiport Signal Switch"
+        DstTerminal   2
+      }
+      Branch {
+        Points        [135, 545]
+        Branch {
+          DstComponent  "Multiport Signal Switch1"
+          DstTerminal   2
+        }
+        Branch {
+          Points        [135, 615]
+          DstComponent  "Multiport Signal Switch2"
+          DstTerminal   2
+        }
+      }
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Constant"
+      SrcTerminal   1
+      Points        [115, 530; 115, 510]
+      DstComponent  "Multiport Signal Switch"
+      DstTerminal   4
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Constant1"
+      SrcTerminal   1
+      Points        [115, 600; 115, 580]
+      DstComponent  "Multiport Signal Switch1"
+      DstTerminal   4
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Constant2"
+      SrcTerminal   1
+      Points        [115, 670; 115, 650]
+      DstComponent  "Multiport Signal Switch2"
+      DstTerminal   4
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Multiport Signal Switch"
+      SrcTerminal   1
+      Points        [400, 505; 400, 330]
+      DstComponent  "Product"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Multiport Signal Switch1"
+      SrcTerminal   1
+      Points        [405, 575; 405, 395]
+      DstComponent  "Product2"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Multiport Signal Switch2"
+      SrcTerminal   1
+      Points        [410, 645; 410, 460]
+      DstComponent  "Product3"
       DstTerminal   3
     }
   }
 }
-DemoSignature "12uXnDhrqxDf/AnthaXTHvtJFFAFcE9j/U+CE19cmbA="
+DemoSignature "lG4jPSTjX2eagWDG1g921qRwH5pxeG6kJtUbiSU3XW8="
