@@ -64,12 +64,12 @@ dispList_Ipv4 = ["No IP", HOST_IPV4]
 TOUT_settingsDialog_RefreshLabels_ms = 500
 TOUT_mainWindow_RefreshStatusBar_ms = 500
 TOUT_mainWindow_RefreshWrite_ms = 1000
-TOUT_mainWindow_RefreshRead_ms = 1100
+TOUT_mainWindow_RefreshRead_ms = 1000
 
 ## Specific Implementation
 DESIGN_TDISC_US = 10
 DESIGN_FLINE_HZ = 50
-DATA_DIM = int(1/(DESIGN_FLINE_HZ*DESIGN_TDISC_US*0.000001))
+DATA_DIM = int(1/(DESIGN_FLINE_HZ*DESIGN_TDISC_US*0.000001)/4)
 V_AC_Ampl = 0.0
 V_AC_Freq = 50
 V_AC_Ena = -1
@@ -96,6 +96,8 @@ SwitchingNoise_DC_Ena = 0
 UnbalVoltage_DC_Ampl = 0.0
 UnbalVoltage_DC_Phase = 0
 UnbalVoltage_DC_Ena = 0
+data_Capture1 = []
+data_Capture2 = []
 
 
 # ===============================================================================
@@ -103,12 +105,6 @@ UnbalVoltage_DC_Ena = 0
 # ===============================================================================
 class RTBox(QObject):
     finished = pyqtSignal()
-    write_progress = pyqtSignal(int)
-    write_finished = pyqtSignal(int)
-#    DESIGN_NAME = "0"
-#    
-#    def __init__(self):
-#        self.DESIGN_NAME = "sim_correnti_tensioni"
 
     def RTBox_find(self):
         global HOST_IPV4
@@ -199,9 +195,13 @@ class RTBox(QObject):
             QMessageBox.about(self, type(error).__name__, traceback.format_exc())
         self.finished.emit()
 
-    # Specific Implementation
+
+class RTBox_workerWrite(QObject):
+    progress = pyqtSignal(int)
+    finished = pyqtSignal()
 
     def RTBox_setProgrammableValue(self):
+        global RTBOX_SERVER_XMLPRC
         global V_AC_Ampl
         global V_AC_Freq
         global V_AC_Ena
@@ -228,26 +228,72 @@ class RTBox(QObject):
         global UnbalVoltage_DC_Ampl
         global UnbalVoltage_DC_Phase
         global UnbalVoltage_DC_Ena
-        try:
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input', [V_AC_Ampl, V_AC_Ena, V_AC_RampTime, V_AC_Freq])
-            self.write_progress.emit(1)
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input1', [WhiteNoise_AC_Ampl, WhiteNoise_AC_Ena])
-            self.write_progress.emit(2)
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input2', [SwitchingNoise_AC_Ampl, SwitchingNoise_AC_Freq, SwitchingNoise_AC_Ena])
-            self.write_progress.emit(3)
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input3', [UnbalVoltage_AC_Ampl, UnbalVoltage_AC_Phase, UnbalVoltage_AC_Ena])
-            self.write_progress.emit(4)
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC', [V_DC_Ampl1, V_DC_Ampl2, V_DC_Ampl3, V_DC_Ena, V_DC_RampTime])
-            self.write_progress.emit(5)
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC1', [WhiteNoise_DC_Ampl, WhiteNoise_DC_Ena])
-            self.write_progress.emit(6)
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC2', [SwitchingNoise_DC_Ampl, SwitchingNoise_DC_Freq, SwitchingNoise_DC_Ena])
-            self.write_progress.emit(7)
-            RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC3', [UnbalVoltage_DC_Ampl, UnbalVoltage_DC_Phase, UnbalVoltage_DC_Ena])
-            self.write_progress.emit(8)
-            self.write_finished.emit()
-        except Exception:
+
+        if ((RTBOX_STATUS == DeviceStatus.RUNNING) & (RTBOX_CONNECTED == ConnectionStatus.CONNECTED)):
+            try:
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input', [V_AC_Ampl, V_AC_Ena, V_AC_RampTime, V_AC_Freq])
+                self.progress.emit(1)
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input1', [WhiteNoise_AC_Ampl, WhiteNoise_AC_Ena])
+                self.progress.emit(2)
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input2', [SwitchingNoise_AC_Ampl, SwitchingNoise_AC_Freq, SwitchingNoise_AC_Ena])
+                self.progress.emit(3)
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('Input3', [UnbalVoltage_AC_Ampl, UnbalVoltage_AC_Phase, UnbalVoltage_AC_Ena])
+                self.progress.emit(4)
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC', [V_DC_Ampl1, V_DC_Ampl2, V_DC_Ampl3, V_DC_Ena, V_DC_RampTime])
+                self.progress.emit(5)
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC1', [WhiteNoise_DC_Ampl, WhiteNoise_DC_Ena])
+                self.progress.emit(6)
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC2', [SwitchingNoise_DC_Ampl, SwitchingNoise_DC_Freq, SwitchingNoise_DC_Ena])
+                self.progress.emit(7)
+                RTBOX_SERVER_XMLPRC.rtbox.setProgrammableValue('InputDC3', [UnbalVoltage_DC_Ampl, UnbalVoltage_DC_Phase, UnbalVoltage_DC_Ena])
+                self.progress.emit(8)
+            except Exception:
+                pass
+        else:
             pass
+        self.finished.emit()
+
+class RTBox_workerRead(QObject):
+    progress = pyqtSignal(int)
+    finished = pyqtSignal()
+
+    def RTBox_getCaptureData(self):
+        global RTBOX_SERVER_XMLPRC
+        global RTBOX_CONNECTED
+        global RTBOX_STATUS
+        global data_Capture1
+        global data_Capture2
+
+        # TO BE REMOVED !!! #########################################
+        data_Capture1 = []
+        data_Capture1.insert(0, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        data_Capture1.insert(1, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        data_Capture1.insert(2, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        data_Capture2 = []
+        data_Capture2.insert(0, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        data_Capture2.insert(1, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        data_Capture2.insert(2, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        # TO BE REMOVED !!! #########################################
+
+        if ((RTBOX_STATUS == DeviceStatus.RUNNING) & (RTBOX_CONNECTED == ConnectionStatus.CONNECTED)):
+            try:
+                if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture1') != 0):
+                    try:
+                        data_Capture1 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture1').values())
+                        self.progress.emit(1)
+                    except Exception:
+                        pass
+                if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture2') != 0):
+                    try:
+                        data_Capture2 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture2').values())
+                        self.progress.emit(2)
+                    except Exception:
+                        pass
+            except Exception:
+                pass
+        else:
+            pass
+        self.finished.emit()
 
 # ===============================================================================
 # MAIN CLASS
@@ -258,6 +304,8 @@ class Window(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
         self.setupUi(self)
         #self.setFixedSize(900, 300)
+        self.numcallWrite = 0
+        self.numcallRead = 0
         self.setWindowTitle("RT-Box GUI")
         self.setFixedSize(self.sizeHint().width(), self.sizeHint().height())
         self.groupBox_Plot_height = 500
@@ -274,17 +322,13 @@ class Window(QMainWindow, Ui_MainWindow):
         self.timer_RefreshWrite = QTimer()
         self.timer_RefreshRead = QTimer()
         ## Class RTBox and managing threads # -----------------------------------
-        self.RTBox = RTBox()
-        self.thread_writeToRTBox = QThread()
-        self.RTBox.moveToThread(self.thread_writeToRTBox)
+
         ## Connect Slots # ------------------------------------------------------
         self.connectSignalsSlots()
         ## Start Timer # --------------------------------------------------------
         self.timer_RefreshStatusBar.start(TOUT_mainWindow_RefreshStatusBar_ms)
         self.timer_RefreshWrite.start(TOUT_mainWindow_RefreshWrite_ms)
         ## Specific Implementation # --------------------------------------------
-        self.data_Capture1 = []
-        self.data_Capture2 = []
         self.PlotData_Ena = 0
         self.Voltage_AC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
         self.Voltage_AC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
@@ -375,58 +419,46 @@ class Window(QMainWindow, Ui_MainWindow):
             self.mainHeightMax = self.sizeHint().height()
             self.setFixedSize(self.sizeHint().width(), self.mainHeightMin)
 
-    ## Specific Implementation
-
     def refreshWrite(self):
-        self.thread_writeToRTBox.started.connect(self.RTBox.RTBox_setProgrammableValue)
-        self.RTBox.write_finished.connect(self.thread_writeToRTBox.quit)
-        self.RTBox.write_progress.connect(self.reportProgressWrite)
+        self.RTBox_workerWrite = RTBox_workerWrite()
+        self.thread_writeToRTBox = QThread()
+        self.RTBox_workerWrite.moveToThread(self.thread_writeToRTBox)
+        self.thread_writeToRTBox.started.connect(self.RTBox_workerWrite.RTBox_setProgrammableValue)
+        self.RTBox_workerWrite.finished.connect(self.thread_writeToRTBox.quit)
+        self.RTBox_workerWrite.progress.connect(self.reportProgressWrite)
+        self.RTBox_workerWrite.finished.connect(self.RTBox_workerWrite.deleteLater)
+        self.thread_writeToRTBox.finished.connect(self.thread_writeToRTBox.deleteLater)
+        self.thread_writeToRTBox.finished.connect(self.reportWriteFinished)
         self.thread_writeToRTBox.start()
 
     def reportProgressWrite(self, n):
-        print(f"Step {n} Completed")
+        print("Write " + n + " Completed")
+
+    def reportWriteFinished(self):
+        self.time = time.time()
+        self.numcallWrite = self.numcallWrite + 1
+        print("MainWindows Write. Call " + str(self.numcallWrite) + " Time: " + str(self.time))
 
     def refreshRead(self):
-        global RTBOX_SERVER_XMLPRC
-        global RTBOX_CONNECTED
-        global RTBOX_STATUS
+        self.RTBox_workerRead = RTBox_workerRead()
+        self.thread_readFromRTBox = QThread()
+        self.RTBox_workerRead.moveToThread(self.thread_readFromRTBox)
+        self.thread_readFromRTBox.started.connect(self.RTBox_workerRead.RTBox_getCaptureData)
+        self.RTBox_workerRead.finished.connect(self.thread_readFromRTBox.quit)
+        self.RTBox_workerRead.progress.connect(self.reportProgressRead)
+        self.RTBox_workerRead.finished.connect(self.RTBox_workerRead.deleteLater)
+        self.thread_readFromRTBox.finished.connect(self.thread_readFromRTBox.deleteLater)
+        self.thread_readFromRTBox.finished.connect(self.update_PlotData)
+        self.thread_readFromRTBox.finished.connect(self.reportReadFinished)
+        self.thread_readFromRTBox.start()
 
-        self.start_time = time.time()
-        self.Voltage_AC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
-        self.Voltage_AC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
-        self.Voltage_AC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
-        self.Voltage_DC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
-        self.Voltage_DC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
-        self.Voltage_DC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)]
+    def reportProgressRead(self, n):
+        print("Read " + n + " Completed")
 
-        if ((RTBOX_STATUS == DeviceStatus.RUNNING) & (RTBOX_CONNECTED == ConnectionStatus.CONNECTED)):
-            try:
-                if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture1') != 0):
-                    try:
-                        self.data_Capture1 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture1').values())
-                        self.Voltage_DC_R = [idx[0] for idx in self.data_Capture1[0]]
-                        self.Voltage_DC_S = [idx[1] for idx in self.data_Capture1[0]]
-                        self.Voltage_DC_T = [idx[2] for idx in self.data_Capture1[0]]
-                    except Exception:
-                        pass
-                if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture2') != 0):
-                    try:
-                        self.data_Capture2 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture2').values())
-                        self.Voltage_AC_R = [idx[0] for idx in self.data_Capture2[0]]
-                        self.Voltage_AC_S = [idx[1] for idx in self.data_Capture2[0]]
-                        self.Voltage_AC_T = [idx[2] for idx in self.data_Capture2[0]]
-                    except Exception:
-                        pass
-            except Exception:
-                pass
-        else:
-            pass
-
-        if (self.PlotData_Ena == 1):
-            self.update_PlotData()
-
-        self.duration = time.time() - self.start_time
-        print(f"Duration {self.duration} seconds")
+    def reportReadFinished(self):
+        self.time = time.time()
+        self.numcallRead = self.numcallRead + 1
+        print("MainWindows Read. Call " + str(self.numcallRead) + " Time: " + str(self.time))
 
     # DoubleSpinBox
 
@@ -597,11 +629,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.groupBox_Plot = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_Plot.setObjectName("groupBox_Plot")
         self.groupBox_Plot.setFixedHeight(self.groupBox_Plot_height)
-        #sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        #sizePolicy1.setHorizontalStretch(0)
-        #sizePolicy1.setVerticalStretch(0)
-        #sizePolicy1.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
-        #self.groupBox.setSizePolicy(sizePolicy1)
         self.gridLayout_4.addWidget(self.groupBox_Plot, 2, 0, 1, 1)
         self.groupBox_Plot.setTitle("Plot")
         self.layout = self.groupBox_Plot.layout()#QVBoxLayout()
@@ -638,12 +665,22 @@ class Window(QMainWindow, Ui_MainWindow):
         self.data_line_DC3 =  self.graphWidget.plot(self.x, self.Voltage_DC_T, pen = pen3)
 
     def update_PlotData(self):
-        self.data_line_AC1.setData(self.x, self.Voltage_AC_R)  # Update the data.
-        self.data_line_AC2.setData(self.x, self.Voltage_AC_S)  # Update the data.
-        self.data_line_AC3.setData(self.x, self.Voltage_AC_T)  # Update the data.
-        self.data_line_DC1.setData(self.x, self.Voltage_DC_R)  # Update the data.
-        self.data_line_DC2.setData(self.x, self.Voltage_DC_S)  # Update the data.
-        self.data_line_DC3.setData(self.x, self.Voltage_DC_T)  # Update the data.
+        if (self.PlotData_Ena == 1):
+            # TO BE REMOVED !!! #########################################
+            self.Voltage_DC_R = data_Capture1[0]    #[idx[0] for idx in data_Capture1[0]]
+            self.Voltage_DC_S = data_Capture1[1]    #[idx[1] for idx in data_Capture1[0]]
+            self.Voltage_DC_T = data_Capture1[2]    #[idx[2] for idx in data_Capture1[0]]
+            self.Voltage_AC_R = data_Capture2[0]    #[idx[0] for idx in data_Capture2[0]]
+            self.Voltage_AC_S = data_Capture2[1]    #[idx[1] for idx in data_Capture2[0]]
+            self.Voltage_AC_T = data_Capture2[2]    #[idx[2] for idx in data_Capture2[0]]
+            # TO BE REMOVED !!! #########################################
+
+            self.data_line_AC1.setData(self.x, self.Voltage_AC_R)
+            self.data_line_AC2.setData(self.x, self.Voltage_AC_S)
+            self.data_line_AC3.setData(self.x, self.Voltage_AC_T)
+            self.data_line_DC1.setData(self.x, self.Voltage_DC_R)
+            self.data_line_DC2.setData(self.x, self.Voltage_DC_S)
+            self.data_line_DC3.setData(self.x, self.Voltage_DC_T)
 
 
 # ===============================================================================
@@ -654,10 +691,9 @@ class settingsDialog(QDialog, Ui_Dialog):
         super().__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("RT-Box Settings")
+        self.numcall = 0
         ## Class RTBox and managing threads # -----------------------------------
         self.RTBox = RTBox()
-        self.thread_callRTBoxMethod = QThread()
-        self.RTBox.moveToThread(self.thread_callRTBoxMethod)
         ## Connect Slots # ------------------------------------------------------
         self.timer_RefreshLabels = QTimer()
         self.connectSignalsSlots()
@@ -735,11 +771,15 @@ class settingsDialog(QDialog, Ui_Dialog):
         self.lineEdit_DesignFilePath.setText(DESIGN_PATH)
 
     def callRTBoxMethod(self, method):
+        self.thread_callRTBoxMethod = QThread()
+        #self.RTBox.moveToThread(self.thread_callRTBoxMethod)
         self.thread_callRTBoxMethod.started.connect(method)
         self.RTBox.finished.connect(self.thread_callRTBoxMethod.quit)
         #self.RTBox.finished.connect(self.RTBox.deleteLater)
-        #self.thread_callRTBoxMethod.finished.connect(self.thread_callRTBoxMethod.deleteLater)
+        self.thread_callRTBoxMethod.finished.connect(self.thread_callRTBoxMethod.deleteLater)
+        self.thread_callRTBoxMethod.finished.connect(self.reportFinished)
         self.thread_callRTBoxMethod.start()
+
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         self.thread_callRTBoxMethod.finished.connect(
             lambda: QApplication.restoreOverrideCursor())
@@ -768,6 +808,11 @@ class settingsDialog(QDialog, Ui_Dialog):
             case _:
                 pass
             
+    def reportFinished(self):
+        self.time = time.time()
+        self.numcall = self.numcall + 1
+        print("Settings. Call " + str(self.numcall) + " Time: " + str(self.time))
+
 
 # ===============================================================================
 # MAIN FUNCTION
