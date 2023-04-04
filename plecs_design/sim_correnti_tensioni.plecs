@@ -116,7 +116,7 @@ Plecs {
     Index         "7"
   }
   Schematic {
-    Location      [0, 23; 1920, 1001]
+    Location      [0, 27; 1920, 1005]
     ZoomFactor    0.873847
     SliderPosition [0, 0]
     ShowBrowser   off
@@ -954,108 +954,6 @@ Plecs {
       Parameter {
         Variable      "DataType"
         Value         "10"
-        Show          off
-      }
-    }
-    Component {
-      Type          SineGenerator
-      Name          "Sine Wave"
-      Show          off
-      Position      [60, 500]
-      Direction     right
-      Flipped       off
-      LabelPosition south
-      Parameter {
-        Variable      "Amplitude"
-        Value         "1"
-        Show          off
-      }
-      Parameter {
-        Variable      "Bias"
-        Value         "0"
-        Show          off
-      }
-      Parameter {
-        Variable      "Frequency"
-        Value         "f_line"
-        Show          off
-      }
-      Parameter {
-        Variable      "Phase"
-        Value         "0"
-        Show          off
-      }
-      Parameter {
-        Variable      "Units"
-        Value         "3"
-        Show          off
-      }
-    }
-    Component {
-      Type          SineGenerator
-      Name          "Sine Wave1"
-      Show          off
-      Position      [60, 570]
-      Direction     right
-      Flipped       off
-      LabelPosition south
-      Parameter {
-        Variable      "Amplitude"
-        Value         "1"
-        Show          off
-      }
-      Parameter {
-        Variable      "Bias"
-        Value         "0"
-        Show          off
-      }
-      Parameter {
-        Variable      "Frequency"
-        Value         "f_line"
-        Show          off
-      }
-      Parameter {
-        Variable      "Phase"
-        Value         "-120"
-        Show          off
-      }
-      Parameter {
-        Variable      "Units"
-        Value         "3"
-        Show          off
-      }
-    }
-    Component {
-      Type          SineGenerator
-      Name          "Sine Wave2"
-      Show          off
-      Position      [60, 640]
-      Direction     right
-      Flipped       off
-      LabelPosition south
-      Parameter {
-        Variable      "Amplitude"
-        Value         "1"
-        Show          off
-      }
-      Parameter {
-        Variable      "Bias"
-        Value         "0"
-        Show          off
-      }
-      Parameter {
-        Variable      "Frequency"
-        Value         "f_line"
-        Show          off
-      }
-      Parameter {
-        Variable      "Phase"
-        Value         "-240"
-        Show          off
-      }
-      Parameter {
-        Variable      "Units"
-        Value         "3"
         Show          off
       }
     }
@@ -2780,75 +2678,83 @@ Plecs {
       }
     }
     Component {
-      Type          ConstantRelationalOperator
-      Name          "Compare to\nConstant6"
+      Type          Trigonometry
+      Name          "Trigonometric\nFunction"
       Show          off
-      Position      [135, 435]
-      Direction     down
+      Position      [305, 495]
+      Direction     right
       Flipped       off
-      LabelPosition west
-      Frame         [-10, -20; 10, 20]
+      LabelPosition south
       Parameter {
         Variable      "Operator"
         Value         "1"
         Show          off
       }
       Parameter {
-        Variable      "Threshold"
+        Variable      "Unit"
+        Value         "1"
+        Show          off
+      }
+    }
+    Component {
+      Type          Integrator
+      Name          "Integrator7"
+      Show          on
+      Position      [210, 495]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "ExternalReset"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "InitialConditionSource"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "x0"
+        Value         "0"
+        Show          off
+      }
+      Parameter {
+        Variable      "ShowStatePort"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "EnableWrapping"
+        Value         "2"
+        Show          off
+      }
+      Parameter {
+        Variable      "UpperLimit"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "LowerLimit"
         Value         "0"
         Show          off
       }
     }
     Component {
-      Type          MultiportSignalSwitch
-      Name          "Multiport Signal Switch"
-      Show          off
-      Position      [180, 505]
-      Direction     up
-      Flipped       off
-      LabelPosition south
-      Parameter {
-        Variable      "Width"
-        Value         "2"
-        Show          off
-      }
-      Parameter {
-        Variable      "Default"
-        Value         "1"
-        Show          off
-      }
-    }
-    Component {
-      Type          Constant
-      Name          "Constant"
-      Show          off
-      Position      [65, 530]
+      Type          Gain
+      Name          "Gain"
+      Show          on
+      Position      [255, 495]
       Direction     right
       Flipped       off
       LabelPosition south
-      Frame         [-10, -10; 10, 10]
       Parameter {
-        Variable      "Value"
-        Value         "1"
+        Variable      "K"
+        Value         "2*pi"
         Show          off
       }
       Parameter {
-        Variable      "DataType"
-        Value         "10"
-        Show          off
-      }
-    }
-    Component {
-      Type          Constant
-      Name          "Constant1"
-      Show          off
-      Position      [65, 600]
-      Direction     right
-      Flipped       off
-      LabelPosition south
-      Frame         [-10, -10; 10, 10]
-      Parameter {
-        Variable      "Value"
+        Variable      "Multiplication"
         Value         "1"
         Show          off
       }
@@ -2862,7 +2768,7 @@ Plecs {
       Type          Constant
       Name          "Constant2"
       Show          off
-      Position      [65, 670]
+      Position      [310, 525]
       Direction     right
       Flipped       off
       LabelPosition south
@@ -2879,40 +2785,273 @@ Plecs {
       }
     }
     Component {
-      Type          MultiportSignalSwitch
-      Name          "Multiport Signal Switch1"
-      Show          off
-      Position      [180, 575]
-      Direction     up
+      Type          SignalSwitch
+      Name          "Switch"
+      Show          on
+      Position      [415, 500]
+      Direction     right
       Flipped       off
       LabelPosition south
       Parameter {
-        Variable      "Width"
-        Value         "2"
+        Variable      "Criteria"
+        Value         "3"
         Show          off
       }
       Parameter {
-        Variable      "Default"
+        Variable      "Threshold"
+        Value         "0"
+        Show          off
+      }
+    }
+    Component {
+      Type          Trigonometry
+      Name          "Trigonometric\nFunction1"
+      Show          off
+      Position      [305, 560]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Operator"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "Unit"
         Value         "1"
         Show          off
       }
     }
     Component {
-      Type          MultiportSignalSwitch
-      Name          "Multiport Signal Switch2"
-      Show          off
-      Position      [180, 645]
-      Direction     up
+      Type          Integrator
+      Name          "Integrator8"
+      Show          on
+      Position      [210, 560]
+      Direction     right
       Flipped       off
       LabelPosition south
       Parameter {
-        Variable      "Width"
+        Variable      "ExternalReset"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "InitialConditionSource"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "x0"
+        Value         "0"
+        Show          off
+      }
+      Parameter {
+        Variable      "ShowStatePort"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "EnableWrapping"
         Value         "2"
         Show          off
       }
       Parameter {
-        Variable      "Default"
+        Variable      "UpperLimit"
         Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "LowerLimit"
+        Value         "0"
+        Show          off
+      }
+    }
+    Component {
+      Type          Gain
+      Name          "Gain1"
+      Show          on
+      Position      [255, 560]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "K"
+        Value         "2*pi"
+        Show          off
+      }
+      Parameter {
+        Variable      "Multiplication"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "DataType"
+        Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          Constant
+      Name          "Constant7"
+      Show          off
+      Position      [310, 590]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Frame         [-10, -10; 10, 10]
+      Parameter {
+        Variable      "Value"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "DataType"
+        Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          SignalSwitch
+      Name          "Switch1"
+      Show          on
+      Position      [415, 565]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Criteria"
+        Value         "3"
+        Show          off
+      }
+      Parameter {
+        Variable      "Threshold"
+        Value         "0"
+        Show          off
+      }
+    }
+    Component {
+      Type          Trigonometry
+      Name          "Trigonometric\nFunction2"
+      Show          off
+      Position      [305, 625]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Operator"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "Unit"
+        Value         "1"
+        Show          off
+      }
+    }
+    Component {
+      Type          Integrator
+      Name          "Integrator9"
+      Show          on
+      Position      [210, 625]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "ExternalReset"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "InitialConditionSource"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "x0"
+        Value         "0"
+        Show          off
+      }
+      Parameter {
+        Variable      "ShowStatePort"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "EnableWrapping"
+        Value         "2"
+        Show          off
+      }
+      Parameter {
+        Variable      "UpperLimit"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "LowerLimit"
+        Value         "0"
+        Show          off
+      }
+    }
+    Component {
+      Type          Gain
+      Name          "Gain2"
+      Show          on
+      Position      [255, 625]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "K"
+        Value         "2*pi"
+        Show          off
+      }
+      Parameter {
+        Variable      "Multiplication"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "DataType"
+        Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          Constant
+      Name          "Constant8"
+      Show          off
+      Position      [310, 655]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Frame         [-10, -10; 10, 10]
+      Parameter {
+        Variable      "Value"
+        Value         "1"
+        Show          off
+      }
+      Parameter {
+        Variable      "DataType"
+        Value         "10"
+        Show          off
+      }
+    }
+    Component {
+      Type          SignalSwitch
+      Name          "Switch2"
+      Show          on
+      Position      [415, 630]
+      Direction     right
+      Flipped       off
+      LabelPosition south
+      Parameter {
+        Variable      "Criteria"
+        Value         "3"
+        Show          off
+      }
+      Parameter {
+        Variable      "Threshold"
+        Value         "0"
         Show          off
       }
     }
@@ -3926,104 +4065,160 @@ Plecs {
     }
     Connection {
       Type          Signal
-      SrcComponent  "Demux4"
-      SrcTerminal   5
-      Points        [135, 310]
-      DstComponent  "Compare to\nConstant6"
+      SrcComponent  "Integrator7"
+      SrcTerminal   2
+      DstComponent  "Gain"
       DstTerminal   1
     }
     Connection {
       Type          Signal
-      SrcComponent  "Sine Wave"
-      SrcTerminal   1
-      DstComponent  "Multiport Signal Switch"
-      DstTerminal   3
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Sine Wave1"
-      SrcTerminal   1
-      DstComponent  "Multiport Signal Switch1"
-      DstTerminal   3
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Sine Wave2"
-      SrcTerminal   1
-      DstComponent  "Multiport Signal Switch2"
-      DstTerminal   3
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Compare to\nConstant6"
+      SrcComponent  "Gain"
       SrcTerminal   2
-      Points        [135, 470]
-      Branch {
-        Points        [180, 470]
-        DstComponent  "Multiport Signal Switch"
-        DstTerminal   2
-      }
-      Branch {
-        Points        [135, 545]
-        Branch {
-          DstComponent  "Multiport Signal Switch1"
-          DstTerminal   2
-        }
-        Branch {
-          Points        [135, 615]
-          DstComponent  "Multiport Signal Switch2"
-          DstTerminal   2
-        }
-      }
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Constant"
-      SrcTerminal   1
-      Points        [115, 530; 115, 510]
-      DstComponent  "Multiport Signal Switch"
-      DstTerminal   4
-    }
-    Connection {
-      Type          Signal
-      SrcComponent  "Constant1"
-      SrcTerminal   1
-      Points        [115, 600; 115, 580]
-      DstComponent  "Multiport Signal Switch1"
-      DstTerminal   4
+      DstComponent  "Trigonometric\nFunction"
+      DstTerminal   1
     }
     Connection {
       Type          Signal
       SrcComponent  "Constant2"
       SrcTerminal   1
-      Points        [115, 670; 115, 650]
-      DstComponent  "Multiport Signal Switch2"
-      DstTerminal   4
+      Points        [330, 525; 330, 505]
+      DstComponent  "Switch"
+      DstTerminal   3
     }
     Connection {
       Type          Signal
-      SrcComponent  "Multiport Signal Switch"
+      SrcComponent  "Trigonometric\nFunction"
+      SrcTerminal   2
+      DstComponent  "Switch"
+      DstTerminal   2
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Integrator8"
+      SrcTerminal   2
+      DstComponent  "Gain1"
+      DstTerminal   1
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Gain1"
+      SrcTerminal   2
+      DstComponent  "Trigonometric\nFunction1"
+      DstTerminal   1
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Constant7"
       SrcTerminal   1
-      Points        [400, 505; 400, 330]
+      Points        [330, 590; 330, 570]
+      DstComponent  "Switch1"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Trigonometric\nFunction1"
+      SrcTerminal   2
+      DstComponent  "Switch1"
+      DstTerminal   2
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Integrator9"
+      SrcTerminal   2
+      DstComponent  "Gain2"
+      DstTerminal   1
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Gain2"
+      SrcTerminal   2
+      DstComponent  "Trigonometric\nFunction2"
+      DstTerminal   1
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Constant8"
+      SrcTerminal   1
+      Points        [330, 655; 330, 635]
+      DstComponent  "Switch2"
+      DstTerminal   3
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Trigonometric\nFunction2"
+      SrcTerminal   2
+      DstComponent  "Switch2"
+      DstTerminal   2
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Demux4"
+      SrcTerminal   5
+      Points        [145, 310; 145, 455]
+      Branch {
+        Points        [145, 495]
+        Branch {
+          DstComponent  "Integrator7"
+          DstTerminal   1
+        }
+        Branch {
+          Points        [145, 560]
+          Branch {
+            DstComponent  "Integrator8"
+            DstTerminal   1
+          }
+          Branch {
+            Points        [145, 625]
+            DstComponent  "Integrator9"
+            DstTerminal   1
+          }
+        }
+      }
+      Branch {
+        Points        [375, 455]
+        Branch {
+          Points        [415, 455]
+          DstComponent  "Switch"
+          DstTerminal   4
+        }
+        Branch {
+          Points        [375, 535]
+          Branch {
+            DstComponent  "Switch1"
+            DstTerminal   4
+          }
+          Branch {
+            Points        [375, 600]
+            DstComponent  "Switch2"
+            DstTerminal   4
+          }
+        }
+      }
+    }
+    Connection {
+      Type          Signal
+      SrcComponent  "Switch"
+      SrcTerminal   1
+      Points        [455, 500; 455, 330]
       DstComponent  "Product"
       DstTerminal   3
     }
     Connection {
       Type          Signal
-      SrcComponent  "Multiport Signal Switch1"
+      SrcComponent  "Switch1"
       SrcTerminal   1
-      Points        [405, 575; 405, 395]
+      Points        [460, 565; 460, 395]
       DstComponent  "Product2"
       DstTerminal   3
     }
     Connection {
       Type          Signal
-      SrcComponent  "Multiport Signal Switch2"
+      SrcComponent  "Switch2"
       SrcTerminal   1
-      Points        [410, 645; 410, 460]
+      Points        [465, 630; 465, 460]
       DstComponent  "Product3"
       DstTerminal   3
     }
   }
 }
-DemoSignature "lG4jPSTjX2eagWDG1g921qRwH5pxeG6kJtUbiSU3XW8="
+DemoSignature "5it1dj0sUf0+27qHN3rUFz1TvmioOla7l31W8Ac3sOo="
