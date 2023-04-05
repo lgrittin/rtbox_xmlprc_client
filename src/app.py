@@ -693,8 +693,9 @@ class settingsDialog(QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowTitle("RT-Box Settings")
         self.numcall = 0
+        self.lineEdit_DesignFilePath.setText(DESIGN_PATH)
         ## Class RTBox and managing threads # -----------------------------------
-        self.RTBox = RTBox()
+        
         ## Connect Slots # ------------------------------------------------------
         self.timer_RefreshLabels = QTimer()
         self.connectSignalsSlots()
@@ -702,11 +703,11 @@ class settingsDialog(QDialog, Ui_Dialog):
         self.timer_RefreshLabels.start(TOUT_settingsDialog_RefreshLabels_ms)
 
     def connectSignalsSlots(self):
-        self.pushButton_Find.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_find))
-        self.pushButton_Connect.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_connect))
-        self.pushButton_LoadDesign.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_loadDesignFile))
-        self.pushButton_Start.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_startSimulation))
-        self.pushButton_Stop.clicked.connect(lambda: self.callRTBoxMethod(self.RTBox.RTBox_stopSimulation))
+        self.pushButton_Find.clicked.connect(lambda: self.callRTBoxMethod(0))
+        self.pushButton_Connect.clicked.connect(lambda: self.callRTBoxMethod(1))
+        self.pushButton_LoadDesign.clicked.connect(lambda: self.callRTBoxMethod(2))
+        self.pushButton_Start.clicked.connect(lambda: self.callRTBoxMethod(3))
+        self.pushButton_Stop.clicked.connect(lambda: self.callRTBoxMethod(4))
         self.pushButton_BrowseDesignFilePath.clicked.connect(self.browseDesignFile)
         self.timer_RefreshLabels.timeout.connect(self.refreshLabels)
 
@@ -770,48 +771,52 @@ class settingsDialog(QDialog, Ui_Dialog):
         DESIGN_PATH = fname[0]
         self.lineEdit_DesignFilePath.setText(DESIGN_PATH)
 
-    def callRTBoxMethod(self, method):
+    def callRTBoxMethod(self, methodNum):
+        self.RTBox = RTBox()
         self.thread_callRTBoxMethod = QThread()
-        #self.RTBox.moveToThread(self.thread_callRTBoxMethod)
-        self.thread_callRTBoxMethod.started.connect(method)
+        self.RTBox.moveToThread(self.thread_callRTBoxMethod)
         self.RTBox.finished.connect(self.thread_callRTBoxMethod.quit)
-        #self.RTBox.finished.connect(self.RTBox.deleteLater)
+        self.RTBox.finished.connect(self.RTBox.deleteLater)
         self.thread_callRTBoxMethod.finished.connect(self.thread_callRTBoxMethod.deleteLater)
-        self.thread_callRTBoxMethod.finished.connect(self.reportFinished)
-        self.thread_callRTBoxMethod.start()
+        self.thread_callRTBoxMethod.finished.connect(lambda: self.reportFinished(methodNum))
+        self.thread_callRTBoxMethod.finished.connect(lambda: QApplication.restoreOverrideCursor())
 
-        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-        self.thread_callRTBoxMethod.finished.connect(
-            lambda: QApplication.restoreOverrideCursor())
-        
-        match method:
-            case self.RTBox.RTBox_find:
+        match methodNum:
+            case 0:
+                self.thread_callRTBoxMethod.started.connect(self.RTBox.RTBox_find)
                 self.pushButton_Find.setEnabled(0)
                 self.thread_callRTBoxMethod.finished.connect(
                 lambda: self.pushButton_Find.setEnabled(1))
-            case self.RTBox.RTBox_connect:
+            case 1:
+                self.thread_callRTBoxMethod.started.connect(self.RTBox.RTBox_connect)
                 self.pushButton_Connect.setEnabled(0)
                 self.thread_callRTBoxMethod.finished.connect(
                 lambda: self.pushButton_Connect.setEnabled(1))
-            case self.RTBox.RTBox_loadDesignFile:
+            case 2:
+                self.thread_callRTBoxMethod.started.connect(self.RTBox.RTBox_loadDesignFile)
                 self.pushButton_LoadDesign.setEnabled(0)
                 self.thread_callRTBoxMethod.finished.connect(
                 lambda: self.pushButton_LoadDesign.setEnabled(1))
-            case self.RTBox.RTBox_startSimulation:
+            case 3:
+                self.thread_callRTBoxMethod.started.connect(self.RTBox.RTBox_startSimulation)
                 self.pushButton_Start.setEnabled(0)
                 self.thread_callRTBoxMethod.finished.connect(
                 lambda: self.pushButton_Start.setEnabled(1))
-            case self.RTBox.RTBox_stopSimulation:
+            case 4:
+                self.thread_callRTBoxMethod.started.connect(self.RTBox.RTBox_stopSimulation)
                 self.pushButton_Stop.setEnabled(0)
                 self.thread_callRTBoxMethod.finished.connect(
                 lambda: self.pushButton_Stop.setEnabled(1))
             case _:
                 pass
+
+        self.thread_callRTBoxMethod.start()
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             
-    def reportFinished(self):
+    def reportFinished(self, methodNum):
         self.time = time.time()
         self.numcall = self.numcall + 1
-        print("Settings. Call " + str(self.numcall) + " Time: " + str(self.time))
+        print("Settings. Call " + str(self.numcall) + " - Method " + str(methodNum) + ". Time: " + str(self.time))
 
 
 # ===============================================================================
