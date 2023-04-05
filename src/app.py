@@ -265,26 +265,28 @@ class RTBox_workerRead(QObject):
         global data_Capture2
 
         # TO BE REMOVED !!! #########################################
-        data_Capture1 = []
-        data_Capture1.insert(0, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
-        data_Capture1.insert(1, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
-        data_Capture1.insert(2, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
-        data_Capture2 = []
-        data_Capture2.insert(0, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
-        data_Capture2.insert(1, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
-        data_Capture2.insert(2, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        #data_Capture1 = []
+        #data_Capture1.insert(0, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        #data_Capture1.insert(1, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        #data_Capture1.insert(2, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        #data_Capture2 = []
+        #data_Capture2.insert(0, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        #data_Capture2.insert(1, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
+        #data_Capture2.insert(2, [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)])
         # TO BE REMOVED !!! #########################################
 
         if ((RTBOX_STATUS == DeviceStatus.RUNNING) & (RTBOX_CONNECTED == ConnectionStatus.CONNECTED)):
             try:
                 if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture1') != 0):
                     try:
+                        data_Capture1 = []
                         data_Capture1 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture1').values())
                         self.progress.emit(1)
                     except Exception:
                         pass
                 if (RTBOX_SERVER_XMLPRC.rtbox.getCaptureTriggerCount('Capture2') != 0):
                     try:
+                        data_Capture2 = []
                         data_Capture2 = list(RTBOX_SERVER_XMLPRC.rtbox.getCaptureData('Capture2').values())
                         self.progress.emit(2)
                     except Exception:
@@ -330,12 +332,12 @@ class Window(QMainWindow, Ui_MainWindow):
         self.timer_RefreshWrite.start(TOUT_mainWindow_RefreshWrite_ms)
         ## Specific Implementation # --------------------------------------------
         self.PlotData_Ena = 0
-        self.Voltage_AC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
-        self.Voltage_AC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
-        self.Voltage_AC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
-        self.Voltage_DC_R = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
-        self.Voltage_DC_S = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
-        self.Voltage_DC_T = [np.random.uniform(-5.0,5.0) for _ in range(DATA_DIM)] #np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_AC_R = np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_AC_S = np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_AC_T = np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_DC_R = np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_DC_S = np.zeros(DATA_DIM, dtype=float)
+        self.Voltage_DC_T = np.zeros(DATA_DIM, dtype=float)
 
     def connectSignalsSlots(self):
         self.action_Exit.triggered.connect(self.close)
@@ -665,15 +667,13 @@ class Window(QMainWindow, Ui_MainWindow):
         self.data_line_DC3 =  self.graphWidget.plot(self.x, self.Voltage_DC_T, pen = pen3)
 
     def update_PlotData(self):
-        if (self.PlotData_Ena == 1):
-            # TO BE REMOVED !!! #########################################
-            self.Voltage_DC_R = data_Capture1[0]    #[idx[0] for idx in data_Capture1[0]]
-            self.Voltage_DC_S = data_Capture1[1]    #[idx[1] for idx in data_Capture1[0]]
-            self.Voltage_DC_T = data_Capture1[2]    #[idx[2] for idx in data_Capture1[0]]
-            self.Voltage_AC_R = data_Capture2[0]    #[idx[0] for idx in data_Capture2[0]]
-            self.Voltage_AC_S = data_Capture2[1]    #[idx[1] for idx in data_Capture2[0]]
-            self.Voltage_AC_T = data_Capture2[2]    #[idx[2] for idx in data_Capture2[0]]
-            # TO BE REMOVED !!! #########################################
+        if ((self.PlotData_Ena == 1) & (RTBOX_STATUS == DeviceStatus.RUNNING) & (RTBOX_CONNECTED == ConnectionStatus.CONNECTED)):
+            self.Voltage_DC_R = [idx[0] for idx in data_Capture1[0]]   #data_Capture1[0]
+            self.Voltage_DC_S = [idx[1] for idx in data_Capture1[0]]   #data_Capture1[1]
+            self.Voltage_DC_T = [idx[2] for idx in data_Capture1[0]]   #data_Capture1[2]
+            self.Voltage_AC_R = [idx[0] for idx in data_Capture2[0]]   #data_Capture2[0]
+            self.Voltage_AC_S = [idx[1] for idx in data_Capture2[0]]   #data_Capture2[1]
+            self.Voltage_AC_T = [idx[2] for idx in data_Capture2[0]]   #data_Capture2[2]
 
             self.data_line_AC1.setData(self.x, self.Voltage_AC_R)
             self.data_line_AC2.setData(self.x, self.Voltage_AC_S)
@@ -681,7 +681,8 @@ class Window(QMainWindow, Ui_MainWindow):
             self.data_line_DC1.setData(self.x, self.Voltage_DC_R)
             self.data_line_DC2.setData(self.x, self.Voltage_DC_S)
             self.data_line_DC3.setData(self.x, self.Voltage_DC_T)
-
+        else:
+            pass
 
 # ===============================================================================
 # SETTINGS DIALOG CLASS
@@ -748,7 +749,6 @@ class settingsDialog(QDialog, Ui_Dialog):
         self.label_DeviceStatusResult.setText(dispList_DeviceStatus[RTBOX_STATUS.value-1])
         self.label_DataCaptureBlocksResult.setText(str(len(OUTPUTBLOCKS)))
         self.label_NumProgrValueBlocksResult.setText(str(len(INPUTBLOCKS)))
-        self.lineEdit_DesignFilePath.setText(DESIGN_PATH)
 
         if (RTBOX_IPFOUND == ConnectionStatus.NOT_CONNECTED):
             self.pushButton_Connect.setEnabled(0)
