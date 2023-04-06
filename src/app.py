@@ -63,8 +63,8 @@ dispList_DeviceStatus = ["Stopped", "Running", "Error"]
 dispList_Ipv4 = ["No IP", HOST_IPV4]
 TOUT_settingsDialog_RefreshLabels_ms = 500
 TOUT_mainWindow_RefreshStatusBar_ms = 500
-TOUT_mainWindow_RefreshWrite_ms = 5000
-TOUT_mainWindow_RefreshRead_ms = 5000
+TOUT_mainWindow_RefreshWrite_ms = 2000
+TOUT_mainWindow_RefreshRead_ms = 2000
 
 ## Specific Implementation
 DESIGN_TDISC_US = 10
@@ -324,7 +324,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.timer_RefreshWrite = QTimer()
         self.timer_RefreshRead = QTimer()
         ## Class RTBox and managing threads # -----------------------------------
-
+        self.RTBox_workerWrite = RTBox_workerWrite()
+        self.RTBox_workerRead = RTBox_workerRead()
         ## Connect Slots # ------------------------------------------------------
         self.connectSignalsSlots()
         ## Start Timer # --------------------------------------------------------
@@ -422,16 +423,17 @@ class Window(QMainWindow, Ui_MainWindow):
             self.setFixedSize(self.sizeHint().width(), self.mainHeightMin)
 
     def refreshWrite(self):
-        self.RTBox_workerWrite = RTBox_workerWrite()
-        self.thread_writeToRTBox = QThread()
-        self.RTBox_workerWrite.moveToThread(self.thread_writeToRTBox)
-        self.thread_writeToRTBox.started.connect(self.RTBox_workerWrite.RTBox_setProgrammableValue)
-        self.RTBox_workerWrite.finished.connect(self.thread_writeToRTBox.quit)
-        self.RTBox_workerWrite.progress.connect(self.reportProgressWrite)
-        self.RTBox_workerWrite.finished.connect(self.RTBox_workerWrite.deleteLater)
-        self.thread_writeToRTBox.finished.connect(self.thread_writeToRTBox.deleteLater)
-        self.thread_writeToRTBox.finished.connect(self.reportWriteFinished)
-        self.thread_writeToRTBox.start()
+        #self.RTBox_workerWrite = RTBox_workerWrite()
+        #self.thread_writeToRTBox = QThread()
+        #self.RTBox_workerWrite.moveToThread(self.thread_writeToRTBox)
+        #self.thread_writeToRTBox.started.connect(self.RTBox_workerWrite.RTBox_setProgrammableValue)
+        #self.RTBox_workerWrite.finished.connect(self.thread_writeToRTBox.quit)
+        #self.RTBox_workerWrite.progress.connect(self.reportProgressWrite)
+        #self.RTBox_workerWrite.finished.connect(self.RTBox_workerWrite.deleteLater)
+        #self.thread_writeToRTBox.finished.connect(self.thread_writeToRTBox.deleteLater)
+        #self.thread_writeToRTBox.finished.connect(self.reportWriteFinished)
+        #self.thread_writeToRTBox.start()
+        self.RTBox_workerWrite.RTBox_setProgrammableValue()
 
     def reportProgressWrite(self, n):
         print("Write " + n + " Completed")
@@ -442,17 +444,18 @@ class Window(QMainWindow, Ui_MainWindow):
         print("MainWindows Write. Call " + str(self.numcallWrite) + " Time: " + str(self.time))
 
     def refreshRead(self):
-        self.RTBox_workerRead = RTBox_workerRead()
-        self.thread_readFromRTBox = QThread()
-        self.RTBox_workerRead.moveToThread(self.thread_readFromRTBox)
-        self.thread_readFromRTBox.started.connect(self.RTBox_workerRead.RTBox_getCaptureData)
-        self.RTBox_workerRead.finished.connect(self.thread_readFromRTBox.quit)
-        self.RTBox_workerRead.progress.connect(self.reportProgressRead)
-        self.RTBox_workerRead.finished.connect(self.RTBox_workerRead.deleteLater)
-        self.thread_readFromRTBox.finished.connect(self.thread_readFromRTBox.deleteLater)
-        self.thread_readFromRTBox.finished.connect(self.update_PlotData)
-        self.thread_readFromRTBox.finished.connect(self.reportReadFinished)
-        self.thread_readFromRTBox.start()
+        #self.RTBox_workerRead = RTBox_workerRead()
+        #self.thread_readFromRTBox = QThread()
+        #self.RTBox_workerRead.moveToThread(self.thread_readFromRTBox)
+        #self.thread_readFromRTBox.started.connect(self.RTBox_workerRead.RTBox_getCaptureData)
+        #self.RTBox_workerRead.finished.connect(self.thread_readFromRTBox.quit)
+        #self.RTBox_workerRead.progress.connect(self.reportProgressRead)
+        #self.RTBox_workerRead.finished.connect(self.RTBox_workerRead.deleteLater)
+        #self.thread_readFromRTBox.finished.connect(self.thread_readFromRTBox.deleteLater)
+        #self.thread_readFromRTBox.finished.connect(self.update_PlotData)
+        #self.thread_readFromRTBox.finished.connect(self.reportReadFinished)
+        #self.thread_readFromRTBox.start()
+        self.RTBox_workerRead.RTBox_getCaptureData()
 
     def reportProgressRead(self, n):
         print("Read " + n + " Completed")
@@ -626,6 +629,8 @@ class Window(QMainWindow, Ui_MainWindow):
             self.doubleSpinBox_vDCAmp2.setEnabled(1)
             self.doubleSpinBox_vDCAmp3.setEnabled(1)
             V_DC_Link = 0
+            V_DC_Ampl2 = self.doubleSpinBox_vDCAmp2.value()
+            V_DC_Ampl3 = self.doubleSpinBox_vDCAmp3.value()
         
     def init_PlotData(self):
         self.groupBox_Plot = QtWidgets.QGroupBox(self.centralwidget)

@@ -125,10 +125,10 @@
             <number>0</number>
            </property>
            <property name="minimum">
-            <double>30.000000000000000</double>
+            <double>0.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>60.000000000000000</double>
+            <double>200.000000000000000</double>
            </property>
            <property name="value">
             <double>50.000000000000000</double>
@@ -183,6 +183,9 @@
           <widget class="QDoubleSpinBox" name="doubleSpinBox_vAmp">
            <property name="decimals">
             <number>3</number>
+           </property>
+           <property name="minimum">
+            <double>-7.000000000000000</double>
            </property>
            <property name="maximum">
             <double>7.000000000000000</double>
