@@ -41,7 +41,7 @@ endif
 APP = sim_correnti_tensioni.elf
 
 HEADERS += sim_correnti_tensioni.h
-C_SRCFILES += sim_correnti_tensioni_main.c sim_correnti_tensioni.c sim_correnti_tensioni_0.c sim_correnti_tensioni_1.c
+C_SRCFILES += sim_correnti_tensioni_main.c sim_correnti_tensioni.c sim_correnti_tensioni_0.c
 
 OBJFILES := $(patsubst %.c, %.o, $(C_SRCFILES))
 DEPFILES := $(patsubst %.c, %.d, $(C_SRCFILES))
