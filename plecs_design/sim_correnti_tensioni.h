@@ -1,8 +1,8 @@
 /*
  * Header file for: sim_correnti_tensioni
- * Generated with : PLECS 4.7.1
- *                  PLECS RT Box 1 2.3.1
- * Generated on   : 6 Apr 2023 18:46:55
+ * Generated with : PLECS 4.7.3
+ *                  PLECS RT Box 3 2.3.6
+ * Generated on   : 5 May 2023 16:38:23
  */
 #ifndef PLECS_HEADER_sim_correnti_tensioni_h_
 #define PLECS_HEADER_sim_correnti_tensioni_h_
@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 /* Model floating point type */
-typedef double sim_correnti_tensioni_FloatType;
+typedef float sim_correnti_tensioni_FloatType;
 
 /* Model checksum */
 extern const char * const sim_correnti_tensioni_checksum;
@@ -21,94 +21,111 @@ extern const char * sim_correnti_tensioni_errorStatus;
 
 
 /* Model sample time */
-extern const double sim_correnti_tensioni_sampleTime;
+extern const float sim_correnti_tensioni_sampleTime[2][2];
 
 
 /*
  * Model states */
 typedef struct
 {
-   double C_Script;                 /* sim_correnti_tensioni/White Noise/C-Script */
-   double Integrator7_x;            /* sim_correnti_tensioni/Integrator7 */
-   bool Integrator7_i1_first;       /* sim_correnti_tensioni/Integrator7 */
-   double Integrator6_x;            /* sim_correnti_tensioni/Integrator6 */
-   double Integrator4_x;            /* sim_correnti_tensioni/Integrator4 */
-   bool Monoflop1;                  /* sim_correnti_tensioni/Monoflop1 */
-   double Integrator9_x;            /* sim_correnti_tensioni/Integrator9 */
-   bool Integrator9_i1_first;       /* sim_correnti_tensioni/Integrator9 */
-   double Integrator8_x;            /* sim_correnti_tensioni/Integrator8 */
-   double Integrator5_x;            /* sim_correnti_tensioni/Integrator5 */
-   bool Monoflop2;                  /* sim_correnti_tensioni/Monoflop2 */
-   double Integrator11_x;           /* sim_correnti_tensioni/Integrator11 */
-   bool Integrator11_i1_first;      /* sim_correnti_tensioni/Integrator11 */
-   double Integrator10_x;           /* sim_correnti_tensioni/Integrator10 */
-   double Integrator12_x;           /* sim_correnti_tensioni/Integrator12 */
-   bool Monoflop3;                  /* sim_correnti_tensioni/Monoflop3 */
-   double Integrator14_x;           /* sim_correnti_tensioni/Integrator14 */
-   bool Integrator14_i1_first;      /* sim_correnti_tensioni/Integrator14 */
-   double Integrator13_x;           /* sim_correnti_tensioni/Integrator13 */
-   double Integrator15_x;           /* sim_correnti_tensioni/Integrator15 */
-   bool Monoflop4;                  /* sim_correnti_tensioni/Monoflop4 */
-   double Integrator17_x;           /* sim_correnti_tensioni/Integrator17 */
-   bool Integrator17_i1_first;      /* sim_correnti_tensioni/Integrator17 */
-   double Integrator16_x;           /* sim_correnti_tensioni/Integrator16 */
-   double Integrator18_x;           /* sim_correnti_tensioni/Integrator18 */
-   bool Monoflop5;                  /* sim_correnti_tensioni/Monoflop5 */
-   double Integrator20_x;           /* sim_correnti_tensioni/Integrator20 */
-   bool Integrator20_i1_first;      /* sim_correnti_tensioni/Integrator20 */
-   double Integrator19_x;           /* sim_correnti_tensioni/Integrator19 */
-   double Integrator21_x;           /* sim_correnti_tensioni/Integrator21 */
-   bool Monoflop6;                  /* sim_correnti_tensioni/Monoflop6 */
-   double Integrator23_x;           /* sim_correnti_tensioni/Integrator23 */
-   bool Integrator23_i1_first;      /* sim_correnti_tensioni/Integrator23 */
-   double Integrator22_x;           /* sim_correnti_tensioni/Integrator22 */
-   double Integrator24_x;           /* sim_correnti_tensioni/Integrator24 */
-   bool Monoflop7;                  /* sim_correnti_tensioni/Monoflop7 */
-   double Integrator26_x;           /* sim_correnti_tensioni/Integrator26 */
-   bool Integrator26_i1_first;      /* sim_correnti_tensioni/Integrator26 */
-   double Integrator25_x;           /* sim_correnti_tensioni/Integrator25 */
-   double Integrator27_x;           /* sim_correnti_tensioni/Integrator27 */
-   bool Monoflop8;                  /* sim_correnti_tensioni/Monoflop8 */
-   double Integrator29_x;           /* sim_correnti_tensioni/Integrator29 */
-   bool Integrator29_i1_first;      /* sim_correnti_tensioni/Integrator29 */
-   double Integrator28_x;           /* sim_correnti_tensioni/Integrator28 */
-   double Integrator30_x;           /* sim_correnti_tensioni/Integrator30 */
-   bool Monoflop9;                  /* sim_correnti_tensioni/Monoflop9 */
-   double Integrator32_x;           /* sim_correnti_tensioni/Integrator32 */
-   bool Integrator32_i1_first;      /* sim_correnti_tensioni/Integrator32 */
-   double Integrator31_x;           /* sim_correnti_tensioni/Integrator31 */
-   double Integrator33_x;           /* sim_correnti_tensioni/Integrator33 */
-   bool Monoflop10;                 /* sim_correnti_tensioni/Monoflop10 */
-   double Integrator35_x;           /* sim_correnti_tensioni/Integrator35 */
-   bool Integrator35_i1_first;      /* sim_correnti_tensioni/Integrator35 */
-   double Integrator34_x;           /* sim_correnti_tensioni/Integrator34 */
-   double Integrator36_x;           /* sim_correnti_tensioni/Integrator36 */
-   bool Monoflop11;                 /* sim_correnti_tensioni/Monoflop11 */
-   double Integrator38_x;           /* sim_correnti_tensioni/Integrator38 */
-   bool Integrator38_i1_first;      /* sim_correnti_tensioni/Integrator38 */
-   double Integrator37_x;           /* sim_correnti_tensioni/Integrator37 */
-   double Integrator39_x;           /* sim_correnti_tensioni/Integrator39 */
-   bool Monoflop12;                 /* sim_correnti_tensioni/Monoflop12 */
-   double Integrator41_x;           /* sim_correnti_tensioni/Integrator41 */
-   bool Integrator41_i1_first;      /* sim_correnti_tensioni/Integrator41 */
-   double Integrator40_x;           /* sim_correnti_tensioni/Integrator40 */
-   double Integrator42_x;           /* sim_correnti_tensioni/Integrator42 */
-   bool Monoflop13;                 /* sim_correnti_tensioni/Monoflop13 */
-   double Integrator44_x;           /* sim_correnti_tensioni/Integrator44 */
-   bool Integrator44_i1_first;      /* sim_correnti_tensioni/Integrator44 */
-   double Integrator43_x;           /* sim_correnti_tensioni/Integrator43 */
-   double Integrator45_x;           /* sim_correnti_tensioni/Integrator45 */
-   bool Monoflop14;                 /* sim_correnti_tensioni/Monoflop14 */
-   double Integrator47_x;           /* sim_correnti_tensioni/Integrator47 */
-   bool Integrator47_i1_first;      /* sim_correnti_tensioni/Integrator47 */
-   double Integrator46_x;           /* sim_correnti_tensioni/Integrator46 */
-   double Integrator48_x;           /* sim_correnti_tensioni/Integrator48 */
-   bool Monoflop15;                 /* sim_correnti_tensioni/Monoflop15 */
-   double Integrator50_x;           /* sim_correnti_tensioni/Integrator50 */
-   bool Integrator50_i1_first;      /* sim_correnti_tensioni/Integrator50 */
-   double Integrator49_x;           /* sim_correnti_tensioni/Integrator49 */
-   double Integrator51_x;           /* sim_correnti_tensioni/Integrator51 */
-   bool Monoflop16;                 /* sim_correnti_tensioni/Monoflop16 */
+   float Integrator7_x;             /* sim_correnti_tensioni/Signal Builder62/Integrator7 */
+   bool Integrator7_i1_first;       /* sim_correnti_tensioni/Signal Builder62/Integrator7 */
+   bool Integrator7_i2_prevReset;   /* sim_correnti_tensioni/Signal Builder62/Integrator7 */
+   float Integrator6_x;             /* sim_correnti_tensioni/Signal Builder62/Integrator6 */
+   float Integrator4_x;             /* sim_correnti_tensioni/Signal Builder62/Integrator4 */
+   bool Monoflop1;                  /* sim_correnti_tensioni/Signal Builder62/Monoflop1 */
+   float Integrator7_1_x;           /* sim_correnti_tensioni/Signal Builder61/Integrator7 */
+   bool Integrator7_1_i1_first;     /* sim_correnti_tensioni/Signal Builder61/Integrator7 */
+   bool Integrator7_1_i2_prevReset; /* sim_correnti_tensioni/Signal Builder61/Integrator7 */
+   float Integrator6_1_x;           /* sim_correnti_tensioni/Signal Builder61/Integrator6 */
+   float Integrator4_1_x;           /* sim_correnti_tensioni/Signal Builder61/Integrator4 */
+   bool Monoflop1_1;                /* sim_correnti_tensioni/Signal Builder61/Monoflop1 */
+   float Integrator7_2_x;           /* sim_correnti_tensioni/Signal Builder63/Integrator7 */
+   bool Integrator7_2_i1_first;     /* sim_correnti_tensioni/Signal Builder63/Integrator7 */
+   bool Integrator7_2_i2_prevReset; /* sim_correnti_tensioni/Signal Builder63/Integrator7 */
+   float Integrator6_2_x;           /* sim_correnti_tensioni/Signal Builder63/Integrator6 */
+   float Integrator4_2_x;           /* sim_correnti_tensioni/Signal Builder63/Integrator4 */
+   bool Monoflop1_2;                /* sim_correnti_tensioni/Signal Builder63/Monoflop1 */
+   float Integrator7_3_x;           /* sim_correnti_tensioni/Signal Builder64/Integrator7 */
+   bool Integrator7_3_i1_first;     /* sim_correnti_tensioni/Signal Builder64/Integrator7 */
+   bool Integrator7_3_i2_prevReset; /* sim_correnti_tensioni/Signal Builder64/Integrator7 */
+   float Integrator6_3_x;           /* sim_correnti_tensioni/Signal Builder64/Integrator6 */
+   float Integrator4_3_x;           /* sim_correnti_tensioni/Signal Builder64/Integrator4 */
+   bool Monoflop1_3;                /* sim_correnti_tensioni/Signal Builder64/Monoflop1 */
+   float Integrator7_4_x;           /* sim_correnti_tensioni/Signal Builder65/Integrator7 */
+   bool Integrator7_4_i1_first;     /* sim_correnti_tensioni/Signal Builder65/Integrator7 */
+   bool Integrator7_4_i2_prevReset; /* sim_correnti_tensioni/Signal Builder65/Integrator7 */
+   float Integrator6_4_x;           /* sim_correnti_tensioni/Signal Builder65/Integrator6 */
+   float Integrator4_4_x;           /* sim_correnti_tensioni/Signal Builder65/Integrator4 */
+   bool Monoflop1_4;                /* sim_correnti_tensioni/Signal Builder65/Monoflop1 */
+   float Integrator7_5_x;           /* sim_correnti_tensioni/Signal Builder66/Integrator7 */
+   bool Integrator7_5_i1_first;     /* sim_correnti_tensioni/Signal Builder66/Integrator7 */
+   bool Integrator7_5_i2_prevReset; /* sim_correnti_tensioni/Signal Builder66/Integrator7 */
+   float Integrator6_5_x;           /* sim_correnti_tensioni/Signal Builder66/Integrator6 */
+   float Integrator4_5_x;           /* sim_correnti_tensioni/Signal Builder66/Integrator4 */
+   bool Monoflop1_5;                /* sim_correnti_tensioni/Signal Builder66/Monoflop1 */
+   float Integrator7_6_x;           /* sim_correnti_tensioni/Signal Builder67/Integrator7 */
+   bool Integrator7_6_i1_first;     /* sim_correnti_tensioni/Signal Builder67/Integrator7 */
+   bool Integrator7_6_i2_prevReset; /* sim_correnti_tensioni/Signal Builder67/Integrator7 */
+   float Integrator6_6_x;           /* sim_correnti_tensioni/Signal Builder67/Integrator6 */
+   float Integrator4_6_x;           /* sim_correnti_tensioni/Signal Builder67/Integrator4 */
+   bool Monoflop1_6;                /* sim_correnti_tensioni/Signal Builder67/Monoflop1 */
+   float Integrator7_7_x;           /* sim_correnti_tensioni/Signal Builder68/Integrator7 */
+   bool Integrator7_7_i1_first;     /* sim_correnti_tensioni/Signal Builder68/Integrator7 */
+   bool Integrator7_7_i2_prevReset; /* sim_correnti_tensioni/Signal Builder68/Integrator7 */
+   float Integrator6_7_x;           /* sim_correnti_tensioni/Signal Builder68/Integrator6 */
+   float Integrator4_7_x;           /* sim_correnti_tensioni/Signal Builder68/Integrator4 */
+   bool Monoflop1_7;                /* sim_correnti_tensioni/Signal Builder68/Monoflop1 */
+   float Integrator7_8_x;           /* sim_correnti_tensioni/Signal Builder69/Integrator7 */
+   bool Integrator7_8_i1_first;     /* sim_correnti_tensioni/Signal Builder69/Integrator7 */
+   bool Integrator7_8_i2_prevReset; /* sim_correnti_tensioni/Signal Builder69/Integrator7 */
+   float Integrator6_8_x;           /* sim_correnti_tensioni/Signal Builder69/Integrator6 */
+   float Integrator4_8_x;           /* sim_correnti_tensioni/Signal Builder69/Integrator4 */
+   bool Monoflop1_8;                /* sim_correnti_tensioni/Signal Builder69/Monoflop1 */
+   float Integrator7_9_x;           /* sim_correnti_tensioni/Signal Builder70/Integrator7 */
+   bool Integrator7_9_i1_first;     /* sim_correnti_tensioni/Signal Builder70/Integrator7 */
+   bool Integrator7_9_i2_prevReset; /* sim_correnti_tensioni/Signal Builder70/Integrator7 */
+   float Integrator6_9_x;           /* sim_correnti_tensioni/Signal Builder70/Integrator6 */
+   float Integrator4_9_x;           /* sim_correnti_tensioni/Signal Builder70/Integrator4 */
+   bool Monoflop1_9;                /* sim_correnti_tensioni/Signal Builder70/Monoflop1 */
+   float Integrator7_10_x;          /* sim_correnti_tensioni/Signal Builder71/Integrator7 */
+   bool Integrator7_10_i1_first;    /* sim_correnti_tensioni/Signal Builder71/Integrator7 */
+   bool Integrator7_10_i2_prevReset; /* sim_correnti_tensioni/Signal Builder71/Integrator7 */
+   float Integrator6_10_x;          /* sim_correnti_tensioni/Signal Builder71/Integrator6 */
+   float Integrator4_10_x;          /* sim_correnti_tensioni/Signal Builder71/Integrator4 */
+   bool Monoflop1_10;               /* sim_correnti_tensioni/Signal Builder71/Monoflop1 */
+   float Integrator7_11_x;          /* sim_correnti_tensioni/Signal Builder72/Integrator7 */
+   bool Integrator7_11_i1_first;    /* sim_correnti_tensioni/Signal Builder72/Integrator7 */
+   bool Integrator7_11_i2_prevReset; /* sim_correnti_tensioni/Signal Builder72/Integrator7 */
+   float Integrator6_11_x;          /* sim_correnti_tensioni/Signal Builder72/Integrator6 */
+   float Integrator4_11_x;          /* sim_correnti_tensioni/Signal Builder72/Integrator4 */
+   bool Monoflop1_11;               /* sim_correnti_tensioni/Signal Builder72/Monoflop1 */
+   float Integrator7_12_x;          /* sim_correnti_tensioni/Signal Builder73/Integrator7 */
+   bool Integrator7_12_i1_first;    /* sim_correnti_tensioni/Signal Builder73/Integrator7 */
+   bool Integrator7_12_i2_prevReset; /* sim_correnti_tensioni/Signal Builder73/Integrator7 */
+   float Integrator6_12_x;          /* sim_correnti_tensioni/Signal Builder73/Integrator6 */
+   float Integrator4_12_x;          /* sim_correnti_tensioni/Signal Builder73/Integrator4 */
+   bool Monoflop1_12;               /* sim_correnti_tensioni/Signal Builder73/Monoflop1 */
+   float Integrator7_13_x;          /* sim_correnti_tensioni/Signal Builder74/Integrator7 */
+   bool Integrator7_13_i1_first;    /* sim_correnti_tensioni/Signal Builder74/Integrator7 */
+   bool Integrator7_13_i2_prevReset; /* sim_correnti_tensioni/Signal Builder74/Integrator7 */
+   float Integrator6_13_x;          /* sim_correnti_tensioni/Signal Builder74/Integrator6 */
+   float Integrator4_13_x;          /* sim_correnti_tensioni/Signal Builder74/Integrator4 */
+   bool Monoflop1_13;               /* sim_correnti_tensioni/Signal Builder74/Monoflop1 */
+   float Integrator7_14_x;          /* sim_correnti_tensioni/Signal Builder75/Integrator7 */
+   bool Integrator7_14_i1_first;    /* sim_correnti_tensioni/Signal Builder75/Integrator7 */
+   bool Integrator7_14_i2_prevReset; /* sim_correnti_tensioni/Signal Builder75/Integrator7 */
+   float Integrator6_14_x;          /* sim_correnti_tensioni/Signal Builder75/Integrator6 */
+   float Integrator4_14_x;          /* sim_correnti_tensioni/Signal Builder75/Integrator4 */
+   bool Monoflop1_14;               /* sim_correnti_tensioni/Signal Builder75/Monoflop1 */
+   float Integrator7_15_x;          /* sim_correnti_tensioni/Signal Builder76/Integrator7 */
+   bool Integrator7_15_i1_first;    /* sim_correnti_tensioni/Signal Builder76/Integrator7 */
+   bool Integrator7_15_i2_prevReset; /* sim_correnti_tensioni/Signal Builder76/Integrator7 */
+   float Integrator6_15_x;          /* sim_correnti_tensioni/Signal Builder76/Integrator6 */
+   float Integrator4_15_x;          /* sim_correnti_tensioni/Signal Builder76/Integrator4 */
+   bool Monoflop1_15;               /* sim_correnti_tensioni/Signal Builder76/Monoflop1 */
+   bool Monoflop1_16;               /* sim_correnti_tensioni/Monoflop1 */
+   float C_Script;                  /* sim_correnti_tensioni/White Noise/C-Script */
 } sim_correnti_tensioni_ModelStates;
 extern sim_correnti_tensioni_ModelStates sim_correnti_tensioni_X;
 
@@ -116,155 +133,183 @@ extern sim_correnti_tensioni_ModelStates sim_correnti_tensioni_X;
 /* Block outputs */
 typedef struct
 {
-   double C_Script;                 /* sim_correnti_tensioni/White Noise/C-Script */
-   bool Comparator1;                /* sim_correnti_tensioni/Comparator1 */
-   bool Monoflop1;                  /* sim_correnti_tensioni/Monoflop1 */
-   bool Comparator2;                /* sim_correnti_tensioni/Comparator2 */
-   bool Monoflop2;                  /* sim_correnti_tensioni/Monoflop2 */
-   bool Comparator3;                /* sim_correnti_tensioni/Comparator3 */
-   bool Monoflop3;                  /* sim_correnti_tensioni/Monoflop3 */
-   bool Comparator4;                /* sim_correnti_tensioni/Comparator4 */
-   bool Monoflop4;                  /* sim_correnti_tensioni/Monoflop4 */
-   bool Comparator5;                /* sim_correnti_tensioni/Comparator5 */
-   bool Monoflop5;                  /* sim_correnti_tensioni/Monoflop5 */
-   bool Comparator6;                /* sim_correnti_tensioni/Comparator6 */
-   bool Monoflop6;                  /* sim_correnti_tensioni/Monoflop6 */
-   bool Comparator7;                /* sim_correnti_tensioni/Comparator7 */
-   bool Monoflop7;                  /* sim_correnti_tensioni/Monoflop7 */
-   bool Comparator8;                /* sim_correnti_tensioni/Comparator8 */
-   bool Monoflop8;                  /* sim_correnti_tensioni/Monoflop8 */
-   bool Comparator9;                /* sim_correnti_tensioni/Comparator9 */
-   bool Monoflop9;                  /* sim_correnti_tensioni/Monoflop9 */
-   bool Comparator10;               /* sim_correnti_tensioni/Comparator10 */
-   bool Monoflop10;                 /* sim_correnti_tensioni/Monoflop10 */
-   bool Comparator11;               /* sim_correnti_tensioni/Comparator11 */
-   bool Monoflop11;                 /* sim_correnti_tensioni/Monoflop11 */
-   bool Comparator12;               /* sim_correnti_tensioni/Comparator12 */
-   bool Monoflop12;                 /* sim_correnti_tensioni/Monoflop12 */
-   bool Comparator13;               /* sim_correnti_tensioni/Comparator13 */
-   bool Monoflop13;                 /* sim_correnti_tensioni/Monoflop13 */
-   bool Comparator14;               /* sim_correnti_tensioni/Comparator14 */
-   bool Monoflop14;                 /* sim_correnti_tensioni/Monoflop14 */
-   bool Comparator15;               /* sim_correnti_tensioni/Comparator15 */
-   bool Monoflop15;                 /* sim_correnti_tensioni/Monoflop15 */
-   bool Comparator16;               /* sim_correnti_tensioni/Comparator16 */
-   bool Monoflop16;                 /* sim_correnti_tensioni/Monoflop16 */
+   float sim_correnti_tensioni;     /* sim_correnti_tensioni */
+   bool Comparator1;                /* sim_correnti_tensioni/Signal Builder62/Comparator1 */
+   bool Monoflop1;                  /* sim_correnti_tensioni/Signal Builder62/Monoflop1 */
+   bool Comparator1_1;              /* sim_correnti_tensioni/Signal Builder61/Comparator1 */
+   bool Monoflop1_1;                /* sim_correnti_tensioni/Signal Builder61/Monoflop1 */
+   bool Comparator1_2;              /* sim_correnti_tensioni/Signal Builder63/Comparator1 */
+   bool Monoflop1_2;                /* sim_correnti_tensioni/Signal Builder63/Monoflop1 */
+   bool Comparator1_3;              /* sim_correnti_tensioni/Signal Builder64/Comparator1 */
+   bool Monoflop1_3;                /* sim_correnti_tensioni/Signal Builder64/Monoflop1 */
+   bool Comparator1_4;              /* sim_correnti_tensioni/Signal Builder65/Comparator1 */
+   bool Monoflop1_4;                /* sim_correnti_tensioni/Signal Builder65/Monoflop1 */
+   bool Comparator1_5;              /* sim_correnti_tensioni/Signal Builder66/Comparator1 */
+   bool Monoflop1_5;                /* sim_correnti_tensioni/Signal Builder66/Monoflop1 */
+   bool Comparator1_6;              /* sim_correnti_tensioni/Signal Builder67/Comparator1 */
+   bool Monoflop1_6;                /* sim_correnti_tensioni/Signal Builder67/Monoflop1 */
+   bool Comparator1_7;              /* sim_correnti_tensioni/Signal Builder68/Comparator1 */
+   bool Monoflop1_7;                /* sim_correnti_tensioni/Signal Builder68/Monoflop1 */
+   bool Comparator1_8;              /* sim_correnti_tensioni/Signal Builder69/Comparator1 */
+   bool Monoflop1_8;                /* sim_correnti_tensioni/Signal Builder69/Monoflop1 */
+   bool Comparator1_9;              /* sim_correnti_tensioni/Signal Builder70/Comparator1 */
+   bool Monoflop1_9;                /* sim_correnti_tensioni/Signal Builder70/Monoflop1 */
+   bool Comparator1_10;             /* sim_correnti_tensioni/Signal Builder71/Comparator1 */
+   bool Monoflop1_10;               /* sim_correnti_tensioni/Signal Builder71/Monoflop1 */
+   bool Comparator1_11;             /* sim_correnti_tensioni/Signal Builder72/Comparator1 */
+   bool Monoflop1_11;               /* sim_correnti_tensioni/Signal Builder72/Monoflop1 */
+   bool Comparator1_12;             /* sim_correnti_tensioni/Signal Builder73/Comparator1 */
+   bool Monoflop1_12;               /* sim_correnti_tensioni/Signal Builder73/Monoflop1 */
+   bool Comparator1_13;             /* sim_correnti_tensioni/Signal Builder74/Comparator1 */
+   bool Monoflop1_13;               /* sim_correnti_tensioni/Signal Builder74/Monoflop1 */
+   bool Comparator1_14;             /* sim_correnti_tensioni/Signal Builder75/Comparator1 */
+   bool Monoflop1_14;               /* sim_correnti_tensioni/Signal Builder75/Monoflop1 */
+   bool Comparator1_15;             /* sim_correnti_tensioni/Signal Builder76/Comparator1 */
+   bool Monoflop1_15;               /* sim_correnti_tensioni/Signal Builder76/Monoflop1 */
    bool MultiportSignalSwitch_bool; /* sim_correnti_tensioni/Multiport Signal Switch */
    int32_t MultiportSignalSwitch_int32_t; /* sim_correnti_tensioni/Multiport Signal Switch */
-   double MultiportSignalSwitch_double; /* sim_correnti_tensioni/Multiport Signal Switch */
-   double PulseGenerator;           /* sim_correnti_tensioni/Pulse Generator */
-   double Input0[8];                /* sim_correnti_tensioni/Input0 */
-   double Integrator7;              /* sim_correnti_tensioni/Integrator7 */
-   double Integrator6;              /* sim_correnti_tensioni/Integrator6 */
-   double Integrator4;              /* sim_correnti_tensioni/Integrator4 */
-   double Sum1;                     /* sim_correnti_tensioni/Sum1 */
-   double Input1[8];                /* sim_correnti_tensioni/Input1 */
-   double Integrator9;              /* sim_correnti_tensioni/Integrator9 */
-   double Integrator8;              /* sim_correnti_tensioni/Integrator8 */
-   double Integrator5;              /* sim_correnti_tensioni/Integrator5 */
-   double Sum2;                     /* sim_correnti_tensioni/Sum2 */
-   double Input2[8];                /* sim_correnti_tensioni/Input2 */
-   double Integrator11;             /* sim_correnti_tensioni/Integrator11 */
-   double Integrator10;             /* sim_correnti_tensioni/Integrator10 */
-   double Integrator12;             /* sim_correnti_tensioni/Integrator12 */
-   double Sum3;                     /* sim_correnti_tensioni/Sum3 */
-   double Input3[8];                /* sim_correnti_tensioni/Input3 */
-   double Integrator14;             /* sim_correnti_tensioni/Integrator14 */
-   double Integrator13;             /* sim_correnti_tensioni/Integrator13 */
-   double Integrator15;             /* sim_correnti_tensioni/Integrator15 */
-   double Sum4;                     /* sim_correnti_tensioni/Sum4 */
-   double Input4[8];                /* sim_correnti_tensioni/Input4 */
-   double Integrator17;             /* sim_correnti_tensioni/Integrator17 */
-   double Integrator16;             /* sim_correnti_tensioni/Integrator16 */
-   double Integrator18;             /* sim_correnti_tensioni/Integrator18 */
-   double Sum5;                     /* sim_correnti_tensioni/Sum5 */
-   double Input5[8];                /* sim_correnti_tensioni/Input5 */
-   double Integrator20;             /* sim_correnti_tensioni/Integrator20 */
-   double Integrator19;             /* sim_correnti_tensioni/Integrator19 */
-   double Integrator21;             /* sim_correnti_tensioni/Integrator21 */
-   double Sum6;                     /* sim_correnti_tensioni/Sum6 */
-   double Input6[8];                /* sim_correnti_tensioni/Input6 */
-   double Integrator23;             /* sim_correnti_tensioni/Integrator23 */
-   double Integrator22;             /* sim_correnti_tensioni/Integrator22 */
-   double Integrator24;             /* sim_correnti_tensioni/Integrator24 */
-   double Sum7;                     /* sim_correnti_tensioni/Sum7 */
-   double Input7[8];                /* sim_correnti_tensioni/Input7 */
-   double Integrator26;             /* sim_correnti_tensioni/Integrator26 */
-   double Integrator25;             /* sim_correnti_tensioni/Integrator25 */
-   double Integrator27;             /* sim_correnti_tensioni/Integrator27 */
-   double Sum8;                     /* sim_correnti_tensioni/Sum8 */
-   double Input8[8];                /* sim_correnti_tensioni/Input8 */
-   double Integrator29;             /* sim_correnti_tensioni/Integrator29 */
-   double Integrator28;             /* sim_correnti_tensioni/Integrator28 */
-   double Integrator30;             /* sim_correnti_tensioni/Integrator30 */
-   double Sum9;                     /* sim_correnti_tensioni/Sum9 */
-   double Input9[8];                /* sim_correnti_tensioni/Input9 */
-   double Integrator32;             /* sim_correnti_tensioni/Integrator32 */
-   double Integrator31;             /* sim_correnti_tensioni/Integrator31 */
-   double Integrator33;             /* sim_correnti_tensioni/Integrator33 */
-   double Sum10;                    /* sim_correnti_tensioni/Sum10 */
-   double Input10[8];               /* sim_correnti_tensioni/Input10 */
-   double Integrator35;             /* sim_correnti_tensioni/Integrator35 */
-   double Integrator34;             /* sim_correnti_tensioni/Integrator34 */
-   double Integrator36;             /* sim_correnti_tensioni/Integrator36 */
-   double Sum11;                    /* sim_correnti_tensioni/Sum11 */
-   double Input11[8];               /* sim_correnti_tensioni/Input11 */
-   double Integrator38;             /* sim_correnti_tensioni/Integrator38 */
-   double Integrator37;             /* sim_correnti_tensioni/Integrator37 */
-   double Integrator39;             /* sim_correnti_tensioni/Integrator39 */
-   double Sum12;                    /* sim_correnti_tensioni/Sum12 */
-   double Input12[8];               /* sim_correnti_tensioni/Input12 */
-   double Integrator41;             /* sim_correnti_tensioni/Integrator41 */
-   double Integrator40;             /* sim_correnti_tensioni/Integrator40 */
-   double Integrator42;             /* sim_correnti_tensioni/Integrator42 */
-   double Sum13;                    /* sim_correnti_tensioni/Sum13 */
-   double Input13[8];               /* sim_correnti_tensioni/Input13 */
-   double Integrator44;             /* sim_correnti_tensioni/Integrator44 */
-   double Integrator43;             /* sim_correnti_tensioni/Integrator43 */
-   double Integrator45;             /* sim_correnti_tensioni/Integrator45 */
-   double Sum14;                    /* sim_correnti_tensioni/Sum14 */
-   double Input14[8];               /* sim_correnti_tensioni/Input14 */
-   double Integrator47;             /* sim_correnti_tensioni/Integrator47 */
-   double Integrator46;             /* sim_correnti_tensioni/Integrator46 */
-   double Integrator48;             /* sim_correnti_tensioni/Integrator48 */
-   double Sum15;                    /* sim_correnti_tensioni/Sum15 */
-   double Input15[8];               /* sim_correnti_tensioni/Input15 */
-   double Integrator50;             /* sim_correnti_tensioni/Integrator50 */
-   double Integrator49;             /* sim_correnti_tensioni/Integrator49 */
-   double Integrator51;             /* sim_correnti_tensioni/Integrator51 */
-   double Sum16;                    /* sim_correnti_tensioni/Sum16 */
-   double Width;                    /* sim_correnti_tensioni/White Noise/Width */
-   double Product19;                /* sim_correnti_tensioni/Product19 */
-   double Product20;                /* sim_correnti_tensioni/Product20 */
-   double Product21;                /* sim_correnti_tensioni/Product21 */
-   double Product22;                /* sim_correnti_tensioni/Product22 */
-   double Product23;                /* sim_correnti_tensioni/Product23 */
-   double Product24;                /* sim_correnti_tensioni/Product24 */
-   double Product25;                /* sim_correnti_tensioni/Product25 */
-   double Product28;                /* sim_correnti_tensioni/Product28 */
-   double Product32;                /* sim_correnti_tensioni/Product32 */
-   double Product36;                /* sim_correnti_tensioni/Product36 */
-   double Product40;                /* sim_correnti_tensioni/Product40 */
-   double Product44;                /* sim_correnti_tensioni/Product44 */
-   double Product48;                /* sim_correnti_tensioni/Product48 */
-   double Product52;                /* sim_correnti_tensioni/Product52 */
-   double Product56;                /* sim_correnti_tensioni/Product56 */
-   double Product60;                /* sim_correnti_tensioni/Product60 */
+   float MultiportSignalSwitch_float; /* sim_correnti_tensioni/Multiport Signal Switch */
+   bool MultiportSignalSwitch2_bool; /* sim_correnti_tensioni/Multiport Signal Switch2 */
+   int32_t MultiportSignalSwitch2_int32_t; /* sim_correnti_tensioni/Multiport Signal Switch2 */
+   float MultiportSignalSwitch2_float; /* sim_correnti_tensioni/Multiport Signal Switch2 */
+   bool MultiportSignalSwitch3_bool; /* sim_correnti_tensioni/Multiport Signal Switch3 */
+   int32_t MultiportSignalSwitch3_int32_t; /* sim_correnti_tensioni/Multiport Signal Switch3 */
+   float MultiportSignalSwitch3_float; /* sim_correnti_tensioni/Multiport Signal Switch3 */
+   bool MultiportSignalSwitch1_bool; /* sim_correnti_tensioni/Multiport Signal Switch1 */
+   int32_t MultiportSignalSwitch1_int32_t; /* sim_correnti_tensioni/Multiport Signal Switch1 */
+   float MultiportSignalSwitch1_float; /* sim_correnti_tensioni/Multiport Signal Switch1 */
+   bool Comparator1_16;             /* sim_correnti_tensioni/Comparator1 */
+   bool Monoflop1_16;               /* sim_correnti_tensioni/Monoflop1 */
+   float sim_correnti_tensioni_i1;  /* sim_correnti_tensioni */
+   float C_Script;                  /* sim_correnti_tensioni/White Noise/C-Script */
+   float Input10[17];               /* sim_correnti_tensioni/Input10 */
+   bool CompareToConstant;          /* sim_correnti_tensioni/Signal Builder62/Compare to Constant */
+   bool CompareToConstant_1;        /* sim_correnti_tensioni/Signal Builder61/Compare to Constant */
+   bool CompareToConstant_2;        /* sim_correnti_tensioni/Signal Builder63/Compare to Constant */
+   float Input00[8];                /* sim_correnti_tensioni/Input00 */
+   float Integrator7;               /* sim_correnti_tensioni/Signal Builder62/Integrator7 */
+   float Integrator6;               /* sim_correnti_tensioni/Signal Builder62/Integrator6 */
+   float Integrator4;               /* sim_correnti_tensioni/Signal Builder62/Integrator4 */
+   float Sum1;                      /* sim_correnti_tensioni/Signal Builder62/Sum1 */
+   float Input01[8];                /* sim_correnti_tensioni/Input01 */
+   float Integrator7_1;             /* sim_correnti_tensioni/Signal Builder61/Integrator7 */
+   float Integrator6_1;             /* sim_correnti_tensioni/Signal Builder61/Integrator6 */
+   float Integrator4_1;             /* sim_correnti_tensioni/Signal Builder61/Integrator4 */
+   float Sum1_1;                    /* sim_correnti_tensioni/Signal Builder61/Sum1 */
+   float Input02[8];                /* sim_correnti_tensioni/Input02 */
+   float Integrator7_2;             /* sim_correnti_tensioni/Signal Builder63/Integrator7 */
+   float Integrator6_2;             /* sim_correnti_tensioni/Signal Builder63/Integrator6 */
+   float Integrator4_2;             /* sim_correnti_tensioni/Signal Builder63/Integrator4 */
+   float Sum1_2;                    /* sim_correnti_tensioni/Signal Builder63/Sum1 */
+   float Input03[8];                /* sim_correnti_tensioni/Input03 */
+   bool CompareToConstant_3;        /* sim_correnti_tensioni/Signal Builder64/Compare to Constant */
+   float Integrator7_3;             /* sim_correnti_tensioni/Signal Builder64/Integrator7 */
+   float Integrator6_3;             /* sim_correnti_tensioni/Signal Builder64/Integrator6 */
+   float Integrator4_3;             /* sim_correnti_tensioni/Signal Builder64/Integrator4 */
+   float Sum1_3;                    /* sim_correnti_tensioni/Signal Builder64/Sum1 */
+   float Input04[8];                /* sim_correnti_tensioni/Input04 */
+   bool CompareToConstant_4;        /* sim_correnti_tensioni/Signal Builder65/Compare to Constant */
+   float Integrator7_4;             /* sim_correnti_tensioni/Signal Builder65/Integrator7 */
+   float Integrator6_4;             /* sim_correnti_tensioni/Signal Builder65/Integrator6 */
+   float Integrator4_4;             /* sim_correnti_tensioni/Signal Builder65/Integrator4 */
+   float Sum1_4;                    /* sim_correnti_tensioni/Signal Builder65/Sum1 */
+   float Input05[8];                /* sim_correnti_tensioni/Input05 */
+   bool CompareToConstant_5;        /* sim_correnti_tensioni/Signal Builder66/Compare to Constant */
+   float Integrator7_5;             /* sim_correnti_tensioni/Signal Builder66/Integrator7 */
+   float Integrator6_5;             /* sim_correnti_tensioni/Signal Builder66/Integrator6 */
+   float Integrator4_5;             /* sim_correnti_tensioni/Signal Builder66/Integrator4 */
+   float Sum1_5;                    /* sim_correnti_tensioni/Signal Builder66/Sum1 */
+   float Input06[8];                /* sim_correnti_tensioni/Input06 */
+   bool CompareToConstant_6;        /* sim_correnti_tensioni/Signal Builder67/Compare to Constant */
+   float Integrator7_6;             /* sim_correnti_tensioni/Signal Builder67/Integrator7 */
+   float Integrator6_6;             /* sim_correnti_tensioni/Signal Builder67/Integrator6 */
+   float Integrator4_6;             /* sim_correnti_tensioni/Signal Builder67/Integrator4 */
+   float Sum1_6;                    /* sim_correnti_tensioni/Signal Builder67/Sum1 */
+   float Input07[8];                /* sim_correnti_tensioni/Input07 */
+   bool CompareToConstant_7;        /* sim_correnti_tensioni/Signal Builder68/Compare to Constant */
+   float Integrator7_7;             /* sim_correnti_tensioni/Signal Builder68/Integrator7 */
+   float Integrator6_7;             /* sim_correnti_tensioni/Signal Builder68/Integrator6 */
+   float Integrator4_7;             /* sim_correnti_tensioni/Signal Builder68/Integrator4 */
+   float Sum1_7;                    /* sim_correnti_tensioni/Signal Builder68/Sum1 */
+   float Input08[8];                /* sim_correnti_tensioni/Input08 */
+   bool CompareToConstant_8;        /* sim_correnti_tensioni/Signal Builder69/Compare to Constant */
+   float Integrator7_8;             /* sim_correnti_tensioni/Signal Builder69/Integrator7 */
+   float Integrator6_8;             /* sim_correnti_tensioni/Signal Builder69/Integrator6 */
+   float Integrator4_8;             /* sim_correnti_tensioni/Signal Builder69/Integrator4 */
+   float Sum1_8;                    /* sim_correnti_tensioni/Signal Builder69/Sum1 */
+   float Input09[8];                /* sim_correnti_tensioni/Input09 */
+   bool CompareToConstant_9;        /* sim_correnti_tensioni/Signal Builder70/Compare to Constant */
+   float Integrator7_9;             /* sim_correnti_tensioni/Signal Builder70/Integrator7 */
+   float Integrator6_9;             /* sim_correnti_tensioni/Signal Builder70/Integrator6 */
+   float Integrator4_9;             /* sim_correnti_tensioni/Signal Builder70/Integrator4 */
+   float Sum1_9;                    /* sim_correnti_tensioni/Signal Builder70/Sum1 */
+   float Input0A[8];                /* sim_correnti_tensioni/Input0A */
+   bool CompareToConstant_10;       /* sim_correnti_tensioni/Signal Builder71/Compare to Constant */
+   float Integrator7_10;            /* sim_correnti_tensioni/Signal Builder71/Integrator7 */
+   float Integrator6_10;            /* sim_correnti_tensioni/Signal Builder71/Integrator6 */
+   float Integrator4_10;            /* sim_correnti_tensioni/Signal Builder71/Integrator4 */
+   float Sum1_10;                   /* sim_correnti_tensioni/Signal Builder71/Sum1 */
+   float Input0B[8];                /* sim_correnti_tensioni/Input0B */
+   bool CompareToConstant_11;       /* sim_correnti_tensioni/Signal Builder72/Compare to Constant */
+   float Integrator7_11;            /* sim_correnti_tensioni/Signal Builder72/Integrator7 */
+   float Integrator6_11;            /* sim_correnti_tensioni/Signal Builder72/Integrator6 */
+   float Integrator4_11;            /* sim_correnti_tensioni/Signal Builder72/Integrator4 */
+   float Sum1_11;                   /* sim_correnti_tensioni/Signal Builder72/Sum1 */
+   float Input0C[8];                /* sim_correnti_tensioni/Input0C */
+   bool CompareToConstant_12;       /* sim_correnti_tensioni/Signal Builder73/Compare to Constant */
+   float Integrator7_12;            /* sim_correnti_tensioni/Signal Builder73/Integrator7 */
+   float Integrator6_12;            /* sim_correnti_tensioni/Signal Builder73/Integrator6 */
+   float Integrator4_12;            /* sim_correnti_tensioni/Signal Builder73/Integrator4 */
+   float Sum1_12;                   /* sim_correnti_tensioni/Signal Builder73/Sum1 */
+   float Input0D[8];                /* sim_correnti_tensioni/Input0D */
+   bool CompareToConstant_13;       /* sim_correnti_tensioni/Signal Builder74/Compare to Constant */
+   float Integrator7_13;            /* sim_correnti_tensioni/Signal Builder74/Integrator7 */
+   float Integrator6_13;            /* sim_correnti_tensioni/Signal Builder74/Integrator6 */
+   float Integrator4_13;            /* sim_correnti_tensioni/Signal Builder74/Integrator4 */
+   float Sum1_13;                   /* sim_correnti_tensioni/Signal Builder74/Sum1 */
+   float Input0E[8];                /* sim_correnti_tensioni/Input0E */
+   bool CompareToConstant_14;       /* sim_correnti_tensioni/Signal Builder75/Compare to Constant */
+   float Integrator7_14;            /* sim_correnti_tensioni/Signal Builder75/Integrator7 */
+   float Integrator6_14;            /* sim_correnti_tensioni/Signal Builder75/Integrator6 */
+   float Integrator4_14;            /* sim_correnti_tensioni/Signal Builder75/Integrator4 */
+   float Sum1_14;                   /* sim_correnti_tensioni/Signal Builder75/Sum1 */
+   float Input0F[8];                /* sim_correnti_tensioni/Input0F */
+   bool CompareToConstant_15;       /* sim_correnti_tensioni/Signal Builder76/Compare to Constant */
+   float Integrator7_15;            /* sim_correnti_tensioni/Signal Builder76/Integrator7 */
+   float Integrator6_15;            /* sim_correnti_tensioni/Signal Builder76/Integrator6 */
+   float Integrator4_15;            /* sim_correnti_tensioni/Signal Builder76/Integrator4 */
+   float Sum1_15;                   /* sim_correnti_tensioni/Signal Builder76/Sum1 */
+   float Product19;                 /* sim_correnti_tensioni/Signal Builder62/Product19 */
+   float Product19_1;               /* sim_correnti_tensioni/Signal Builder61/Product19 */
+   float Product19_2;               /* sim_correnti_tensioni/Signal Builder63/Product19 */
+   float Product19_3;               /* sim_correnti_tensioni/Signal Builder64/Product19 */
+   float Product19_4;               /* sim_correnti_tensioni/Signal Builder65/Product19 */
+   float Product19_5;               /* sim_correnti_tensioni/Signal Builder66/Product19 */
+   float Product19_6;               /* sim_correnti_tensioni/Signal Builder67/Product19 */
+   float Product19_7;               /* sim_correnti_tensioni/Signal Builder68/Product19 */
+   float Product19_8;               /* sim_correnti_tensioni/Signal Builder69/Product19 */
+   float Product19_9;               /* sim_correnti_tensioni/Signal Builder70/Product19 */
+   float Product19_10;              /* sim_correnti_tensioni/Signal Builder71/Product19 */
+   float Product19_11;              /* sim_correnti_tensioni/Signal Builder72/Product19 */
+   float Product19_12;              /* sim_correnti_tensioni/Signal Builder73/Product19 */
+   float Product19_13;              /* sim_correnti_tensioni/Signal Builder74/Product19 */
+   float Product19_14;              /* sim_correnti_tensioni/Signal Builder75/Product19 */
+   float Product19_15;              /* sim_correnti_tensioni/Signal Builder76/Product19 */
 } sim_correnti_tensioni_BlockOutputs;
 extern sim_correnti_tensioni_BlockOutputs sim_correnti_tensioni_B;
 
 #if defined(EXTERNAL_MODE) && EXTERNAL_MODE
 /* External mode signals */
-#define sim_correnti_tensioni_NumExtModeSignals 0
-extern const double * const sim_correnti_tensioni_ExtModeSignals[];
+#define sim_correnti_tensioni_NumExtModeSignals 6
+extern const float * const sim_correnti_tensioni_ExtModeSignals[];
 /* Tunable parameters */
 #define sim_correnti_tensioni_NumTunableParameters 0
 #endif /* defined(EXTERNAL_MODE) */
 
 
 /* Entry point functions */
-void sim_correnti_tensioni_initialize();
-void sim_correnti_tensioni_step(void);
+void sim_correnti_tensioni_initialize(float time);
+void sim_correnti_tensioni_step(int task_id);
 void sim_correnti_tensioni_terminate(void);
-
+void sim_correnti_tensioni_sync(void);
 #endif /* PLECS_HEADER_sim_correnti_tensioni_h_ */

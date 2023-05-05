@@ -1,12 +1,12 @@
 /*
  * C-Script file for: sim_correnti_tensioni/White Noise/C-Script
- * Generated with   : PLECS 4.7.1
- * Generated on     : 6 Apr 2023 18:46:55
+ * Generated with   : PLECS 4.7.3
+ * Generated on     : 5 May 2023 16:38:23
  */
-typedef double real_t;
-#define REAL_MAX DBL_MAX
-#define REAL_MIN DBL_MIN
-#define REAL_EPSILON DBL_EPSILON
+typedef float real_t;
+#define REAL_MAX FLT_MAX
+#define REAL_MIN FLT_MIN
+#define REAL_EPSILON FLT_EPSILON
 #include <stdlib.h>
 #include <math.h>
 
@@ -101,28 +101,28 @@ struct CScriptStruct
    int numSampleTimes;
    int numParameters;
    int isMajorTimeStep;
-   double time;
-   const double ***inputs;
-   double ***outputs;
-   double *contStates;
-   double *contDerivs;
-   double *discStates;
-   double *zCSignals;
+   float time;
+   const float ***inputs;
+   float ***outputs;
+   float *contStates;
+   float *contDerivs;
+   float *discStates;
+   float *zCSignals;
    const int *paramNumDims;
    const int **paramDims;
    const int *paramNumElements;
-   const double **paramRealData;
+   const float **paramRealData;
    const char **paramStringData;
    const char * const *sampleHits;
-   const double *sampleTimePeriods;
-   const double *sampleTimeOffsets;
-   double *nextSampleHit;
+   const float *sampleTimePeriods;
+   const float *sampleTimeOffsets;
+   float *nextSampleHit;
    const char** errorStatus;
    const char** warningStatus;
    const char** rangeErrorMsg;
    int* rangeErrorLine;
-   void (*writeCustomStateDouble)(void*, double);
-   double (*readCustomStateDouble)(void*);
+   void (*writeCustomStateDouble)(void*, float);
+   float (*readCustomStateDouble)(void*);
    void (*writeCustomStateInt)(void*, int);
    void (*writeCustomStateData)(void*, const void*, int);
    void (*readCustomStateData)(void*, void*, int);

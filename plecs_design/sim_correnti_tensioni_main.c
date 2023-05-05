@@ -1,5 +1,11 @@
 #include "plexim/HIL_Framework.h"
 #include "plexim/ScopeBuffer.h"
+#include "plexim/hw_wrapper.h"
+#include "plexim/DigitalOut.h"
+#include "plexim/SPI.h"
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdatomic.h>
 #include <math.h>
 #include "sim_correnti_tensioni.h"
 
@@ -10,6 +16,7 @@
 #define MODEL_FLOAT_TYPE CONCAT(MODEL_PREFIX, _FloatType)
 #define MODEL_SAMPLE_TIME CONCAT(MODEL_PREFIX, _sampleTime)
 #define MODEL_STEP CONCAT(MODEL_PREFIX, _step)
+#define MODEL_SYNC CONCAT(MODEL_PREFIX, _sync)
 #define MODEL_ERROR_STATUS CONCAT(MODEL_PREFIX, _errorStatus)
 #define MODEL_CHECKSUM CONCAT(MODEL_PREFIX, _checksum)
 #define MODEL_INITIALIZE CONCAT(MODEL_PREFIX, _initialize)
@@ -18,9 +25,8 @@
 #define min(a, b) ((a) < (b)) ? a : b
 #define likely(x)       __builtin_expect((x),1)
 #define unlikely(x)     __builtin_expect((x),0)
-#define plxMulticoreSyncedStep()
 
-#define MULTITASKING 0
+#define MULTITASKING 1
 
 #if defined(EXTERNAL_MODE) && EXTERNAL_MODE
 #define MODEL_NUM_EXT_MODE_SIGNALS CONCAT(MODEL_PREFIX, _NumExtModeSignals)
@@ -128,6 +134,21 @@ void copyTunableParameters(const double* aData) { (void)aData; }
 #define checkScopeTrigger()
 #endif /* defined(EXTERNAL_MODE) */
 
+const char* plxGetModelName()
+{
+   static const char* modelName = MODEL_NAME;
+   return modelName;
+}
+
+uint32_t plxActiveTasks = 1;
+
+const char* plxGetA2l() 
+{ 
+   return "";
+}
+
+
+
 int plxPlatform_poll();
 static void modelInitFunction()
 {
@@ -138,8 +159,11 @@ static void modelInitFunction()
    {
       if (!plxErrorFlag)
       {
-         MODEL_STEP();
+         MODEL_STEP(0);
          plxPlatform_poll();
+         MODEL_STEP(1);
+         plxPlatform_poll();
+         plxMulticoreSyncedStep();
       }
    }
    if (!plxErrorFlag)
@@ -151,17 +175,42 @@ static void modelInitFunction()
 }
 
 
+static void modelSyncFunction()
+{
+   MODEL_SYNC();
+}
+
+
+
+void plxGenPreStepFunction()
+{
+   plxSetBufferAdresses();
+}
+
 void modelStepFunction0()
 {
+   static const size_t subTaskId[1] = { 1 };
+   static const size_t subTaskPeriod[1] = { 10 };
+   static size_t subTaskTick[1] = { 0 };
+   static atomic_bool subTaskHit[1];
+   static bool subTaskActive[1] = { false };
+   static const char* subTaskOverrunMsg[1] = { "Overrun in Task \"[0.0001, 0]\"." };
+   size_t subTaskIdx;
    /* Execute base task. */
-   MODEL_STEP();
+   static int inBaseStep = 0;
+   if (inBaseStep)
+   {
+      plxCancelTimingMeasurement();
+      return;
+   }
+   inBaseStep++;
+
+   MODEL_STEP(0);
    if(unlikely((size_t)MODEL_ERROR_STATUS))
    {
       plxStopTimer();
       plxUserMessage(PLXUSERMSG_NEEDS_ATTENTION, "%s\n", MODEL_ERROR_STATUS);
       plxErrorFlag = 1;
-
-      plxWaitForIrqAck();
 
    }
    if (unlikely(plxErrorFlag))
@@ -171,6 +220,38 @@ void modelStepFunction0()
    checkScopeTrigger();
 #endif /* defined(EXTERNAL_MODE) */
 
+   plxSyncDigitalOuts();
+   // Increment sub-task tick counters and set sub-task hit flags.
+   for (subTaskIdx = 0; subTaskIdx < 1; ++subTaskIdx)
+   {
+      if (subTaskTick[subTaskIdx] == 0)
+         atomic_store_explicit(&subTaskHit[subTaskIdx], true, memory_order_relaxed);
+      subTaskTick[subTaskIdx] = (subTaskTick[subTaskIdx]+1) % subTaskPeriod[subTaskIdx];
+      if (!subTaskActive[subTaskIdx])
+         plxActiveTasks &= ~(1 << (subTaskIdx+1));
+   }
+   plxPostBaseStep();
+   inBaseStep--;
+   // Execute sub-task based on sub-task hit flags.
+   for (subTaskIdx = 0; subTaskIdx < 1; ++subTaskIdx)
+   {
+      if (atomic_exchange_explicit(&subTaskHit[subTaskIdx], false, memory_order_relaxed))
+      {
+         if (subTaskActive[subTaskIdx])
+         {
+            MODEL_ERROR_STATUS = subTaskOverrunMsg[subTaskIdx];
+            break;
+         }
+         subTaskActive[subTaskIdx] = true;
+         plxActiveTasks |= (1 << (subTaskIdx+1));
+
+         MODEL_STEP(subTaskId[subTaskIdx]);
+         
+         subTaskActive[subTaskIdx] = false;
+      }
+      else if (subTaskActive[subTaskIdx])
+         break;
+   }
 }
 
 void modelStepFunction1()
@@ -181,7 +262,13 @@ void modelStepFunction2()
 {
 }
 
-int main(void)
+void plxXcpRegisterExtModeSignals(
+   const void* const* aSignals,
+   uint32_t aNumSignals,
+   void* aParameters,
+   uint32_t aNumParameters);
+
+void plxStartup(void)
 {
    int useExternalMode = 0;
    int numExtModeSignals = 0;
@@ -192,11 +279,22 @@ int main(void)
    struct PlxModelFunctions modelFunctions = 
    {
       .init = &modelInitFunction,
+      .sync = &modelSyncFunction,
       .step = &modelStepFunction0,
+      .step1 = &modelStepFunction1,
+      .step2 = &modelStepFunction2,
       .terminate = &MODEL_TERMINATE,
       .initializeScopeTrigger = &initializeScopeTrigger,
       .copyTunableParams = &copyTunableParameters
    };
+   struct PlxCoreTiming coreTiming = 
+   {
+      .mCore1Tick = 0,
+      .mCore1Period = 0,
+      .mCore2Tick = 0,
+      .mCore2Period = 0
+   };
+   
 #if defined(EXTERNAL_MODE) && EXTERNAL_MODE
    useExternalMode = 1;
    numExtModeSignals = MODEL_NUM_EXT_MODE_SIGNALS;
@@ -208,15 +306,23 @@ int main(void)
    numTunableParameters = MODEL_NUM_TUNABLE_PARAMETERS;
    tunableParameterValues = &MODEL_TUNABLE_PARAMETERS;
 #endif
+   plxXcpRegisterExtModeSignals(
+      (const void* const*)MODEL_EXT_MODE_SIGNALS,
+      MODEL_NUM_EXT_MODE_SIGNALS,
+      tunableParameterValues,
+      MODEL_NUM_TUNABLE_PARAMETERS
+   );
 #endif
-   plxRegisterBackgroundTask(plxStandaloneBackgroundTask);
+   plxRegisterStandaloneBackgroundTask();
 #if defined(MULTITASKING) && MULTITASKING
    double sampleTime = MODEL_SAMPLE_TIME[0][0];
 #else
    double sampleTime = MODEL_SAMPLE_TIME;
 #endif
+
    plxStartSimulationModel(sampleTime, sizeof(MODEL_FLOAT_TYPE),
                            useExternalMode, numExtModeSignals, numTunableParameters,
                            trigger, armResponse, MODEL_CHECKSUM, MODEL_NAME,
-                           &modelFunctions, 1);
+                           &modelFunctions, &coreTiming, 1,
+                           2);
 }

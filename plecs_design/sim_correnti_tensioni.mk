@@ -1,5 +1,5 @@
-CROSS            ?= "C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/bin/win/arm-none-eabi/bin/arm-none-eabi-"
-CFLAGS           := -Wall -O2 -c -fmessage-length=0 -DEXTERNAL_MODE=1 \
+CROSS            ?= "C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/aarch64-none-elf-"
+CFLAGS           := -Wall -O2 -g  -c -fmessage-length=0 -DEXTERNAL_MODE=1 \
    -fgcse-after-reload \
    -finline-functions \
    -fipa-cp-clone \
@@ -16,16 +16,19 @@ CFLAGS           := -Wall -O2 -c -fmessage-length=0 -DEXTERNAL_MODE=1 \
    -funswitch-loops \
    -fvect-cost-model \
    -fno-fast-math \
-   -mtune=cortex-a9 -mcpu=cortex-a9 \
+   -mtune=cortex-a53 -march=armv8-a -mcpu=cortex-a53 \
    -Wno-unused-variable \
    -funsafe-math-optimizations -fopt-info-vec --param max-completely-peeled-insns=1000 --param max-completely-peel-times=100
 CC               = $(CROSS)gcc
+LD               = $(CROSS)ld
 STRIP            = $(CROSS)strip
-INCLUDE          := -I"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/include/rtbox"
-LIBS             := -L"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/lib/rtbox" -L"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/lib/rtbox/OpenAmp" \
-                    -L"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/lib/rtbox/Xilinx" -lplexim_hil -lopen_amp -lbaremetal_remote \
-                    -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-LFLAGS           := -Wl,-T -Wl,"C:/Users/LGrittin/Documents/Plexim/PLECS 4.6 (64 bit)/PLECS_RT_Box/build/rtbox.ld"
+OBJCOPY          = $(CROSS)objcopy
+INCLUDE          := -I"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/include/rtbox2"
+LDFLAGS          := -T "C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/build/rtbox2.lds"        
+LIBS             := "C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox2/librtbox2.a" -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox2/Xilinx" -lrpumsg_a53 -lmetal -lxil \
+   -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/../aarch64-none-elf/lib" \
+   -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/../lib/gcc/aarch64-none-elf/8.3.0" \
+   -lm -lm --start-group -lc -lgcc -lnosys --end-group
 
 undefine GCC_EXEC_PREFIX
 
@@ -38,7 +41,8 @@ else
  CP               := cp
 endif
 
-APP = sim_correnti_tensioni.elf
+APP = sim_correnti_tensioni_linked.elf
+BIN = sim_correnti_tensioni.elf
 
 HEADERS += sim_correnti_tensioni.h
 C_SRCFILES += sim_correnti_tensioni_main.c sim_correnti_tensioni.c sim_correnti_tensioni_0.c
@@ -46,12 +50,15 @@ C_SRCFILES += sim_correnti_tensioni_main.c sim_correnti_tensioni.c sim_correnti_
 OBJFILES := $(patsubst %.c, %.o, $(C_SRCFILES))
 DEPFILES := $(patsubst %.c, %.d, $(C_SRCFILES))
 
-all: $(APP)
+all: $(BIN)
 
 $(APP): $(OBJFILES)
 	@echo Linking $@
-	@$(CC) -o $@ $(LFLAGS) $(OBJFILES) $(LIBS)
-	@$(STRIP) $@
+	@$(LD) -o $@ $(OBJFILES) $(LIBS) $(LDFLAGS) 
+
+$(BIN): $(APP)
+	@echo Creating $@
+	@$(OBJCOPY) -O binary $< $@
 
 %.o:%.c $(HEADERS)
 	@echo Compiling $(<:.c=.o)
