@@ -35,7 +35,8 @@ Plecs {
   CodeGenFloatingPointFormat "1"
   CodeGenAbsTimeUsageMsg "3"
   CodeGenBaseName ""
-  CodeGenOutputDir "C:/Users/LGrittin/Documents/Plexim/PLECS 4.7 (64 bit)"
+  CodeGenOutputDir "C:/Users/LGRITTIN/local_repos/rtbox_xmlprc_client/plecs_de"
+"sign"
   CodeGenExtraOpts ""
   CodeGenTarget "PLECS RT Box 3"
   CodeGenTargetSettings "AAAAfwAAAAAlUU1hcDxRU3RyaW5nLFFNYXA8UVN0cmluZyxRU3Rya"
@@ -17663,4 +17664,4 @@ Plecs {
     } 
   }
 }
-DemoSignature "6Q7W8MxJk3MckTKTfvDx3oLvrgZEadP0/hW9jdP1tso="
+DemoSignature "VmbhRO6dfXmvTBBWGAaV+JneeE6+5oBUboIH1JQDNls="

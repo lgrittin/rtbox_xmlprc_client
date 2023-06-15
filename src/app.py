@@ -42,8 +42,9 @@ import sip
 # ===============================================================================
 
 ## CONNECTIVITY
-RTBOX_MACADDRESS = ["20b0f7047680", "20b0f7058532"]   # RTBox1, RTBox3
-HOST_NAME = "rtbox-" + RTBOX_MACADDRESS[0] + ".local"
+RTBOX_MACADDRESS_LIST = ["20b0f7047680", "20b0f7058532"]   # RTBox1, RTBox3
+RTBOX_MACADDRESS = RTBOX_MACADDRESS_LIST[0]
+HOST_NAME = "rtbox-" + RTBOX_MACADDRESS + ".local"
 HOST_IPV4 = "000.000.000.000"
 HOST_ADDRESS = "http://" + HOST_IPV4 + ":9998/RPC2"
 INPUTBLOCKS = [0]
@@ -920,8 +921,12 @@ class settingsDialog(QDialog, Ui_Dialog):
         self.setupUi(self)
         self.setWindowTitle("RT-Box Settings")
         self.numcall = 0
-        self.comboBox_RtBoxMacAddress.insertItem(0, str("RtBox1 - " + RTBOX_MACADDRESS[0]))
-        self.comboBox_RtBoxMacAddress.insertItem(1, str("RtBox3 - " + RTBOX_MACADDRESS[1]))
+        self.comboBox_RtBoxMacAddress.insertItem(0, str("RtBox1 - " + RTBOX_MACADDRESS_LIST[0]))
+        self.comboBox_RtBoxMacAddress.insertItem(1, str("RtBox3 - " + RTBOX_MACADDRESS_LIST[1]))
+        if (RTBOX_MACADDRESS == RTBOX_MACADDRESS_LIST[0]):
+            self.comboBox_RtBoxMacAddress.setCurrentIndex(0)
+        else:
+            self.comboBox_RtBoxMacAddress.setCurrentIndex(1)
         self.lineEdit_DesignFilePath.setText(DESIGN_PATH)
         ## Class RTBox and managing threads # -----------------------------------
         self.RTBox = RTBox()
@@ -950,29 +955,27 @@ class settingsDialog(QDialog, Ui_Dialog):
         global RTBOX_IPFOUND
 
         if (RTBOX_CONNECTED == ConnectionStatus.CONNECTED):
-            #try:
-                #RTBOX_STATUS_INT = list(RTBOX_SERVER_XMLPRC.rtbox.querySimulation().values())
-                #lambda: self.callRTBoxMethod(5)
-                
-            if (RTBOX_STATUS_INT[8] == 'running'):
+
+            if (RTBOX_MACADDRESS == RTBOX_MACADDRESS_LIST[0]):   # RTBox1
+                idxsel = 7
+            elif (RTBOX_MACADDRESS == RTBOX_MACADDRESS_LIST[1]):   # RTBox3
+                idxsel = 8
+
+            if (RTBOX_STATUS_INT[idxsel] == 'running'):
                 RTBOX_STATUS = DeviceStatus.RUNNING
                 self.pushButton_Start.setEnabled(0)
                 self.pushButton_Stop.setEnabled(1)
-            elif(RTBOX_STATUS_INT[8] == 'stopped'):
+            elif(RTBOX_STATUS_INT[idxsel] == 'stopped'):
                 RTBOX_STATUS = DeviceStatus.STOPPED
                 self.pushButton_Start.setEnabled(1)
                 self.pushButton_Stop.setEnabled(0)
-            elif(RTBOX_STATUS_INT[8] == 'error'):
+            elif(RTBOX_STATUS_INT[idxsel] == 'error'):
                 RTBOX_STATUS = DeviceStatus.ERROR
                 self.pushButton_Start.setEnabled(0)
                 self.pushButton_Stop.setEnabled(0)
             else:
                 self.pushButton_Start.setEnabled(1)
                 self.pushButton_Stop.setEnabled(1)
-            #except Exception as error:
-            #    QMessageBox.about(self, type(error).__name__, traceback.format_exc())
-            #    RTBOX_STATUS = DeviceStatus.ERROR
-            #    RTBOX_CONNECTED = ConnectionStatus.NOT_CONNECTED
 
         self.label_Ipv4Result.setStyleSheet(dispListColor[RTBOX_IPFOUND.value-1])
         self.label_Ipv4Result.setText(dispList_Ipv4[RTBOX_IPFOUND.value-1])
@@ -999,10 +1002,10 @@ class settingsDialog(QDialog, Ui_Dialog):
 
     def onComboBox_indexChanged(self):
         global HOST_NAME
-
+        global RTBOX_MACADDRESS
         idx = self.comboBox_RtBoxMacAddress.currentIndex()
-        value = RTBOX_MACADDRESS[idx]
-        HOST_NAME = "rtbox-" + value + ".local"
+        RTBOX_MACADDRESS = RTBOX_MACADDRESS_LIST[idx]
+        HOST_NAME = "rtbox-" + RTBOX_MACADDRESS + ".local"
 
     def browseDesignFile(self):
         global DESIGN_PATH

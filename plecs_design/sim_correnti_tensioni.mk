@@ -1,4 +1,4 @@
-CROSS            ?= "C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/aarch64-none-elf-"
+CROSS            ?= "C:/Users/LGrittin/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/aarch64-none-elf-"
 CFLAGS           := -Wall -O2 -g  -c -fmessage-length=0 -DEXTERNAL_MODE=1 \
    -fgcse-after-reload \
    -finline-functions \
@@ -23,11 +23,11 @@ CC               = $(CROSS)gcc
 LD               = $(CROSS)ld
 STRIP            = $(CROSS)strip
 OBJCOPY          = $(CROSS)objcopy
-INCLUDE          := -I"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/include/rtbox2"
-LDFLAGS          := -T "C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/build/rtbox2.lds"        
-LIBS             := "C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox2/librtbox2.a" -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox2/Xilinx" -lrpumsg_a53 -lmetal -lxil \
-   -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/../aarch64-none-elf/lib" \
-   -L"C:/Users/LGRITTIN/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/../lib/gcc/aarch64-none-elf/8.3.0" \
+INCLUDE          := -I"C:/Users/LGrittin/Documents/Plexim/CoderTargets/PLECS_RT_Box/include/rtbox2"
+LDFLAGS          := -T "C:/Users/LGrittin/Documents/Plexim/CoderTargets/PLECS_RT_Box/build/rtbox2.lds"        
+LIBS             := "C:/Users/LGrittin/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox2/librtbox2.a" -L"C:/Users/LGrittin/Documents/Plexim/CoderTargets/PLECS_RT_Box/lib/rtbox2/Xilinx" -lrpumsg_a53 -lmetal -lxil \
+   -L"C:/Users/LGrittin/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/../aarch64-none-elf/lib" \
+   -L"C:/Users/LGrittin/Documents/Plexim/CoderTargets/PLECS_RT_Box/bin/win/aarch64-none-elf/bin/../lib/gcc/aarch64-none-elf/8.3.0" \
    -lm -lm --start-group -lc -lgcc -lnosys --end-group
 
 undefine GCC_EXEC_PREFIX
